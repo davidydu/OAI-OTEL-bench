@@ -69,6 +69,7 @@ async def run_rag() -> None:
 async def main() -> None:
     """Run all basic use cases with Logfire tracing."""
 
+    logfire.configure()
     logfire.instrument_openai_agents()
 
     await run_echo()
