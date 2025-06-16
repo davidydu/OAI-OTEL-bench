@@ -8,13 +8,16 @@ four scenarios that shipped in the original prototype (`echo`, `cot`, `rag`, and
 `pydantic`). Additional benchmarks can be added by creating a module under
 `src/benchmarks/` with a `run` coroutine and referencing it in the config file.
 
-Tracing is handled in each benchmark via the `run_with_tracing` helper. We do
-not call `instrument_openai_agents()` so that each use case span appears as the
-root span with attributes such as model name and the input/output payloads.
+
+Tracing is handled in each benchmark via the `run_with_tracing` helper. We call
+`telemetry.configure()` after `logfire.configure()` to attach an OTLP exporter,
+but we do **not** call `instrument_openai_agents()` so that each use case span
+appears as the root span with attributes such as model name and the
+input/output payloads.
+
 
 Example scripts under `src/examples/` illustrate Logfire integration but are not
 executed when running the benchmarks.
-
 
 To execute all configured benchmarks:
 
