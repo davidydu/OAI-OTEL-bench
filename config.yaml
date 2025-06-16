@@ -1,9 +1,11 @@
 benchmarks:
-  - name: echo
-    prompt: "Hello, OTEL!"
-  - name: cot
-    prompt: "If I have 2 apples and add 3, how many? Think step by step."
-  - name: rag
-    prompt: "Tell me about the Eiffel Tower."
-  - name: pydantic
-    prompt: "How does pyodide let you run Python in the browser? (short answer please)"
+  # - name: echo
+  #   prompt: "Hello, OTEL!"
+  # - name: cot
+  #   prompt: "If I have 2 apples and add 3, how many? Think step by step."
+  # - name: rag
+  #   prompt: "Tell me about the Eiffel Tower."
+  # - name: pydantic
+  #   prompt: "How does pyodide let you run Python in the browser? (short answer please)"
+  - name: deterministic
+    prompt: "Generate a short sci-fi outline."

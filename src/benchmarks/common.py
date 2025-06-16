@@ -14,11 +14,19 @@ class AgentResponse(BaseModel):
     output: str
 
 
-async def run_with_tracing(use_case: str, agent, req: AgentRequest) -> AgentResponse:
+async def run_with_tracing(
+    use_case: str,
+    agent,
+    req: AgentRequest,
+    *,
+    context=None,
+) -> AgentResponse:
 
     tracer = trace.get_tracer(__name__)
 
-    with tracer.start_as_current_span(f"use_case.{use_case}") as span:
+    with tracer.start_as_current_span(
+        f"use_case.{use_case}", context=context
+    ) as span:
         agent_name = getattr(agent, "name", None)
         if isinstance(agent_name, str):
             span.set_attribute("agent.name", agent_name)
@@ -59,6 +67,33 @@ async def run_with_tracing(use_case: str, agent, req: AgentRequest) -> AgentResp
         resp_value = getattr(result, "final_output", None) or getattr(
             result, "output", None
         )
+        if not isinstance(resp_value, str):
+            if hasattr(resp_value, "model_dump_json"):
+                resp_value = resp_value.model_dump_json()
+            else:
+                resp_value = str(resp_value)
+
         resp = AgentResponse(output=resp_value)
+        span.add_event("agent.response", resp.model_dump())
+        return resp
+
+async def run_in_root(
+    use_case: str,
+    req: AgentRequest,
+    agent_name: str | None,
+    chain_fn,
+) -> AgentResponse:
+    """Run a sequence of agent calls under a root span."""
+
+    tracer = trace.get_tracer(__name__)
+
+    with tracer.start_as_current_span(f"use_case.{use_case}") as span:
+        if agent_name:
+            span.set_attribute("agent.name", agent_name)
+        span.add_event("agent.request", req.model_dump())
+
+        ctx = trace.set_span_in_context(span)
+        resp = await chain_fn(req, ctx)
+
         span.add_event("agent.response", resp.model_dump())
         return resp

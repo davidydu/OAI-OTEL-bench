@@ -10,7 +10,7 @@ from src import telemetry
 def scrubbing_callback(m: logfire.ScrubMatch):
     if (
         m.path == ('otel_events', 1, 'attributes', 'output')
-        and m.pattern_match.group(0) == 'secret'
+        and m.pattern_match.group(0) == 'secret' or 'session'
     ):
         return m.value
     
