@@ -1,0 +1,16 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+
+# Logs
+*.log
+
+# Data
+pydantic_pypi.db
+
+# Python packaging
+*.egg-info/
+
