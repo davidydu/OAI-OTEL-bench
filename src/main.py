@@ -3,11 +3,9 @@ import asyncio
 
 import logfire
 
-from config import load_config
-from benchmarks.runner import BenchmarkRunner
-import telemetry
-
-
+from src.config import load_config
+from src.benchmarks.runner import BenchmarkRunner
+from src import telemetry
 
 
 async def main() -> None:
@@ -24,9 +22,6 @@ async def main() -> None:
     config = load_config()
     runner = BenchmarkRunner(config.benchmarks)
     await runner.run_all()
-
-
-
-
+    
 if __name__ == "__main__":
     asyncio.run(main())
