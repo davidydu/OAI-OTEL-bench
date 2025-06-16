@@ -77,6 +77,20 @@ async def run_with_tracing(
         span.add_event("agent.response", resp.model_dump())
         return resp
 
+async def run_step(
+    use_case: str,
+    agent,
+    req: AgentRequest,
+    ctx,
+) -> AgentResponse:
+    """Execute an agent call and log the output on the parent span."""
+
+    resp = await run_with_tracing(use_case, agent, req, context=ctx)
+    parent = trace.get_current_span()
+    if parent.is_recording():
+        parent.add_event(f"{use_case}.response", {"output": resp.output})
+    return resp
+
 async def run_in_root(
     use_case: str,
     req: AgentRequest,

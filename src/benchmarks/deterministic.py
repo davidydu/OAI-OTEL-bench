@@ -2,9 +2,12 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 from agents import Agent
-from opentelemetry import trace
-
-from .common import AgentRequest, AgentResponse, run_with_tracing, run_in_root
+from .common import (
+    AgentRequest,
+    AgentResponse,
+    run_in_root,
+    run_step,
+)
 
 
 class OutlineCheckerOutput(BaseModel):
@@ -36,28 +39,17 @@ story_agent = Agent(
 
 
 async def _chain(req: AgentRequest, ctx) -> AgentResponse:
-    root_span = trace.get_current_span()
 
-    outline_resp = await run_with_tracing(
-        "deterministic.outline", story_outline_agent, req, context=ctx
+    outline_resp = await run_step(
+        "deterministic.outline", story_outline_agent, req, ctx
     )
-    if root_span.is_recording():
-        root_span.add_event(
-            "deterministic.outline.response",
-            {"output": outline_resp.output},
-        )
 
-    checker_resp = await run_with_tracing(
+    checker_resp = await run_step(
         "deterministic.checker",
         outline_checker_agent,
         AgentRequest(prompt=outline_resp.output),
-        context=ctx,
+        ctx,
     )
-    if root_span.is_recording():
-        root_span.add_event(
-            "deterministic.checker.response",
-            {"output": checker_resp.output},
-        )
 
     try:
         checker_data = OutlineCheckerOutput.model_validate_json(checker_resp.output)
@@ -67,11 +59,11 @@ async def _chain(req: AgentRequest, ctx) -> AgentResponse:
     if not checker_data or not (checker_data.good_quality and checker_data.is_scifi):
         return AgentResponse(output="Outline rejected")
 
-    return await run_with_tracing(
+    return await run_step(
         "deterministic.story",
         story_agent,
         AgentRequest(prompt=outline_resp.output),
-        context=ctx,
+        ctx,
     )
 
 
