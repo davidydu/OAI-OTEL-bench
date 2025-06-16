@@ -7,9 +7,16 @@ from src.config import load_config
 from src.benchmarks.runner import BenchmarkRunner
 from src import telemetry
 
-
+def scrubbing_callback(m: logfire.ScrubMatch):
+    if (
+        m.path == ('otel_events', 1, 'attributes', 'output')
+        and m.pattern_match.group(0) == 'secret'
+    ):
+        return m.value
+    
 async def main() -> None:
     logfire.configure(token=os.getenv("LOGFIRE_TOKEN"))
+    logfire.configure(scrubbing=logfire.ScrubbingOptions(callback=scrubbing_callback))
 
     telemetry.configure()
     # We manually capture spans via run_with_tracing and do not
