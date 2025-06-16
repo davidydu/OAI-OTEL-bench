@@ -4,3 +4,4 @@ opentelemetry-sdk
 opentelemetry-exporter-otlp-proto-http
 pydantic
 logfire
+pyyaml
