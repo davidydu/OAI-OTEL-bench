@@ -6,6 +6,7 @@ The benchmarks run according to `config.yaml` which lists prompts for each scena
 
 To execute all configured benchmarks:
 
+
 ```bash
 export OPENAI_API_KEY=...
 export LOGFIRE_TOKEN=...
@@ -13,3 +14,4 @@ python -m src.main
 ```
 
 Each example script may also be executed directly once the environment variables are set.
+
