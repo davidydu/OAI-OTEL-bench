@@ -9,5 +9,12 @@ benchmarks:
   #   prompt: "How does pyodide let you run Python in the browser? (short answer please)"
   # - name: deterministic
   #   prompt: "Generate a short sci-fi outline."
-  - name: parallelization
-    prompt: "Translate the following sentence to Spanish and pick the best translation. Although the committee had spent countless hours poring over the detailed proposals, questioning every assumption and cross-referencing each statistic with historical data, they remained undecided about which initiative would most effectively foster sustainable growth in the region, all the while knowing that their final decision would shape the community’s future for decades to come."
+  # - name: parallelization
+  #   prompt: "Translate the following sentence to Spanish and pick the best translation. Although the committee had spent countless hours poring over the detailed proposals, questioning every assumption and cross-referencing each statistic with historical data, they remained undecided about which initiative would most effectively foster sustainable growth in the region, all the while knowing that their final decision would shape the community’s future for decades to come."
+  - name: routing
+    prompt: "« Dans quelle mesure nos peurs les plus profondes sont-elles le reflet de nos désirs inavoués, et comment pouvons-nous les apprivoiser pour vivre en accord avec notre moi véritable ? »"
+  - name: routing
+    prompt: "To what extent do the stories we tell ourselves shape our reality, and is it possible to truly perceive the world without the filter of our own narratives?"
+  - name: routing
+    prompt: "¿Hasta qué punto nuestras decisiones reflejan realmente nuestra esencia auténtica y no simplemente las expectativas que otros tienen de nosotros?
+"

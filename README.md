@@ -6,9 +6,9 @@ This project collects OpenTelemetry traces for various OpenAI agent use cases. E
 The benchmarks run according to `config.yaml`, which lists the scenarios to
 execute. Additional benchmarks can be added by creating a module under
 `src/benchmarks/` with a `run` coroutine and referencing it in the config file.
-The repository currently includes examples such as `deterministic` and
-`parallelization` in addition to the original `echo`, `cot`, `rag`, and
-`pydantic` demos.
+The repository currently includes examples such as `deterministic`,
+`parallelization`, and `routing` in addition to the original `echo`,
+`cot`, `rag`, and `pydantic` demos.
 
 
 Tracing is handled in each benchmark via the `run_with_tracing` helper. We call
