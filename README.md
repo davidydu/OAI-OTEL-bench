@@ -2,6 +2,7 @@
 
 This project collects OpenTelemetry traces for various OpenAI agent use cases. Example scripts live under `src/examples/` and the OpenAI Agents SDK is included as a submodule in `src/openai_agents`.
 
+
 The benchmarks run according to `config.yaml`, which by default defines the same
 four scenarios that shipped in the original prototype (`echo`, `cot`, `rag`, and
 `pydantic`). Additional benchmarks can be added by creating a module under
@@ -14,6 +15,7 @@ root span with attributes such as model name and the input/output payloads.
 Example scripts under `src/examples/` illustrate Logfire integration but are not
 executed when running the benchmarks.
 
+
 To execute all configured benchmarks:
 
 ```bash
@@ -23,3 +25,4 @@ python -m src.main
 ```
 
 Each example script may also be executed directly once the environment variables are set.
+

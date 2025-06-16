@@ -3,8 +3,10 @@ from __future__ import annotations
 import importlib
 from typing import Sequence
 
+
 from src.config import BenchmarkItem
 from src.benchmarks.common import AgentRequest
+
 
 
 class BenchmarkRunner:
