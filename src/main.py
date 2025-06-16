@@ -22,7 +22,6 @@ async def main() -> None:
     config = load_config()
     runner = BenchmarkRunner(config.benchmarks)
     await runner.run_all()
-
-
+    
 if __name__ == "__main__":
     asyncio.run(main())
