@@ -10,13 +10,16 @@ from src import telemetry
 
 async def main() -> None:
     logfire.configure(token=os.getenv("LOGFIRE_TOKEN"))
+
     telemetry.configure()
     # We manually capture spans via run_with_tracing and do not
     # instrument the OpenAI Agents SDK to avoid extra parent spans.
+
     logfire.instrument_pydantic_ai()
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("Please set OPENAI_API_KEY in environment.")
+
 
     config = load_config()
     runner = BenchmarkRunner(config.benchmarks)

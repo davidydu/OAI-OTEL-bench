@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from agents import Runner
 
 
+
 class AgentRequest(BaseModel):
     prompt: str
 
@@ -14,7 +15,9 @@ class AgentResponse(BaseModel):
 
 
 async def run_with_tracing(use_case: str, agent, req: AgentRequest) -> AgentResponse:
+
     tracer = trace.get_tracer(__name__)
+
     with tracer.start_as_current_span(f"use_case.{use_case}") as span:
         agent_name = getattr(agent, "name", None)
         if isinstance(agent_name, str):
