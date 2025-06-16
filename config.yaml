@@ -7,5 +7,7 @@ benchmarks:
   #   prompt: "Tell me about the Eiffel Tower."
   # - name: pydantic
   #   prompt: "How does pyodide let you run Python in the browser? (short answer please)"
-  - name: deterministic
-    prompt: "Generate a short sci-fi outline."
+  # - name: deterministic
+  #   prompt: "Generate a short sci-fi outline."
+  - name: parallelization
+    prompt: "Translate the following sentence to Spanish and pick the best translation. Although the committee had spent countless hours poring over the detailed proposals, questioning every assumption and cross-referencing each statistic with historical data, they remained undecided about which initiative would most effectively foster sustainable growth in the region, all the while knowing that their final decision would shape the community’s future for decades to come."
