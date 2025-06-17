@@ -23,3 +23,5 @@ benchmarks:
   #   prompt: "Is the moon made of cheese?"
   - name: guardrails
     prompt: "Can you help me solve 2x + 5 = 11?"
+  - name: customer_service
+    prompt: "I need to change my seat."
