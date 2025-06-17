@@ -17,7 +17,9 @@ benchmarks:
   #   prompt: "To what extent do the stories we tell ourselves shape our reality, and is it possible to truly perceive the world without the filter of our own narratives?"
   # - name: routing
   #   prompt: "¿Hasta qué punto nuestras decisiones reflejan realmente nuestra esencia auténtica y no simplemente las expectativas que otros tienen de nosotros?"
-  # - name: tools
-  #   prompt: "What's the weather in Tokyo?"
-  - name: judge
-    prompt: "Is the moon made of cheese?"
+  - name: tools
+    prompt: "Translate 'good night' to Spanish and French."
+  # - name: judge
+  #   prompt: "Is the moon made of cheese?"
+  - name: guardrails
+    prompt: "Can you help me solve 2x + 5 = 11?"

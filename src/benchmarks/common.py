@@ -5,12 +5,12 @@ import json
 
 from opentelemetry import trace
 from pydantic import BaseModel
-from agents import Runner
+from agents import Runner, ItemHelpers, MessageOutputItem
 
 
 
 class AgentRequest(BaseModel):
-    prompt: str
+    prompt: Any
 
 
 class AgentResponse(BaseModel):
@@ -30,6 +30,7 @@ async def run_with_tracing(
     *,
     context=None,
     attributes: dict[str, Any] | None = None,
+    return_result: bool = False
 ) -> AgentResponse:
 
     tracer = trace.get_tracer(__name__)
@@ -70,7 +71,14 @@ async def run_with_tracing(
             if tool_names:
                 span.set_attribute("agent.tools", tool_names)
 
-        span.add_event("agent.request", req.model_dump())
+        req_dict = req.model_dump()
+        prompt_val = req_dict.get("prompt")
+        if not isinstance(prompt_val, (str, bytes, int, float, bool)) and prompt_val is not None:
+            try:
+                req_dict["prompt"] = json.dumps(prompt_val)
+            except TypeError:
+                req_dict["prompt"] = str(prompt_val)
+        span.add_event("agent.request", req_dict)
 
         if hasattr(agent, "run") and callable(agent.run):
             result = await agent.run(req.prompt)
@@ -88,8 +96,28 @@ async def run_with_tracing(
 
         resp = AgentResponse(output=resp_value)
         span.add_event("agent.response", resp.model_dump())
+        if return_result:
+            return resp, result
         return resp
 
+
+async def run_step(
+    use_case: str,
+    agent,
+    req: AgentRequest,
+    ctx,
+    *,
+    attributes: dict[str, Any] | None = None,
+) -> AgentResponse:
+    """Execute an agent call and log the output on the parent span."""
+
+    resp = await run_with_tracing(
+        use_case, agent, req, context=ctx, attributes=attributes
+    )
+    parent = trace.get_current_span()
+    if parent.is_recording():
+        parent.add_event(f"{use_case}.response", {"output": resp.output})
+    return resp
 
 async def run_streamed_with_tracing(
     use_case: str,
@@ -123,7 +151,18 @@ async def run_streamed_with_tracing(
             resp_value = str(resp_value)
 
         resp = AgentResponse(output=resp_value)
-        span.add_event("agent.response", resp.model_dump())
+
+        if attributes:
+            for key, value in attributes.items():
+                span.set_attribute(key, value)
+        req_dict = resp.model_dump()
+        prompt_val = req_dict.get("prompt")
+        if not isinstance(prompt_val, (str, bytes, int, float, bool)) and prompt_val is not None:
+            try:
+                req_dict["prompt"] = json.dumps(prompt_val)
+            except TypeError:
+                req_dict["prompt"] = str(prompt_val)
+        span.add_event("agent.request", req_dict)
 
         return resp, result.current_agent, result.to_input_list()
 
@@ -137,18 +176,27 @@ async def run_in_root(
 ) -> AgentResponse:
     """Run a sequence of agent calls under a root span."""
 
+    # 获取tracer
     tracer = trace.get_tracer(__name__)
 
+    # 开始一个新的span
     with tracer.start_as_current_span(f"use_case.{use_case}") as span:
+        # 如果agent_name不为空，则设置span的属性
         if agent_name:
             span.set_attribute("agent.name", agent_name)
+        # 如果attributes不为空，则设置span的属性
         if attributes:
             for key, value in attributes.items():
                 span.set_attribute(key, value)
+        # 添加agent.request事件
         span.add_event("agent.request", req.model_dump())
 
+        # 将span设置到上下文中
         ctx = trace.set_span_in_context(span)
+        # 调用chain_fn函数
         resp = await chain_fn(req, ctx)
 
+        # 添加agent.response事件
         span.add_event("agent.response", resp.model_dump())
+        # 返回响应
         return resp
