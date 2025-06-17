@@ -8,7 +8,6 @@ from pydantic import BaseModel
 from agents import Runner, ItemHelpers, MessageOutputItem
 
 
-
 class AgentRequest(BaseModel):
     prompt: Any
 
@@ -22,7 +21,8 @@ def add_event(event_name: str, attributes: dict[str, Any] | None = None) -> None
     span = trace.get_current_span()
     if span.is_recording():
         span.add_event(event_name, attributes or {})
-        
+
+
 async def run_with_tracing(
     use_case: str,
     agent,
@@ -30,14 +30,12 @@ async def run_with_tracing(
     *,
     context=None,
     attributes: dict[str, Any] | None = None,
-    return_result: bool = False
+    return_result: bool = False,
 ) -> AgentResponse:
 
     tracer = trace.get_tracer(__name__)
 
-    with tracer.start_as_current_span(
-        f"use_case.{use_case}", context=context
-    ) as span:
+    with tracer.start_as_current_span(f"use_case.{use_case}", context=context) as span:
         if attributes:
             for key, value in attributes.items():
                 span.set_attribute(key, value)
@@ -73,7 +71,10 @@ async def run_with_tracing(
 
         req_dict = req.model_dump()
         prompt_val = req_dict.get("prompt")
-        if not isinstance(prompt_val, (str, bytes, int, float, bool)) and prompt_val is not None:
+        if (
+            not isinstance(prompt_val, (str, bytes, int, float, bool))
+            and prompt_val is not None
+        ):
             try:
                 req_dict["prompt"] = json.dumps(prompt_val)
             except TypeError:
@@ -119,21 +120,21 @@ async def run_step(
         parent.add_event(f"{use_case}.response", {"output": resp.output})
     return resp
 
+
 async def run_streamed_with_tracing(
     use_case: str,
     agent,
     inputs: Iterable[dict[str, Any]],
     *,
     context=None,
+    agent_context=None,
     attributes: dict[str, Any] | None = None,
 ) -> tuple[AgentResponse, Any, list[dict[str, Any]]]:
     """Run an agent with streaming and return the updated conversation."""
 
     tracer = trace.get_tracer(__name__)
 
-    with tracer.start_as_current_span(
-        f"use_case.{use_case}", context=context
-    ) as span:
+    with tracer.start_as_current_span(f"use_case.{use_case}", context=context) as span:
         if attributes:
             for key, value in attributes.items():
                 span.set_attribute(key, value)
@@ -142,7 +143,7 @@ async def run_streamed_with_tracing(
         # message list to JSON instead of passing nested dicts directly.
         span.add_event("agent.request", {"messages": json.dumps(list(inputs))})
 
-        result = Runner.run_streamed(agent, input=list(inputs), context=context)
+        result = Runner.run_streamed(agent, input=list(inputs), context=agent_context)
         async for _ in result.stream_events():
             pass
 
@@ -157,7 +158,10 @@ async def run_streamed_with_tracing(
                 span.set_attribute(key, value)
         req_dict = resp.model_dump()
         prompt_val = req_dict.get("prompt")
-        if not isinstance(prompt_val, (str, bytes, int, float, bool)) and prompt_val is not None:
+        if (
+            not isinstance(prompt_val, (str, bytes, int, float, bool))
+            and prompt_val is not None
+        ):
             try:
                 req_dict["prompt"] = json.dumps(prompt_val)
             except TypeError:
@@ -165,6 +169,7 @@ async def run_streamed_with_tracing(
         span.add_event("agent.request", req_dict)
 
         return resp, result.current_agent, result.to_input_list()
+
 
 async def run_in_root(
     use_case: str,
