@@ -2,7 +2,13 @@ from __future__ import annotations
 
 from agents import Agent
 
-from .common import AgentRequest, AgentResponse, run_with_tracing
+import uuid
+
+from .common import (
+    AgentRequest,
+    AgentResponse,
+    run_streamed_with_tracing,
+)
 
 french_agent = Agent(
     name="french_agent",
@@ -31,4 +37,17 @@ triage_agent = Agent(
 
 
 async def run(req: AgentRequest) -> AgentResponse:
-    return await run_with_tracing("routing", triage_agent, req)
+    conversation_id = uuid.uuid4().hex[:8]
+    agent = triage_agent
+    inputs = [{"content": req.prompt, "role": "user"}]
+
+    resp, agent, inputs = await run_streamed_with_tracing(
+        "routing.turn1", agent, inputs, attributes={"conversation.id": conversation_id}
+    )
+
+    inputs.append({"content": "Thanks!", "role": "user"})
+    resp, agent, inputs = await run_streamed_with_tracing(
+        "routing.turn2", agent, inputs, attributes={"conversation.id": conversation_id}
+    )
+
+    return resp

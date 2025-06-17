@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from typing import Any, Iterable
+import json
+
 from opentelemetry import trace
 from pydantic import BaseModel
 from agents import Runner
@@ -20,6 +23,7 @@ async def run_with_tracing(
     req: AgentRequest,
     *,
     context=None,
+    attributes: dict[str, Any] | None = None,
 ) -> AgentResponse:
 
     tracer = trace.get_tracer(__name__)
@@ -27,6 +31,9 @@ async def run_with_tracing(
     with tracer.start_as_current_span(
         f"use_case.{use_case}", context=context
     ) as span:
+        if attributes:
+            for key, value in attributes.items():
+                span.set_attribute(key, value)
         agent_name = getattr(agent, "name", None)
         if isinstance(agent_name, str):
             span.set_attribute("agent.name", agent_name)
@@ -77,25 +84,50 @@ async def run_with_tracing(
         span.add_event("agent.response", resp.model_dump())
         return resp
 
-async def run_step(
+
+async def run_streamed_with_tracing(
     use_case: str,
     agent,
-    req: AgentRequest,
-    ctx,
-) -> AgentResponse:
-    """Execute an agent call and log the output on the parent span."""
+    inputs: Iterable[dict[str, Any]],
+    *,
+    context=None,
+    attributes: dict[str, Any] | None = None,
+) -> tuple[AgentResponse, Any, list[dict[str, Any]]]:
+    """Run an agent with streaming and return the updated conversation."""
 
-    resp = await run_with_tracing(use_case, agent, req, context=ctx)
-    parent = trace.get_current_span()
-    if parent.is_recording():
-        parent.add_event(f"{use_case}.response", {"output": resp.output})
-    return resp
+    tracer = trace.get_tracer(__name__)
+
+    with tracer.start_as_current_span(
+        f"use_case.{use_case}", context=context
+    ) as span:
+        if attributes:
+            for key, value in attributes.items():
+                span.set_attribute(key, value)
+
+        # Logfire only allows primitive attribute types, so we serialize the
+        # message list to JSON instead of passing nested dicts directly.
+        span.add_event("agent.request", {"messages": json.dumps(list(inputs))})
+
+        result = Runner.run_streamed(agent, input=list(inputs), context=context)
+        async for _ in result.stream_events():
+            pass
+
+        resp_value = result.final_output
+        if not isinstance(resp_value, str):
+            resp_value = str(resp_value)
+
+        resp = AgentResponse(output=resp_value)
+        span.add_event("agent.response", resp.model_dump())
+
+        return resp, result.current_agent, result.to_input_list()
 
 async def run_in_root(
     use_case: str,
     req: AgentRequest,
     agent_name: str | None,
     chain_fn,
+    *,
+    attributes: dict[str, Any] | None = None,
 ) -> AgentResponse:
     """Run a sequence of agent calls under a root span."""
 
@@ -104,6 +136,9 @@ async def run_in_root(
     with tracer.start_as_current_span(f"use_case.{use_case}") as span:
         if agent_name:
             span.set_attribute("agent.name", agent_name)
+        if attributes:
+            for key, value in attributes.items():
+                span.set_attribute(key, value)
         span.add_event("agent.request", req.model_dump())
 
         ctx = trace.set_span_in_context(span)
