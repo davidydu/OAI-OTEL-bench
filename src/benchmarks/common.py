@@ -17,6 +17,12 @@ class AgentResponse(BaseModel):
     output: str
 
 
+def add_event(event_name: str, attributes: dict[str, Any] | None = None) -> None:
+    """Attach an event to the current span if recording."""
+    span = trace.get_current_span()
+    if span.is_recording():
+        span.add_event(event_name, attributes or {})
+        
 async def run_with_tracing(
     use_case: str,
     agent,
