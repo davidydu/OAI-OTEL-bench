@@ -1,7 +1,8 @@
-openai==0.27.0
 opentelemetry-api
 opentelemetry-sdk
 opentelemetry-exporter-otlp-proto-http
 pydantic
-logfire
+logfire==3.21.1
+logfire[httpx]==3.21.1
 pyyaml
+openai-agents==0.0.19

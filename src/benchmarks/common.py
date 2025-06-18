@@ -181,27 +181,25 @@ async def run_in_root(
 ) -> AgentResponse:
     """Run a sequence of agent calls under a root span."""
 
-    # 获取tracer
+
     tracer = trace.get_tracer(__name__)
 
-    # 开始一个新的span
+
     with tracer.start_as_current_span(f"use_case.{use_case}") as span:
-        # 如果agent_name不为空，则设置span的属性
+
         if agent_name:
             span.set_attribute("agent.name", agent_name)
-        # 如果attributes不为空，则设置span的属性
+        
         if attributes:
             for key, value in attributes.items():
                 span.set_attribute(key, value)
-        # 添加agent.request事件
+
         span.add_event("agent.request", req.model_dump())
 
-        # 将span设置到上下文中
+
         ctx = trace.set_span_in_context(span)
-        # 调用chain_fn函数
         resp = await chain_fn(req, ctx)
 
-        # 添加agent.response事件
+
         span.add_event("agent.response", resp.model_dump())
-        # 返回响应
         return resp
