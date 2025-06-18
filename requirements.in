@@ -5,4 +5,5 @@ pydantic
 logfire==3.21.1
 logfire[httpx]==3.21.1
 pyyaml
-openai-agents==0.0.19
+openai-agents[voice]==0.0.19
+sounddevice>=0.5.2

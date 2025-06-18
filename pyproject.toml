@@ -2,9 +2,9 @@
 name = "oai-otel-bench"
 version = "0.1.0"
 dependencies = [
-    "agents>=1.4.0",
     "openai>=1.88.0",
-    "openai-agents>=0.0.19",
+    "logfire[httpx]>=3.21.1",
+    "openai-agents[voice]>=0.0.19",
     "requests>=2.32.4",
 ]
 
