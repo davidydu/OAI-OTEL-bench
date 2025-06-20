@@ -1,3 +1,4 @@
+# To run: python ./GAIA_agent_design/run_gaia.py ./GAIA/2023/validation/metadata.jsonl my_submission.jsonl 
 from __future__ import annotations
 
 import json
@@ -8,15 +9,15 @@ import logfire
 from agents import Runner, ItemHelpers, trace
 from agents.mcp import MCPServerStdio
 
-from agents.file_router import FileRouterAgent
-from agents.processors.text_processor import TextProcessorAgent
-from agents.processors.docx_processor import DocxProcessorAgent
-from agents.processors.excel_processor import ExcelProcessorAgent
-from agents.processors.pdf_processor import PDFProcessorAgent
-from agents.processors.image_ocr_agent import ImageOCRAgent
-from agents.processors.audio_stt_agent import AudioSTTAgent
-from agents.knowledge_agent import KnowledgeAgent
-from agents.verifier_agent import VerifierAgent
+from agents_lib.file_router import FileRouterAgent
+from agents_lib.processors.text_processor import TextProcessorAgent
+from agents_lib.processors.docx_processor import DocxProcessorAgent
+from agents_lib.processors.excel_processor import ExcelProcessorAgent
+from agents_lib.processors.pdf_processor import PDFProcessorAgent
+from agents_lib.processors.image_ocr_agent import ImageOCRAgent
+from agents_lib.processors.audio_stt_agent import AudioSTTAgent
+from agents_lib.knowledge_agent import KnowledgeAgent
+from agents_lib.verifier_agent import VerifierAgent
 
 
 logfire.configure()
@@ -51,7 +52,7 @@ def choose_processor(mime: str):
 
 
 async def main(jsonl_path: str, out_path: str) -> None:
-    media_dir = Path("gaia_media").resolve()
+    media_dir = Path("GAIA_agent_design/gaia_media").resolve()
     async with MCPServerStdio(
         name="GAIA Filesystem",
         params={
@@ -72,10 +73,13 @@ async def main(jsonl_path: str, out_path: str) -> None:
 
                 with trace(span):
                     raw, mime = file_router.fetch(tid)
-                    processor = choose_processor(mime)
-                    context = processor.process(raw, mime)
+                    if raw is not None and mime is not None:
+                        processor = choose_processor(mime)
+                        context = processor.process(raw, mime)
+                    else:
+                        context = ""
                     context = context[:30000]
-                    result = Runner.run_sync(
+                    result = await Runner.run(
                         knowledge_agent,
                         f"Question: {question}\n\nContext:\n{context}",
                     )
@@ -85,7 +89,8 @@ async def main(jsonl_path: str, out_path: str) -> None:
                     reasoning, final = text.rsplit("FINAL ANSWER:", 1)
                 else:
                     reasoning, final = text, ""
-                verified = verifier_agent.verify(final.strip())
+                verified = await verifier_agent.verify(final.strip())
+
 
                 out = {
                     "task_id": tid,

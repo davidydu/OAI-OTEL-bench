@@ -17,11 +17,11 @@ class FileRouterAgent:
         # MIME detector
         self._magic = magic.Magic(mime=True)
 
-    def fetch(self, task_id: str) -> Tuple[bytes, str]:
+    def fetch(self, task_id: str) -> Tuple[bytes | None, str | None]:
         """Return raw bytes and detected MIME for the file matching ``task_id``."""
         matches = [f for f in os.listdir(self.media_dir) if f.startswith(task_id)]
         if not matches:
-            raise FileNotFoundError(f"No file starting with {task_id}")
+            return None, None
         path = self.media_dir / matches[0]
         with open(path, "rb") as fh:
             data = fh.read()

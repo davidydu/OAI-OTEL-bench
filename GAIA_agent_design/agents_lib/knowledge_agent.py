@@ -20,12 +20,16 @@ FINAL ANSWER: <your answer>
 
 class KnowledgeAgent(Agent):
     def __init__(self) -> None:
-        tools = [get_web_search_tool(), get_file_search_tool()]
+        tools = [get_web_search_tool()]
+        file_search = get_file_search_tool()
+        if file_search is not None:
+            tools.append(file_search)
         super().__init__(name="KnowledgeAgent", instructions=KNOWLEDGE_PROMPT, tools=tools)
 
-    def run(self, question: str, context: str) -> tuple[str, str]:
+    async def answer(self, question: str, context: str) -> tuple[str, str]:
+        """Run the agent asynchronously and return the final answer and reasoning."""
         prompt = f"Question: {question}\n\nContext:\n{context}"
-        result = Runner.run_sync(self, prompt)
+        result = await Runner.run(self, prompt)
         text = "\n".join(ItemHelpers.text_message_outputs(result.new_items)).strip()
         if "FINAL ANSWER:" in text:
             reasoning, final = text.rsplit("FINAL ANSWER:", 1)

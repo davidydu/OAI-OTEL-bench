@@ -20,11 +20,14 @@ class VerifierAgent(Agent):
             tools=[get_web_search_tool()],
         )
 
-    def verify(self, text: str) -> str:
+    async def verify(self, text: str) -> str:
+        """Run fact checking asynchronously."""
         entities = re.findall(r"\b[A-Z][A-Za-z0-9]+(?: [A-Z][A-Za-z0-9]+)*\b", text)
         unique = ", ".join(sorted(set(entities)))
         if not unique:
             return "Verified: no entities found"
-        prompt = f"Answer: {text}\nEntities: {unique}\nCheck these entities and summarize in one short sentence."
-        result = Runner.run_sync(self, prompt)
+        prompt = (
+            f"Answer: {text}\nEntities: {unique}\nCheck these entities and summarize in one short sentence."
+        )
+        result = await Runner.run(self, prompt)
         return f"Verified: {result.final_output.strip()}"
