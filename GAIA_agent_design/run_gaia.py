@@ -1,95 +1,107 @@
+from __future__ import annotations
+
 import json
 import os
-import shutil
+from pathlib import Path
+
 import logfire
-from agents import Runner, trace, ItemHelpers
+from agents import Runner, ItemHelpers, trace
 from agents.mcp import MCPServerStdio
-from agents.file_reader import FileReaderAgent
+
+from agents.file_router import FileRouterAgent
+from agents.processors.text_processor import TextProcessorAgent
+from agents.processors.docx_processor import DocxProcessorAgent
+from agents.processors.excel_processor import ExcelProcessorAgent
+from agents.processors.pdf_processor import PDFProcessorAgent
+from agents.processors.image_ocr_agent import ImageOCRAgent
+from agents.processors.audio_stt_agent import AudioSTTAgent
+from agents.knowledge_agent import KnowledgeAgent
+from agents.verifier_agent import VerifierAgent
+
 
 logfire.configure()
 logfire.instrument_httpx()
 logfire.instrument_openai_agents()
 
-SYSTEM_PROMPT = """
-You are a general AI assistant. I will ask you a question. \
-Report your thoughts, and finish your answer with the following template:
 
-FINAL ANSWER: [YOUR FINAL ANSWER]
+PROCESSORS = {
+    "text": TextProcessorAgent(),
+    "docx": DocxProcessorAgent(),
+    "excel": ExcelProcessorAgent(),
+    "pdf": PDFProcessorAgent(),
+    "image": ImageOCRAgent(),
+    "audio": AudioSTTAgent(),
+}
 
-YOUR FINAL ANSWER should be a number OR as few words as possible OR \
-a comma separated list of numbers and/or strings. If you are asked for \
-a number, don't use commas or units (like $ or %). If you are asked for \
-a string, don't use articles or abbreviations, and write digits in plain text.
-"""
 
-def extract_trace_and_answer(items):
-    texts = ItemHelpers.text_message_outputs(items)
-    full = "\n".join(texts).strip()
-    if "FINAL ANSWER:" in full:
-        reasoning, final = full.rsplit("FINAL ANSWER:", 1)
-        return final.strip(), reasoning.strip()
-    return "", full
+def choose_processor(mime: str):
+    if mime.startswith("text/") or "json" in mime or "python" in mime:
+        return PROCESSORS["text"]
+    if "word" in mime:
+        return PROCESSORS["docx"]
+    if "excel" in mime or "spreadsheet" in mime:
+        return PROCESSORS["excel"]
+    if "pdf" in mime:
+        return PROCESSORS["pdf"]
+    if mime.startswith("image/"):
+        return PROCESSORS["image"]
+    if mime.startswith("audio/"):
+        return PROCESSORS["audio"]
+    return PROCESSORS["text"]
 
-async def main(jsonl_path: str, out_path: str):
-    # Ensure npx is installed
-    if not shutil.which("npx"):
-        raise RuntimeError("Install npx: `npm install -g npx`")
 
-    media_dir = os.path.abspath("gaia_media")
-    # 1) launch the filesystem MCP server
+async def main(jsonl_path: str, out_path: str) -> None:
+    media_dir = Path("gaia_media").resolve()
     async with MCPServerStdio(
         name="GAIA Filesystem",
         params={
             "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-filesystem", media_dir],
+            "args": ["-y", "@modelcontextprotocol/server-filesystem", str(media_dir)],
         },
-    ) as mcp:
+    ):
+        file_router = FileRouterAgent(media_dir)
+        knowledge_agent = KnowledgeAgent()
+        verifier_agent = VerifierAgent()
 
-        # 2) build our file‐reader
-        file_reader = FileReaderAgent(mcp)
-
-        # 3) process each GAIA example
         with open(jsonl_path) as src, open(out_path, "w") as dst:
             for line in src:
                 task = json.loads(line)
                 tid = task["task_id"]
-                q   = task["Question"]
+                question = task["Question"]
                 span = f"GAIA Question {tid}"
 
                 with trace(span):
-                    # → step 1: fetch file for this task_id
-                    raw = file_reader.read_for(tid)
-
-                    # (for now we just embed it as text; later you'll
-                    #  detect binary vs. text and call a MediaProcessorAgent)
-                    prompt = (
-                        f"{q}\n\n"
-                        "Here is the file contents from the media directory:\n"
-                        f"{raw}\n\n"
-                        "Report your thoughts and finish with:\n"
-                        "FINAL ANSWER: [your answer]"
+                    raw, mime = file_router.fetch(tid)
+                    processor = choose_processor(mime)
+                    context = processor.process(raw, mime)
+                    context = context[:30000]
+                    result = Runner.run_sync(
+                        knowledge_agent,
+                        f"Question: {question}\n\nContext:\n{context}",
                     )
 
-                    # → step 2: ask the original GAIA Assistant
-                    from agents import Agent
-                    gaia_agent = Agent(
-                        name="GAIA Assistant",
-                        instructions=SYSTEM_PROMPT.strip()
-                    )
-                    result = Runner.run_sync(starting_agent=gaia_agent, input=prompt)
+                text = "\n".join(ItemHelpers.text_message_outputs(result.new_items)).strip()
+                if "FINAL ANSWER:" in text:
+                    reasoning, final = text.rsplit("FINAL ANSWER:", 1)
+                else:
+                    reasoning, final = text, ""
+                verified = verifier_agent.verify(final.strip())
 
-                answer, trace_txt = extract_trace_and_answer(result.new_items)
                 out = {
                     "task_id": tid,
-                    "model_answer": answer,
-                    "reasoning_trace": trace_txt,
+                    "model_answer": final.strip(),
+                    "reasoning_trace": reasoning.strip(),
+                    "verified": verified,
                 }
                 dst.write(json.dumps(out, ensure_ascii=False) + "\n")
 
+
 if __name__ == "__main__":
-    import sys, asyncio
+    import asyncio
+    import sys
+
     if len(sys.argv) != 3:
         print("Usage: python run_gaia.py metadata.jsonl submission.jsonl")
-        sys.exit(1)
-    # python run_gaia.py ./GAIA/2023/test/metadata.jsonl my_submission.jsonl
+        raise SystemExit(1)
+
     asyncio.run(main(sys.argv[1], sys.argv[2]))
