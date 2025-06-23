@@ -6,7 +6,12 @@ from pathlib import Path
 
 import logfire
 
-from research_bot.manager import GAIAResearchManager
+# Allow running this script either as part of the GAIA_agent_design package
+# (`python -m GAIA_agent_design.run_gaia_manager`) or directly via a file path
+if __package__ is None:
+    sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+from GAIA_agent_design.research_bot.manager import GAIAResearchManager
 
 logfire.configure()
 logfire.instrument_httpx()
