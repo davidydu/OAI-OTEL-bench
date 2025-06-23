@@ -1,6 +1,8 @@
 from .file_router import FileRouterAgent
 from .knowledge_agent import KnowledgeAgent
 from .verifier_agent import VerifierAgent
+from .research_assistant import ResearchAssistantAgent
+from .coordinator import CoordinatorAgent
 
 from .processors.text_processor import TextProcessorAgent
 from .processors.docx_processor import DocxProcessorAgent
@@ -13,6 +15,8 @@ __all__ = [
     "FileRouterAgent",
     "KnowledgeAgent",
     "VerifierAgent",
+    "ResearchAssistantAgent",
+    "CoordinatorAgent",
     "TextProcessorAgent",
     "DocxProcessorAgent",
     "ExcelProcessorAgent",
