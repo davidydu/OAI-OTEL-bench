@@ -12,3 +12,4 @@ python-docx
 pandas
 pdfplumber
 pytesseract
+openpyxl

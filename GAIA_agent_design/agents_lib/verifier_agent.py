@@ -2,7 +2,19 @@ from __future__ import annotations
 
 import re
 
-from agents import Agent, Runner
+from agents import Agent, Runner, ItemHelpers
+
+SYSTEM_PROMPT = """
+You are a general AI assistant. I will ask you a question. \
+Report your thoughts, and finish your answer with the following template:
+
+FINAL ANSWER: [YOUR FINAL ANSWER]
+
+YOUR FINAL ANSWER should be a number OR as few words as possible OR \
+a comma separated list of numbers and/or strings. If you are asked for \
+a number, don't use commas or units (like $ or %). If you are asked for \
+a string, don't use articles or abbreviations, and write digits in plain text.
+""".strip()
 
 from .tools.web_search_tool import get_web_search_tool
 
@@ -19,7 +31,28 @@ class VerifierAgent(Agent):
             ),
             tools=[get_web_search_tool()],
         )
+        self.formatter = Agent(
+            name="AnswerFormatter",
+            instructions=SYSTEM_PROMPT,
+        )
+        
+    @staticmethod
+    def _clean_text(text: str) -> str:
+        """Collapse whitespace for cleaner prompts."""
+        text = text.replace("\n", " ")
+        text = re.sub(r"\s+", " ", text)
+        return text.strip()
 
+    async def format_answer(self, question: str, answer: str) -> str:
+        """Ensure final answer follows the system prompt."""
+        prompt = f"Question: {question}\n\nCandidate answer:\n{answer}"
+        result = await Runner.run(self.formatter, prompt)
+        text = "\n".join(ItemHelpers.text_message_outputs(result.new_items)).strip()
+        if "FINAL ANSWER:" in text:
+            _, final = text.rsplit("FINAL ANSWER:", 1)
+            return final.strip()
+        return text
+    
     async def verify(self, text: str) -> str:
         """Run fact checking asynchronously."""
         entities = re.findall(r"\b[A-Z][A-Za-z0-9]+(?: [A-Z][A-Za-z0-9]+)*\b", text)

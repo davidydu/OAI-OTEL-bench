@@ -109,7 +109,6 @@ class GAIAManager:
         # run assistants in parallel
         assist_tasks = [Runner.run(a, prompt) for a in self.assistants]
         assist_results = await asyncio.gather(*assist_tasks)
-
         notes = "\n".join(res.final_output.strip() for res in assist_results)
 
         # synthesize multiple candidate answers
@@ -118,7 +117,7 @@ class GAIAManager:
         answers, reasonings = zip(*candidates)
 
         # choose best using verifier
-        clean = [a.replace("\n", " ").strip() for a in answers]
+        clean = [self.verifier._clean_text(a) for a in answers]
         best_index = await self.verifier.choose_best(clean)
-
-        return answers[best_index], reasonings[best_index]
+        formatted = await self.verifier.format_answer(question, answers[best_index])
+        return formatted, reasonings[best_index]

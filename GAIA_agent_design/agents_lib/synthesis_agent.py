@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from agents import Agent, Runner, ItemHelpers
 
-SYSTEM_PROMPT = """
-You are a general AI assistant. I will ask you a question. \
-Report your thoughts, and finish your answer with the following template:
+SYNTHESIZER_PROMPT = """
+You are a synthesizer agent. You will be given a question from the GAIA benchmark and \
+research notes from a research assistant. Use the research notes as the sole information (if in the research notes a word is lowercase, don't make it uppercase in the final answer) to decide on the final answer \
+in the following format: \
 
 FINAL ANSWER: [YOUR FINAL ANSWER]
 
@@ -17,7 +18,7 @@ a string, don't use articles or abbreviations, and write digits in plain text.
 
 class SynthesisAgent(Agent):
     def __init__(self) -> None:
-        super().__init__(name="SynthesisAgent", instructions=SYSTEM_PROMPT)
+        super().__init__(name="SynthesisAgent", instructions=SYNTHESIZER_PROMPT)
 
     async def synthesize(self, question: str, notes: str) -> tuple[str, str]:
         prompt = f"Question: {question}\n\nResearch notes:\n{notes}"
