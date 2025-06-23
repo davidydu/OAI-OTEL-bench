@@ -19,6 +19,6 @@ async def main(jsonl_path: str, out_path: str) -> None:
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python -m GAIA_agent_design.research_bot.main metadata.jsonl submission.jsonl")
+        print("Usage: python ./GAIA_agent_design/run_gaia_manager.py ./GAIA/2023/validation/metadata.jsonl my_submission.jsonl ")
         raise SystemExit(1)
     asyncio.run(main(sys.argv[1], sys.argv[2]))

@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from agents import Runner
+from agents.tracing import trace
 
 from ..agents_lib.file_router import FileRouterAgent
 from ..agents_lib.processors.text_processor import TextProcessorAgent
@@ -62,7 +63,8 @@ class GAIAResearchManager:
                 tid = task["task_id"]
                 question = task["Question"]
                 context = self._get_context(tid)
-                answer, reasoning = await self._answer(question, context)
+                with trace(workflow_name=f"GAIA {tid}"):
+                    answer, reasoning = await self._answer(question, context)
                 out = {
                     "task_id": tid,
                     "model_answer": answer,

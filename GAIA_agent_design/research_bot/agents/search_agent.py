@@ -6,7 +6,7 @@ from ...agents_lib.tools.code_interpreter import get_code_interpreter_tool
 
 INSTRUCTIONS = (
     "You are a research assistant. Given a search term, you search the web for that term "
-    "and summarize the most relevant results. Keep the summary under 300 words."
+    "and summarize the most relevant results. Keep the summary under 300 words. Grammar is not important, don't add extra fluff."
 )
 
 TOOLS = [WebSearchTool()]
