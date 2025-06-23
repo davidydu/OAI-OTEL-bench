@@ -1,5 +1,7 @@
 from .file_router import FileRouterAgent
 from .knowledge_agent import KnowledgeAgent
+from .knowledge_assistant import KnowledgeAssistantAgent
+from .synthesis_agent import SynthesisAgent
 from .verifier_agent import VerifierAgent
 
 from .processors.text_processor import TextProcessorAgent
@@ -12,6 +14,8 @@ from .processors.audio_stt_agent import AudioSTTAgent
 __all__ = [
     "FileRouterAgent",
     "KnowledgeAgent",
+    "KnowledgeAssistantAgent",
+    "SynthesisAgent",
     "VerifierAgent",
     "TextProcessorAgent",
     "DocxProcessorAgent",
