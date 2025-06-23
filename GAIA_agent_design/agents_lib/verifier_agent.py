@@ -31,3 +31,21 @@ class VerifierAgent(Agent):
         )
         result = await Runner.run(self, prompt)
         return f"Verified: {result.final_output.strip()}"
+
+    async def choose_best(self, answers: list[str]) -> int:
+        """Given multiple candidate answers, pick the best one.
+
+        Returns the index of the preferred answer.
+        """
+        bullet_list = "\n".join(
+            f"Option {i+1}: {a}" for i, a in enumerate(answers)
+        )
+        prompt = (
+            "Evaluate the following candidate answers using web search and "
+            "respond with the number of the best option.\n" + bullet_list
+        )
+        result = await Runner.run(self, prompt)
+        try:
+            return int(result.final_output.strip()) - 1
+        except Exception:
+            return 0
