@@ -46,11 +46,28 @@ def _choose_processor(mime: str):
 
 
 class GAIAManager:
-    def __init__(self, media_dir: Path) -> None:
+    """Orchestrates the GAIA workflow using multiple helper agents.
+
+    Parameters
+    ----------
+    media_dir:
+        Directory containing GAIA media files.
+    num_assistants:
+        Number of knowledge assistants to run in parallel.
+    num_synths:
+        Number of synthesis agents creating candidate answers.
+    """
+
+    def __init__(
+        self,
+        media_dir: Path,
+        num_assistants: int = 3,
+        num_synths: int = 3,
+    ) -> None:
         self.media_dir = media_dir
         self.file_router = FileRouterAgent(media_dir)
-        self.assistants = [KnowledgeAssistantAgent() for _ in range(3)]
-        self.synth_agents = [SynthesisAgent() for _ in range(3)]
+        self.assistants = [KnowledgeAssistantAgent() for _ in range(num_assistants)]
+        self.synth_agents = [SynthesisAgent() for _ in range(num_synths)]
         self.verifier = VerifierAgent()
 
     async def run(self, jsonl_path: str, out_path: str) -> None:
@@ -92,7 +109,8 @@ class GAIAManager:
         # run assistants in parallel
         assist_tasks = [Runner.run(a, prompt) for a in self.assistants]
         assist_results = await asyncio.gather(*assist_tasks)
-        notes = "\n".join(res.final_output for res in assist_results)
+
+        notes = "\n".join(res.final_output.strip() for res in assist_results)
 
         # synthesize multiple candidate answers
         synth_tasks = [a.synthesize(question, notes) for a in self.synth_agents]
@@ -100,5 +118,7 @@ class GAIAManager:
         answers, reasonings = zip(*candidates)
 
         # choose best using verifier
-        best_index = await self.verifier.choose_best(list(answers))
+        clean = [a.replace("\n", " ").strip() for a in answers]
+        best_index = await self.verifier.choose_best(clean)
+
         return answers[best_index], reasonings[best_index]

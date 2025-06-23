@@ -37,10 +37,12 @@ class VerifierAgent(Agent):
 
         Returns the index of the preferred answer.
         """
-        joined = "\n".join(f"Option {i+1}: {a}" for i, a in enumerate(answers))
+        bullet_list = "\n".join(
+            f"Option {i+1}: {a}" for i, a in enumerate(answers)
+        )
         prompt = (
             "Evaluate the following candidate answers using web search and "
-            "respond with the number of the best option.\n" + joined
+            "respond with the number of the best option.\n" + bullet_list
         )
         result = await Runner.run(self, prompt)
         try:

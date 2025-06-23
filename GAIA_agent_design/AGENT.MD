@@ -116,7 +116,7 @@ agents/tools/
 │       ├── image_gen_tool.py
 │       └── hosted_mcp_tool.py
 ├── gaia_media/                   # media and JSONL data for GAIA
-├── run_gaia.py                   # top-level orchestration script
+├── run_gaia_manager.py           # orchestrator running multiple agents in parallel
 └── requirements.txt              # dependencies (openai-agents-python, python-docx, etc.)
 ```
 
@@ -129,3 +129,14 @@ agents/tools/
 * **openai-agents-python/examples/voice/static**: audio STT pipelines
 
 This blueprint will guide incremental implementation, testing, and extension of your GAIA benchmark agent system. langfristig, each component can be refined, prompt‑tuned, and instrumented with LogFire traces for full transparency.
+
+## GAIA Manager Workflow
+
+`run_gaia_manager.py` instantiates a `GAIAManager` coordinating helper agents:
+
+1. Several `KnowledgeAssistantAgent` instances gather facts in parallel.
+2. Multiple `SynthesisAgent` instances craft candidate answers from those notes.
+3. `VerifierAgent` picks the best candidate and performs a light fact check.
+
+This design encourages diverse reasoning while still producing a single verified answer.
+
