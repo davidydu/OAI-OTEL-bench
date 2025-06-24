@@ -21,8 +21,10 @@ from .agents import (
     planner_agent,
     search_agent,
     writer_agent,
+    verifier_agent,
     evaluator_agent,
     AnswerData,
+    VerificationResult
 )
 
 PROCESSORS = {
@@ -64,11 +66,12 @@ class GAIAResearchManager:
                 question = task["Question"]
                 context = self._get_context(tid)
                 with trace(workflow_name=f"GAIA {tid}"):
-                    answer, reasoning = await self._answer(question, context)
+                    answer, reasoning, verified = await self._answer(question, context)
                 out = {
                     "task_id": tid,
                     "model_answer": answer,
                     "reasoning_trace": reasoning,
+                    "verified": verified,
                 }
                 dst.write(json.dumps(out, ensure_ascii=False) + "\n")
 
@@ -80,14 +83,23 @@ class GAIAResearchManager:
         text = processor.process(raw, mime)
         return text[:30000]
 
-    async def _answer(self, question: str, context: str) -> tuple[str, str]:
+    async def _answer(self, question: str, context: str) -> tuple[str, str, bool]:
         plan = await self._plan_searches(question, context)
         results = await self._perform_searches(plan)
         new_plan = await self._evaluate_results(question, results)
         if new_plan.searches:
             results.extend(await self._perform_searches(new_plan))
-        data = await self._write_answer(question, context, results)
-        return data.answer, data.reasoning
+        
+        feedback: str | None = None
+        data = await self._write_answer(question, context, results, feedback)
+        verification = await self._verify_answer(question, data)
+
+        while not verification.is_correct:
+            feedback = verification.feedback
+            data = await self._write_answer(question, context, results, feedback)
+            verification = await self._verify_answer(question, data)
+
+        return data.answer, data.reasoning, True
 
     async def _plan_searches(self, question: str, context: str) -> WebSearchPlan:
         prompt = f"Query: {question}\nContext:\n{context}"
@@ -116,7 +128,22 @@ class GAIAResearchManager:
         result = await Runner.run(evaluator_agent, prompt)
         return result.final_output_as(WebSearchPlan)
 
-    async def _write_answer(self, question: str, context: str, summaries: list[str]) -> AnswerData:
-        input = f"Question: {question}\nContext: {context}\nResearch summaries: {summaries}"
+    async def _write_answer(
+        self,
+        question: str,
+        context: str,
+        summaries: list[str],
+        feedback: str | None,
+    ) -> AnswerData:
+        input = (
+            f"Question: {question}\nContext: {context}\nResearch summaries: {summaries}"
+        )
+        if feedback:
+            input += f"\nVerifier feedback: {feedback}\nPlease correct your answer accordingly."
         result = await Runner.run(writer_agent, input)
         return result.final_output_as(AnswerData)
+    
+    async def _verify_answer(self, question: str, data: AnswerData) -> VerificationResult:
+        prompt = f"Question: {question}\nReasoning: {data.reasoning}\nFinal answer: {data.answer}"
+        result = await Runner.run(verifier_agent, prompt)
+        return result.final_output_as(VerificationResult)

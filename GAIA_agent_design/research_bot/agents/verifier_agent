@@ -1,0 +1,30 @@
+from pydantic import BaseModel
+
+from agents import Agent
+
+# Agent that double-checks the writer's final answer.
+# It ensures the answer obeys the question requirements
+# such as units, rounding, and general correctness.
+VERIFIER_PROMPT = (
+    "You are a careful verifier. You will be given the original question, "
+    "the writer's reasoning trace, and the final answer. "
+    "Confirm the answer satisfies the question in terms of format "
+    "(units, rounding, etc.) and overall correctness. "
+    "Return whether it looks correct and point out any issues."
+)
+
+
+class VerificationResult(BaseModel):
+    is_correct: bool
+    """Whether the answer appears correct and well formatted."""
+
+    feedback: str
+    """If not correct, describe the problems."""
+
+
+verifier_agent = Agent(
+    name="VerifierAgent",
+    instructions=VERIFIER_PROMPT,
+    model="o3-mini",
+    output_type=VerificationResult,
+)

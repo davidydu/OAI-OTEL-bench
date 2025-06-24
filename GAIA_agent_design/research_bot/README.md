@@ -13,7 +13,8 @@ The flow is:
 1. User enters their research topic
 2. `planner_agent` comes up with a plan to search the web for information. The plan is a list of search queries, with a search term and a reason for each query.
 3. For each search item, we run a `search_agent`, which uses the Web Search tool to search for that term and summarize the results. These all run in parallel.
-4. Finally, the `writer_agent` receives the search summaries, and creates a written report.
+4. The `writer_agent` receives the search summaries and creates a written report.
+5. A `verifier_agent` reviews the reasoning and final answer to ensure it matches the question requirements (units, rounding, etc.). If not, the writer updates the answer based on the verifier feedback and the check repeats until it passes.
 
 ## Suggested improvements
 

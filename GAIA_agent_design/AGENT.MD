@@ -17,68 +17,50 @@ This document outlines the goals and architecture of a multi-agent system design
 
 ```text
 CoordinatorAgent
-    ├─ FileRouterAgent (MCP or native I/O)
-    ├─ ProcessorAgents (per file type)
-    │    ├─ TextProcessorAgent (.txt, .json, .py)
-    │    ├─ DocxProcessorAgent (.docx)
-    │    ├─ ExcelProcessorAgent (.xls, .xlsx)
-    │    ├─ PDFProcessorAgent (.pdf)
-    │    ├─ ImageOCRAgent (.png, .jpg)
-    │    └─ AudioSTTAgent (.wav, .mp3)
-    ├─ KnowledgeAgent (QA with WebSearchTool, FileSearchTool)
-    ├─ VerifierAgent (optional fact‐checking)
-    └─ SubmissionWriter (JSONL output)
+    ├─ FileRouterAgent          # secure file I/O via MCP or native code
+    ├─ ProcessorAgents          # format-specific parsing → plain text
+    │    ├─ TextProcessorAgent  # .txt, .json, .py
+    │    ├─ DocxProcessorAgent  # .docx          (python-docx)
+    │    ├─ ExcelProcessorAgent # .xls/.xlsx     (pandas)
+    │    ├─ PDFProcessorAgent   # .pdf           (pdfplumber/tika)
+    │    ├─ ImageOCRAgent       # .png/.jpg      (Tesseract / vision API)
+    │    └─ AudioSTTAgent       # .wav/.mp3      (Whisper / cloud STT)
+    ├─ KnowledgeAgent           # QA: Plan→Act→Reflect with search/file tools
+    ├─ WriteAgent               # Formats answer and reasoning into GAIA-spec JSONL
+    ├─ VerifierAgent            # Post-write format & correctness check
+    └─ SubmissionWriter         # Persists final JSONL submission
 ```
 
-### 1. CoordinatorAgent
+### Expanded Flow
 
-* Reads each line of `gaia_val.jsonl` (task\_id, Question, etc.)
-* Calls FileRouterAgent → returns `(raw_bytes, file_type)`
-* Dispatches to the appropriate ProcessorAgent to get plain text
-* Aggregates all text into context and invokes KnowledgeAgent
-* Optionally invokes VerifierAgent for low-confidence answers
-* Writes out `{"task_id":..., "model_answer":..., "reasoning_trace":...}` to submission JSONL
+1. **CoordinatorAgent** kicks off a run for each question: reads metadata, invokes FileRouterAgent and ProcessorAgents, and collects all extracted text.
 
-### 2. FileRouterAgent
+2. **KnowledgeAgent** receives the question + aggregated context, performs searches or file lookups as needed, and outputs a candidate `FINAL ANSWER:` plus reasoning trace.
 
-* Uses either:
+3. **WriteAgent** takes the raw model output and serializes it into the GAIA JSONL schema, splitting out `model_answer` and `reasoning_trace`.
 
-  * **MCP filesystem** via `HostedMCPTool` (see `examples/mcp/filesystem_example`) to securely list/read `gaia_media/`
-  * **Native Python I/O** + `python-magic` for MIME detection
-* Ensures no hallucinated paths or contents
+4. **VerifierAgent** consumes the written JSONL entry, inspects both the `reasoning_trace` and the `model_answer`, and checks:
 
-### 3. ProcessorAgents
+   * **Format compliance** (units, rounding, number vs string, comma use)
+   * **Consistency** (answer matches reasoning, no contradictions)
+   * **Basic correctness** (e.g. re-calculate simple numeric steps or re-run unit conversions)
 
-Each agent wraps a specialized pipeline and exposes a `.process(raw_bytes)` API:
+   If a violation is detected, it can:
 
-| Agent               | File Types             | Example Source / Tools                                 |
-| ------------------- | ---------------------- | ------------------------------------------------------ |
-| TextProcessorAgent  | `.txt`, `.json`, `.py` | Direct pass-through, `json.loads`                      |
-| DocxProcessorAgent  | `.docx`                | `python-docx` → text (`examples/word_processor` style) |
-| ExcelProcessorAgent | `.xls`, `.xlsx`        | `pandas.read_excel` → CSV/text                         |
-| PDFProcessorAgent   | `.pdf`                 | `pdfplumber`/`tika` → text                             |
-| ImageOCRAgent       | `.png`, `.jpg`, etc.   | Tesseract / `openai-agents-python/examples/vision`     |
-| AudioSTTAgent       | `.wav`, `.mp3`, etc.   | Whisper / `examples/voice` static STT pipeline         |
+   * Flag the entry for retry
+   * Auto-correct minor format or rounding mistakes
+   * Append a `verified: false` tag or add a corrective note
 
-### 4. KnowledgeAgent
+5. **SubmissionWriter** finalizes and writes out the verified (or flagged) JSONL submission ready for GAIA scoring.
 
-* Instructed to “Plan → Act”:
+### Additional Accuracy Mechanisms
 
-  1. Decide if a web or file search is needed
-  2. Call `WebSearchTool` (`examples/web_search`) or `FileSearchTool` (`examples/file_search`)
-  3. Reflect on results, loop if necessary
-  4. Emit `FINAL ANSWER: ...` per GAIA guidelines
-
-### 5. VerifierAgent (Optional)
-
-* Extracts named entities or claims from `model_answer`
-* Re-queries via `WebSearchTool` or `FileSearchTool`
-* Flags or corrects discrepancies to reduce errors
-
-### 6. SubmissionWriter
-
-* Uses `ItemHelpers.text_message_outputs` and custom parsing to split chain-of-thought vs. final answer
-* Writes final JSONL to disk, ready for GAIA scoring
+* **Dual-pass verification**: run a second, lightweight agent to independently answer the same question and compare outputs.
+* **Regex-based format enforcement**: define strict patterns for numeric answers (e.g. `^\d+(\.\d{1,2})?$` for two-decimal numbers) and reject mismatches.
+* **Confidence thresholds**: leverage LLM token probabilities or explicit “I am confident at X%” statements to decide when to trigger a human review or retrial.
+* **Cache and dedupe**: store past question-answer pairs to avoid re-computation and reduce rate-limit errors.
+* **Human-in-the-loop checkpointing**: for Level 4–5 tasks, insert manual validation steps where high stakes demand it.
+* **Ensemble scoring**: aggregate answers from multiple model variants or prompt templates, then pick the majority or highest-confidence response.
 
 ## Tools Directory Layout
 
@@ -116,7 +98,7 @@ agents/tools/
 │       ├── image_gen_tool.py
 │       └── hosted_mcp_tool.py
 ├── gaia_media/                   # media and JSONL data for GAIA
-├── run_gaia_manager.py           # orchestrator running multiple agents in parallel
+├── run_gaia.py                   # top-level orchestration script
 └── requirements.txt              # dependencies (openai-agents-python, python-docx, etc.)
 ```
 
@@ -129,14 +111,3 @@ agents/tools/
 * **openai-agents-python/examples/voice/static**: audio STT pipelines
 
 This blueprint will guide incremental implementation, testing, and extension of your GAIA benchmark agent system. langfristig, each component can be refined, prompt‑tuned, and instrumented with LogFire traces for full transparency.
-
-## GAIA Manager Workflow
-
-`run_gaia_manager.py` instantiates a `GAIAManager` coordinating helper agents:
-
-1. Several `KnowledgeAssistantAgent` instances gather facts in parallel.
-2. Multiple `SynthesisAgent` instances craft candidate answers from those notes.
-3. `VerifierAgent` picks the best candidate and performs a light fact check.
-
-This design encourages diverse reasoning while still producing a single verified answer.
-
