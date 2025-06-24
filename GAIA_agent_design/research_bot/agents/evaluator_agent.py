@@ -15,5 +15,5 @@ evaluator_agent = Agent(
     name="EvaluatorAgent",
     instructions=INSTRUCTIONS,
     output_type=WebSearchPlan,
-    model="o4-mini",
+    model="gpt-4.1",
 )

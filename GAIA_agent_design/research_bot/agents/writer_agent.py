@@ -25,6 +25,6 @@ class AnswerData(BaseModel):
 writer_agent = Agent(
     name="WriterAgent",
     instructions=PROMPT,
-    model="o3",
+    model="gpt-4.1",
     output_type=AnswerData,
 )

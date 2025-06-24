@@ -25,6 +25,6 @@ class WebSearchPlan(BaseModel):
 planner_agent = Agent(
     name="PlannerAgent",
     instructions=PROMPT,
-    model="o4-mini",
+    model="gpt-4.1",
     output_type=WebSearchPlan,
 )
