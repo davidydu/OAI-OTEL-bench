@@ -8,15 +8,7 @@ from agents import Runner
 from agents.tracing import trace
 
 from ..agents_lib.file_router import FileRouterAgent
-from ..agents_lib.processors.text_processor import TextProcessorAgent
-from ..agents_lib.processors.docx_processor import DocxProcessorAgent
-from ..agents_lib.processors.excel_processor import ExcelProcessorAgent
-from ..agents_lib.processors.pdf_processor import PDFProcessorAgent
-from ..agents_lib.processors.image_ocr_agent import ImageOCRAgent
-from ..agents_lib.processors.audio_stt_agent import AudioSTTAgent
-from ..agents_lib.processors.pptx_processor import PPTXProcessorAgent
-from ..agents_lib.processors.pdb_processor import PDBProcessorAgent
-from ..agents_lib.processors.zip_processor import ZipProcessorAgent
+from ..agents_lib.processors import choose_processor
 
 from .agents import (
     SearchPlan,
@@ -30,39 +22,6 @@ from .agents import (
     VerificationResult,
 )
 
-PROCESSORS = {
-    "text": TextProcessorAgent(),
-    "docx": DocxProcessorAgent(),
-    "excel": ExcelProcessorAgent(),
-    "pdf": PDFProcessorAgent(),
-    "image": ImageOCRAgent(),
-    "audio": AudioSTTAgent(),
-    "pptx": PPTXProcessorAgent(),
-    "pdb": PDBProcessorAgent(),
-    "zip": ZipProcessorAgent(),
-}
-
-
-def _choose_processor(mime: str):
-    if mime.startswith("text/") or "json" in mime or "python" in mime:
-        return PROCESSORS["text"]
-    if "word" in mime:
-        return PROCESSORS["docx"]
-    if "excel" in mime or "spreadsheet" in mime:
-        return PROCESSORS["excel"]
-    if "pdf" in mime:
-        return PROCESSORS["pdf"]
-    if mime.startswith("image/"):
-        return PROCESSORS["image"]
-    if mime.startswith("audio/"):
-        return PROCESSORS["audio"]
-    if "presentation" in mime or mime.endswith("pptx"):
-        return PROCESSORS["pptx"]
-    if "pdb" in mime:
-        return PROCESSORS["pdb"]
-    if "zip" in mime:
-        return PROCESSORS["zip"]
-    return PROCESSORS["text"]
 
 
 class GAIAResearchManager:
@@ -91,8 +50,11 @@ class GAIAResearchManager:
         raw, mime = self.file_router.fetch(task_id)
         if raw is None or mime is None:
             return ""
-        processor = _choose_processor(mime)
-        text = processor.process(raw, mime)
+        processor = choose_processor(mime)
+        try:
+            text = processor.process(raw, mime)
+        except Exception:
+            text = ""
         return text[:30000]
 
     async def _answer(self, question: str, context: str) -> tuple[str, str, bool]:

@@ -11,6 +11,8 @@ python-magic
 python-docx
 pandas
 pdfplumber
+pydub
+pdf2image
 pytesseract
 openpyxl
 python-pptx
