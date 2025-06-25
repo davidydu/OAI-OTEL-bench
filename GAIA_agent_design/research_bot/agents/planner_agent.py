@@ -3,28 +3,37 @@ from pydantic import BaseModel
 from agents import Agent
 
 PROMPT = (
-    "You are a helpful research assistant. Given a query and optional context, "
-    "come up with a set of web searches to perform to best answer the query. "
-    "Output between 5 and 20 terms to query for."
+    "You plan research steps for another agent. You will be given a question "
+    "and a chunk of context extracted from uploaded media. First check if the "
+    "context likely contains the answer. If so, plan to search or analyse that "
+    "context. Only fall back to web search if the context looks insufficient. "
+    "For each step output a JSON item with three fields:\n"
+    "- `source`: `context` or `web`\n"
+    "- `reason`: why this step is needed\n"
+    "- `query`: the search string or key phrase.\n"
+    "Return between 1 and 10 items."
 )
 
 
-class WebSearchItem(BaseModel):
+class SearchItem(BaseModel):
+    source: str
+    """Where to search: either `context` or `web`."""
+
     reason: str
-    """Your reasoning for why this search is important to the query."""
+    """Why this search helps answer the question."""
 
     query: str
-    """The search term to use for the web search."""
+    """The query or keyword for the search."""
 
 
-class WebSearchPlan(BaseModel):
-    searches: list[WebSearchItem]
-    """A list of web searches to perform to best answer the query."""
+class SearchPlan(BaseModel):
+    searches: list[SearchItem]
+    """A list of research steps to best answer the question."""
 
 
 planner_agent = Agent(
     name="PlannerAgent",
     instructions=PROMPT,
     model="gpt-4.1",
-    output_type=WebSearchPlan,
+    output_type=SearchPlan,
 )

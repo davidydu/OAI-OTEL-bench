@@ -6,15 +6,19 @@ This is a simple example of a multi-agent research bot. To run it:
 python -m GAIA_agent_design.research_bot.main
 ```
 
+This example can parse a variety of GAIA media types. Supported formats include
+TXT/JSON/PY, DOCX, XLSX/CSV, PPTX, PDF, PDB, ZIP archives, PNG/JPG images, and
+MP3 audio.
+
 ## Architecture
 
 The flow is:
 
-1. User enters their research topic
-2. `planner_agent` comes up with a plan to search the web for information. The plan is a list of search queries, with a search term and a reason for each query.
-3. For each search item, we run a `search_agent`, which uses the Web Search tool to search for that term and summarize the results. These all run in parallel.
-4. The `writer_agent` receives the search summaries and creates a written report.
-5. A `verifier_agent` reviews the reasoning and final answer to ensure it matches the question requirements (units, rounding, etc.). If not, the writer updates the answer based on the verifier feedback and the check repeats until it passes.
+1. The user provides a question and optional media context.
+2. `planner_agent` produces a list of research items. Each item specifies a `source` of either `context` or `web`, a short reason, and a query or key phrase.
+3. For each item, `search_agent` runs the appropriate tool. If the source is `context`, it analyses the provided text using the Code Interpreter (and File Search if available). If the source is `web`, it performs a web search. All searches run in parallel.
+4. The `writer_agent` receives the search summaries together with the extracted context and writes the final answer.
+5. A `verifier_agent` checks the result for formatting and correctness. If verification fails, the `evaluator_agent` reviews the summaries and the verifier feedback to decide whether more research is needed. Any extra searches are run before the writer revises the answer. This loop repeats until the verifier approves.
 
 ## Suggested improvements
 

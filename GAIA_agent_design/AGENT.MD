@@ -23,6 +23,9 @@ CoordinatorAgent
     │    ├─ DocxProcessorAgent  # .docx          (python-docx)
     │    ├─ ExcelProcessorAgent # .xls/.xlsx     (pandas)
     │    ├─ PDFProcessorAgent   # .pdf           (pdfplumber/tika)
+    │    ├─ PPTXProcessorAgent  # .pptx          (python-pptx)
+    │    ├─ PDBProcessorAgent   # .pdb           (biopython)
+    │    ├─ ZipProcessorAgent   # .zip           (extract + text)
     │    ├─ ImageOCRAgent       # .png/.jpg      (Tesseract / vision API)
     │    └─ AudioSTTAgent       # .wav/.mp3      (Whisper / cloud STT)
     ├─ KnowledgeAgent           # QA: Plan→Act→Reflect with search/file tools

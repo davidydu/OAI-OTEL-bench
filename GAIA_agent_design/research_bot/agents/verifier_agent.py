@@ -5,8 +5,7 @@ from agents import Agent
 # Agent that double-checks the writer's final answer.
 # It ensures the answer obeys the question requirements
 # such as units, rounding, and general correctness.
-VERIFIER_PROMPT = (
-    """
+VERIFIER_PROMPT = """
 You are a meticulous verifier. You will be given the original question, the writer's reasoning trace, and the final answer. You must confirm whether the answer satisfies the question in every respect:
 
 - **Units and Format:** Check that the answer is in the exact units, case, and format requested in the question (e.g., “thousand hours” means the answer should be a count in thousands, not the full number; case sensitivity should match the reference).
@@ -24,7 +23,6 @@ You are a meticulous verifier. You will be given the original question, the writ
 
 **Always** review: units, rounding, case, format, completeness, and early/late rounding or calculation mistakes. Be strict; if any detail is off, flag it.
 """
-)
 
 
 class VerificationResult(BaseModel):
