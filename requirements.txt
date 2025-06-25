@@ -134,12 +134,15 @@ packaging==25.0
     #   pytesseract
 pandas==2.3.0
     # via -r requirements.in
+pdf2image==1.17.0
+    # via -r requirements.in
 pdfminer-six==20250506
     # via pdfplumber
 pdfplumber==0.11.7
     # via -r requirements.in
 pillow==11.2.1
     # via
+    #   pdf2image
     #   pdfplumber
     #   pytesseract
     #   python-pptx
@@ -161,6 +164,8 @@ pydantic-core==2.33.2
     # via pydantic
 pydantic-settings==2.9.1
     # via mcp
+pydub==0.25.1
+    # via -r requirements.in
 pygments==2.19.1
     # via rich
 pypdfium2==4.30.1

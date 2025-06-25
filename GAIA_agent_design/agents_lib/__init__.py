@@ -1,11 +1,15 @@
 from .file_router import FileRouterAgent
 
-from .processors.text_processor import TextProcessorAgent
-from .processors.docx_processor import DocxProcessorAgent
-from .processors.excel_processor import ExcelProcessorAgent
-from .processors.pdf_processor import PDFProcessorAgent
-from .processors.image_ocr_agent import ImageOCRAgent
-from .processors.audio_stt_agent import AudioSTTAgent
+from .processors import (
+    PROCESSORS,
+    choose_processor,
+    TextProcessorAgent,
+    DocxProcessorAgent,
+    ExcelProcessorAgent,
+    PDFProcessorAgent,
+    ImageOCRAgent,
+    AudioSTTAgent,
+)
 
 __all__ = [
     "FileRouterAgent",
@@ -15,4 +19,6 @@ __all__ = [
     "PDFProcessorAgent",
     "ImageOCRAgent",
     "AudioSTTAgent",
+    "PROCESSORS",
+    "choose_processor",
 ]
