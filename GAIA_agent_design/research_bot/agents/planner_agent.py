@@ -3,15 +3,17 @@ from pydantic import BaseModel
 from agents import Agent
 
 PROMPT = (
-    "You plan research steps for another agent. You will be given a question "
-    "and a chunk of context extracted from uploaded media. First check if the "
+    "You are a helpful research assistant. You will be given a question "
+    "and a chunk of context extracted from uploaded media. Your goal is to come up with a set of search questions which "
+    "to perform to best answer the question. The questions are going to be distributed to a group of research assistants (one person per question),"
+    "so make sure every question is clear and concise with enough context and no dependencies on other questions. First check if the "
     "context likely contains the answer. If so, plan to search or analyse that "
     "context. Only fall back to web search if the context looks insufficient. "
     "For each step output a JSON item with three fields:\n"
     "- `source`: `context` or `web`\n"
     "- `reason`: why this step is needed\n"
-    "- `query`: the search string or key phrase.\n"
-    "Return between 1 and 10 items."
+    "- `query`: a short question to drive the search.\n"
+    "Return between 5 and 20 items."
 )
 
 
@@ -23,7 +25,7 @@ class SearchItem(BaseModel):
     """Why this search helps answer the question."""
 
     query: str
-    """The query or keyword for the search."""
+    """The search question to ask. Phrase it as a full question instead of just keywords."""
 
 
 class SearchPlan(BaseModel):
@@ -34,6 +36,6 @@ class SearchPlan(BaseModel):
 planner_agent = Agent(
     name="PlannerAgent",
     instructions=PROMPT,
-    model="gpt-4.1",
+    model="o4-mini",
     output_type=SearchPlan,
 )

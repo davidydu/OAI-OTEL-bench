@@ -15,7 +15,7 @@ MP3 audio.
 The flow is:
 
 1. The user provides a question and optional media context.
-2. `planner_agent` produces a list of research items. Each item specifies a `source` of either `context` or `web`, a short reason, and a query or key phrase.
+2. `planner_agent` produces a list of research items. Each item specifies a `source` of either `context` or `web`, a short reason, and a search question.
 3. For each item, `search_agent` runs the appropriate tool. If the source is `context`, it analyses the provided text using the Code Interpreter (and File Search if available). If the source is `web`, it performs a web search. All searches run in parallel.
 4. The `writer_agent` receives the search summaries together with the extracted context and writes the final answer.
 5. A `verifier_agent` checks the result for formatting and correctness. If verification fails, the `evaluator_agent` reviews the summaries and the verifier feedback to decide whether more research is needed. Any extra searches are run before the writer revises the answer. This loop repeats until the verifier approves.

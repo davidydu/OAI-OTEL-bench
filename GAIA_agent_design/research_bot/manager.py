@@ -13,6 +13,8 @@ from ..agents_lib.processors import choose_processor
 from .agents import (
     SearchPlan,
     SearchItem,
+    SearchPlan,
+    SearchItem,
     planner_agent,
     search_agent,
     writer_agent,
@@ -81,6 +83,7 @@ class GAIAResearchManager:
         result = await Runner.run(planner_agent, prompt)
         return result.final_output_as(SearchPlan)
 
+
     async def _perform_searches(self, plan: SearchPlan, context: str) -> list[str]:
         tasks = [
             asyncio.create_task(self._search(item, context)) for item in plan.searches
@@ -109,6 +112,7 @@ class GAIAResearchManager:
         if feedback:
             prompt += f"\nVerifier feedback: {feedback}"
         result = await Runner.run(evaluator_agent, prompt)
+        return result.final_output_as(SearchPlan)
         return result.final_output_as(SearchPlan)
 
     async def _write_answer(

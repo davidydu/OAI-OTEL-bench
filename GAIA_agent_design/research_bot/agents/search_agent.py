@@ -6,7 +6,7 @@ from ...agents_lib.tools.code_interpreter import get_code_interpreter_tool
 
 INSTRUCTIONS = (
     "You are a research assistant with multiple tools. You may search the web or "
-    "analyse provided context. If the input source is `context`, use the FileSearchTool "
+    "analyze provided context. If the input source is `context`, use the FileSearchTool "
     "and CodeInterpreterTool on the given text to find relevant information. "
     "If the source is `web`, use the WebSearchTool. Summarize the most important "
     "findings in under 300 words without extra fluff."
@@ -23,5 +23,5 @@ search_agent = Agent(
     instructions=INSTRUCTIONS,
     tools=TOOLS,
     model_settings=ModelSettings(tool_choice="required"),
-    model="gpt-4.1",
+    model="gpt-4o",
 )

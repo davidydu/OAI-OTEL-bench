@@ -36,6 +36,6 @@ class VerificationResult(BaseModel):
 verifier_agent = Agent(
     name="VerifierAgent",
     instructions=VERIFIER_PROMPT,
-    model="gpt-4.1",
+    model="o3",
     output_type=VerificationResult,
 )
