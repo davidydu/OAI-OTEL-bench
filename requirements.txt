@@ -9,6 +9,8 @@ anyio==4.9.0
     #   openai
     #   sse-starlette
     #   starlette
+biopython==1.85
+    # via -r requirements.in
 certifi==2025.6.15
     # via
     #   httpcore
@@ -70,7 +72,9 @@ jiter==0.10.0
 logfire==3.21.1
     # via -r requirements.in
 lxml==5.4.0
-    # via python-docx
+    # via
+    #   python-docx
+    #   python-pptx
 markdown-it-py==3.0.0
     # via rich
 mcp==1.9.4
@@ -79,6 +83,7 @@ mdurl==0.1.2
     # via markdown-it-py
 numpy==2.3.0
     # via
+    #   biopython
     #   openai-agents
     #   pandas
 openai==1.88.0
@@ -137,6 +142,7 @@ pillow==11.2.1
     # via
     #   pdfplumber
     #   pytesseract
+    #   python-pptx
 protobuf==5.29.5
     # via
     #   googleapis-common-protos
@@ -171,6 +177,8 @@ python-magic==0.4.27
     # via -r requirements.in
 python-multipart==0.0.20
     # via mcp
+python-pptx==1.0.2
+    # via -r requirements.in
 pytz==2025.2
     # via pandas
 pyyaml==6.0.2
@@ -207,6 +215,7 @@ typing-extensions==4.14.0
     #   pydantic
     #   pydantic-core
     #   python-docx
+    #   python-pptx
     #   typing-inspection
 typing-inspection==0.4.1
     # via
@@ -227,5 +236,7 @@ wrapt==1.17.2
     #   deprecated
     #   opentelemetry-instrumentation
     #   opentelemetry-instrumentation-httpx
+xlsxwriter==3.2.5
+    # via python-pptx
 zipp==3.23.0
     # via importlib-metadata

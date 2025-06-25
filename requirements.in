@@ -13,3 +13,5 @@ pandas
 pdfplumber
 pytesseract
 openpyxl
+python-pptx
+biopython

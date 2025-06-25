@@ -14,17 +14,20 @@ from ..agents_lib.processors.excel_processor import ExcelProcessorAgent
 from ..agents_lib.processors.pdf_processor import PDFProcessorAgent
 from ..agents_lib.processors.image_ocr_agent import ImageOCRAgent
 from ..agents_lib.processors.audio_stt_agent import AudioSTTAgent
+from ..agents_lib.processors.pptx_processor import PPTXProcessorAgent
+from ..agents_lib.processors.pdb_processor import PDBProcessorAgent
+from ..agents_lib.processors.zip_processor import ZipProcessorAgent
 
 from .agents import (
-    WebSearchPlan,
-    WebSearchItem,
+    SearchPlan,
+    SearchItem,
     planner_agent,
     search_agent,
     writer_agent,
     verifier_agent,
     evaluator_agent,
     AnswerData,
-    VerificationResult
+    VerificationResult,
 )
 
 PROCESSORS = {
@@ -34,6 +37,9 @@ PROCESSORS = {
     "pdf": PDFProcessorAgent(),
     "image": ImageOCRAgent(),
     "audio": AudioSTTAgent(),
+    "pptx": PPTXProcessorAgent(),
+    "pdb": PDBProcessorAgent(),
+    "zip": ZipProcessorAgent(),
 }
 
 
@@ -50,6 +56,12 @@ def _choose_processor(mime: str):
         return PROCESSORS["image"]
     if mime.startswith("audio/"):
         return PROCESSORS["audio"]
+    if "presentation" in mime or mime.endswith("pptx"):
+        return PROCESSORS["pptx"]
+    if "pdb" in mime:
+        return PROCESSORS["pdb"]
+    if "zip" in mime:
+        return PROCESSORS["zip"]
     return PROCESSORS["text"]
 
 
@@ -85,29 +97,32 @@ class GAIAResearchManager:
 
     async def _answer(self, question: str, context: str) -> tuple[str, str, bool]:
         plan = await self._plan_searches(question, context)
-        results = await self._perform_searches(plan)
-        new_plan = await self._evaluate_results(question, results)
-        if new_plan.searches:
-            results.extend(await self._perform_searches(new_plan))
-        
-        feedback: str | None = None
-        data = await self._write_answer(question, context, results, feedback)
-        verification = await self._verify_answer(question, data)
+        results = await self._perform_searches(plan, context)
 
-        while not verification.is_correct:
-            feedback = verification.feedback
+        feedback: str | None = None
+        while True:
+            eval_plan = await self._evaluate_results(question, results, feedback)
+            if eval_plan.searches:
+                results.extend(await self._perform_searches(eval_plan, context))
+                feedback = None
+                continue
+
             data = await self._write_answer(question, context, results, feedback)
             verification = await self._verify_answer(question, data)
+            if verification.is_correct:
+                return data.answer, data.reasoning, True
 
-        return data.answer, data.reasoning, True
+            feedback = verification.feedback
 
-    async def _plan_searches(self, question: str, context: str) -> WebSearchPlan:
-        prompt = f"Query: {question}\nContext:\n{context}"
+    async def _plan_searches(self, question: str, context: str) -> SearchPlan:
+        prompt = f"Question: {question}\nContext:\n{context}"
         result = await Runner.run(planner_agent, prompt)
-        return result.final_output_as(WebSearchPlan)
+        return result.final_output_as(SearchPlan)
 
-    async def _perform_searches(self, plan: WebSearchPlan) -> list[str]:
-        tasks = [asyncio.create_task(self._search(item)) for item in plan.searches]
+    async def _perform_searches(self, plan: SearchPlan, context: str) -> list[str]:
+        tasks = [
+            asyncio.create_task(self._search(item, context)) for item in plan.searches
+        ]
         results = []
         for task in asyncio.as_completed(tasks):
             r = await task
@@ -115,18 +130,24 @@ class GAIAResearchManager:
                 results.append(r)
         return results
 
-    async def _search(self, item: WebSearchItem) -> str | None:
-        prompt = f"Search term: {item.query}\nReason for searching: {item.reason}"
+    async def _search(self, item: SearchItem, context: str) -> str | None:
+        prompt = f"Source: {item.source}\nQuery: {item.query}\nReason: {item.reason}"
+        if item.source == "context":
+            prompt += f"\nContext:\n{context}"
         try:
             result = await Runner.run(search_agent, prompt)
             return str(result.final_output)
         except Exception:
             return None
 
-    async def _evaluate_results(self, question: str, summaries: list[str]) -> WebSearchPlan:
+    async def _evaluate_results(
+        self, question: str, summaries: list[str], feedback: str | None
+    ) -> SearchPlan:
         prompt = f"Question: {question}\nCurrent summaries: {summaries}"
+        if feedback:
+            prompt += f"\nVerifier feedback: {feedback}"
         result = await Runner.run(evaluator_agent, prompt)
-        return result.final_output_as(WebSearchPlan)
+        return result.final_output_as(SearchPlan)
 
     async def _write_answer(
         self,
@@ -142,8 +163,10 @@ class GAIAResearchManager:
             input += f"\nVerifier feedback: {feedback}\nPlease correct your answer accordingly."
         result = await Runner.run(writer_agent, input)
         return result.final_output_as(AnswerData)
-    
-    async def _verify_answer(self, question: str, data: AnswerData) -> VerificationResult:
+
+    async def _verify_answer(
+        self, question: str, data: AnswerData
+    ) -> VerificationResult:
         prompt = f"Question: {question}\nReasoning: {data.reasoning}\nFinal answer: {data.answer}"
         result = await Runner.run(verifier_agent, prompt)
         return result.final_output_as(VerificationResult)
