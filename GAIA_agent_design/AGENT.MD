@@ -114,3 +114,14 @@ agents/tools/
 * **openai-agents-python/examples/voice/static**: audio STT pipelines
 
 This blueprint will guide incremental implementation, testing, and extension of your GAIA benchmark agent system. langfristig, each component can be refined, prompt‑tuned, and instrumented with LogFire traces for full transparency.
+
+### Media processing pipeline
+
+Media files are handled according to type:
+
+* **Images (PNG/JPEG):** sent directly to GPT‑4o via `ImageVisionAgent` which returns OCR text or a brief description.
+* **PDFs:** uploaded to the vision API with `PDFVisionAgent` so the model can read native text or scanned pages.
+* **Audio:** processed with Whisper in `AudioSTTAgent`.
+* **Other formats:** converted to plain text using the corresponding processor (docx, pptx, spreadsheets, archives, etc.).
+
+The resulting text or summary is then used as context for the planner agent.

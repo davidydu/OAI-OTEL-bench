@@ -3,8 +3,8 @@
 from .text_processor import TextProcessorAgent
 from .docx_processor import DocxProcessorAgent
 from .excel_processor import ExcelProcessorAgent
-from .pdf_processor import PDFProcessorAgent
-from .image_ocr_agent import ImageOCRAgent
+from .pdf_vision_agent import PDFVisionAgent
+from .image_vision_agent import ImageVisionAgent
 from .audio_stt_agent import AudioSTTAgent
 from .pptx_processor import PPTXProcessorAgent
 from .pdb_processor import PDBProcessorAgent
@@ -16,8 +16,8 @@ __all__ = [
     "TextProcessorAgent",
     "DocxProcessorAgent",
     "ExcelProcessorAgent",
-    "PDFProcessorAgent",
-    "ImageOCRAgent",
+    "PDFVisionAgent",
+    "ImageVisionAgent",
     "AudioSTTAgent",
     "PPTXProcessorAgent",
     "PDBProcessorAgent",
