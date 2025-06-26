@@ -31,3 +31,26 @@ If you're building your own research bot, some ideas to add to this are:
 2. Image and file upload: Allow users to attach PDFs or other files, as baseline context for the research.
 3. More planning and thinking: Models often produce better results given more time to think. Improve the planning process to come up with a better plan, and add an evaluation step so that the model can choose to improve its results, search for more stuff, etc.
 4. Code execution: Allow running code, which is useful for data analysis.
+
+## Local sandbox for code execution
+
+When the Code Interpreter tool is unavailable, you can run Python snippets in a
+local sandbox using the helper in `agents_lib.tools.sandbox`. The `run_python`
+function executes the given code in a temporary directory with telemetry spans.
+Example:
+
+```python
+from GAIA_agent_design.agents_lib.tools import run_python
+
+output = run_python("""
+from Bio.PDB import PDBParser
+parser = PDBParser(QUIET=True)
+structure = parser.get_structure('5WB7', '5wb7.pdb')
+first_atom = list(structure.get_atoms())[0]
+print(first_atom.get_coord())
+""")
+print(output)
+```
+
+This keeps the execution isolated and records a `sandbox.run_python` span so it
+appears in your Logfire traces.
