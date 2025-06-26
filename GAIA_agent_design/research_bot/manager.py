@@ -63,20 +63,29 @@ class GAIAResearchManager:
         plan = await self._plan_searches(question, context)
         results = await self._perform_searches(plan, context)
 
+        # The evaluator only gets one chance to review the initial search results
+        eval_plan = await self._evaluate_results(question, results, None)
+        if eval_plan.searches:
+            results.extend(await self._perform_searches(eval_plan, context))
+
         feedback: str | None = None
         while True:
-            eval_plan = await self._evaluate_results(question, results, feedback)
-            if eval_plan.searches:
-                results.extend(await self._perform_searches(eval_plan, context))
-                feedback = None
-                continue
-
             data = await self._write_answer(question, context, results, feedback)
             verification = await self._verify_answer(question, data)
             if verification.is_correct:
                 return data.answer, data.reasoning, True
 
             feedback = verification.feedback
+            if self._format_issue(feedback):
+                # Writer corrects the format with verifier feedback
+                continue
+
+            # Otherwise the answer may be wrong. Ask evaluator if more research
+            # is needed before rewriting the answer.
+            eval_plan = await self._evaluate_results(question, results, feedback)
+            if eval_plan.searches:
+                results.extend(await self._perform_searches(eval_plan, context))
+            feedback = None
 
     async def _plan_searches(self, question: str, context: str) -> SearchPlan:
         prompt = f"Question: {question}\nContext:\n{context}"
@@ -136,3 +145,9 @@ class GAIAResearchManager:
         prompt = f"Question: {question}\nReasoning: {data.reasoning}\nFinal answer: {data.answer}"
         result = await Runner.run(verifier_agent, prompt)
         return result.final_output_as(VerificationResult)
+
+    def _format_issue(self, feedback: str) -> bool:
+        """Return True if the verifier feedback looks like a formatting issue."""
+        text = feedback.lower()
+        keywords = ["format", "unit", "round", "case"]
+        return any(k in text for k in keywords)
