@@ -6,10 +6,8 @@ from ...agents_lib.tools.code_interpreter import get_code_interpreter_tool
 
 INSTRUCTIONS = (
     "You are a research assistant with multiple tools. You may search the web or "
-    "analyze provided context. If the input source is `context`, use the FileSearchTool "
-    "and CodeInterpreterTool on the given text to find relevant information. "
-    "If the source is `web`, use the WebSearchTool. Summarize the most important "
-    "findings in under 300 words without extra fluff."
+    "analyze provided context as you see fit."
+    "Summarize the most important findings in under 300 words without extra fluff."
 )
 
 TOOLS = [WebSearchTool()]

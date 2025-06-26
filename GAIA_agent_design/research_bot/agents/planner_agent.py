@@ -7,13 +7,9 @@ PROMPT = (
     "and a chunk of context extracted from uploaded media. Your goal is to come up with a set of search questions which "
     "to perform to best answer the question. The questions are going to be distributed to a group of research assistants (one person per question),"
     "so make sure every question is clear and concise with enough context and no dependencies on other questions. First check if the "
-    "context likely contains the answer. If so, plan to search or analyse that "
+    "context likely contains the answer. If so, plan to search or analyze that "
     "context. Only fall back to web search if the context looks insufficient. "
-    "For each step output a JSON item with three fields:\n"
-    "- `source`: `context` or `web`\n"
-    "- `reason`: why this step is needed\n"
-    "- `query`: a short question to drive the search.\n"
-    "Return between 5 and 20 items."
+    "Return less than 20 items."
 )
 
 
