@@ -22,11 +22,11 @@ CoordinatorAgent
     │    ├─ TextProcessorAgent  # .txt, .json, .py
     │    ├─ DocxProcessorAgent  # .docx          (python-docx)
     │    ├─ ExcelProcessorAgent # .xls/.xlsx     (pandas)
-    │    ├─ PDFProcessorAgent   # .pdf           (pdfplumber/tika)
+    │    ├─ PDFVisionAgent      # .pdf           (GPT-4o file vision)
     │    ├─ PPTXProcessorAgent  # .pptx          (python-pptx)
     │    ├─ PDBProcessorAgent   # .pdb           (biopython)
     │    ├─ ZipProcessorAgent   # .zip           (extract + text)
-    │    ├─ ImageOCRAgent       # .png/.jpg      (Tesseract / vision API)
+    │    ├─ ImageVisionAgent    # .png/.jpg      (GPT-4o vision)
     │    └─ AudioSTTAgent       # .wav/.mp3      (Whisper / cloud STT)
     ├─ KnowledgeAgent           # QA: Plan→Act→Reflect with search/file tools
     ├─ WriteAgent               # Formats answer and reasoning into GAIA-spec JSONL
@@ -114,3 +114,14 @@ agents/tools/
 * **openai-agents-python/examples/voice/static**: audio STT pipelines
 
 This blueprint will guide incremental implementation, testing, and extension of your GAIA benchmark agent system. langfristig, each component can be refined, prompt‑tuned, and instrumented with LogFire traces for full transparency.
+
+### Media processing pipeline
+
+Media files are handled according to type:
+
+* **Images (PNG/JPEG):** sent directly to GPT‑4o via `ImageVisionAgent` which returns OCR text or a brief description.
+* **PDFs:** uploaded to the vision API with `PDFVisionAgent` so the model can read native text or scanned pages.
+* **Audio:** processed with Whisper in `AudioSTTAgent`.
+* **Other formats:** converted to plain text using the corresponding processor (docx, pptx, spreadsheets, archives, etc.).
+
+The resulting text or summary is then used as context for the planner agent.
