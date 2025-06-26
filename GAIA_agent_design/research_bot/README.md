@@ -8,7 +8,8 @@ python -m GAIA_agent_design.research_bot.main
 
 This example can parse a variety of GAIA media types. Supported formats include
 TXT/JSON/PY, DOCX, XLSX/CSV, PPTX, PDF, PDB, ZIP archives, PNG/JPG images, and
-MP3 audio.
+MP3 audio. Image and PDF files are routed through an OpenAI vision model before
+falling back to local OCR when necessary.
 
 ## Architecture
 
