@@ -5,7 +5,10 @@ import mimetypes
 from pathlib import Path
 from typing import Dict, Tuple
 
-import magic
+try:
+    import magic
+except Exception:  # pragma: no cover - optional dependency may be missing
+    magic = None
 
 
 class FileRouterAgent:
@@ -16,7 +19,13 @@ class FileRouterAgent:
         if not self.media_dir.exists():
             raise FileNotFoundError(f"Media directory {self.media_dir} not found")
         # MIME detector
-        self._magic = magic.Magic(mime=True)
+        if magic:
+            try:
+                self._magic = magic.Magic(mime=True)
+            except Exception:
+                self._magic = None
+        else:
+            self._magic = None
         # Build an index of task_id -> file path for quick lookup
         self._index: Dict[str, Path] = {}
         for fname in os.listdir(self.media_dir):
@@ -37,9 +46,17 @@ class FileRouterAgent:
             path = self.media_dir / matches[0]
         with open(path, "rb") as fh:
             data = fh.read()
-        mime_type = self._magic.from_buffer(data[:2048])
-        if mime_type == "application/octet-stream" or mime_type is None:
+
+        mime_type = None
+        if self._magic is not None:
+            try:
+                mime_type = self._magic.from_buffer(data[:2048])
+            except Exception:
+                mime_type = None
+
+        if not mime_type or mime_type == "application/octet-stream":
             guessed, _ = mimetypes.guess_type(path.name)
             if guessed:
                 mime_type = guessed
+
         return data, mime_type

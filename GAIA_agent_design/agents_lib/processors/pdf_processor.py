@@ -6,7 +6,7 @@ from typing import List
 import pdfplumber
 from pdf2image import convert_from_bytes
 
-from .image_ocr_agent import call_ocr_api, preprocess_image
+from .image_ocr_agent import call_ocr_api, call_vision_api, preprocess_image
 
 
 class PDFProcessorAgent:
@@ -23,7 +23,10 @@ class PDFProcessorAgent:
         if not any(text_parts):
             images = convert_from_bytes(raw)
             for img in images:
-                img = preprocess_image(img)
-                text_parts.append(call_ocr_api(img))
+                try:
+                    text_parts.append(call_vision_api(img))
+                except Exception:
+                    img = preprocess_image(img)
+                    text_parts.append(call_ocr_api(img))
 
         return "\n".join(text_parts)
