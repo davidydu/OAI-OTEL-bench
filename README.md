@@ -31,4 +31,5 @@ python -m src.main
 
 
 
-
+## Curator Integration
+Bespoke Curator can run the GAIA pipeline in batch mode. The `CuratorGAIAManager` under `GAIA_agent_design/curator_manager.py` wraps each agent step in a `curator.LLM` subclass, enabling retries and caching for the entire dataset.

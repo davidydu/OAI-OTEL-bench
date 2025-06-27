@@ -6,7 +6,7 @@ from agents import Agent
 # It ensures the answer obeys the question requirements
 # such as units, rounding, and general correctness.
 VERIFIER_PROMPT = """
-You are a meticulous verifier. You will be given the original question, the writer's reasoning trace, and the final answer. You must confirm whether the answer satisfies the question in every respect:
+You are a careful verifier. You will be given the original question, the writer's reasoning trace, and the final answer. You must confirm whether the answer satisfies the question in every respect:
 
 - **Units and Format:** Check that the answer is in the exact units, case, and format requested in the question (e.g., “thousand hours” means the answer should be a count in thousands, not the full number; case sensitivity should match the reference).
 - **Rounding:** Ensure that rounding is performed at the correct step as specified in the instructions. Early or late rounding (compared to the reference solution) that leads to incorrect results should be flagged.

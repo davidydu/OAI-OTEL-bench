@@ -245,3 +245,4 @@ xlsxwriter==3.2.5
     # via python-pptx
 zipp==3.23.0
     # via importlib-metadata
+bespokelabs-curator==0.1.26

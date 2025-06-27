@@ -32,20 +32,31 @@ class GAIAResearchManager:
         self.file_router = FileRouterAgent(media_dir)
 
     async def run(self, jsonl_path: str, out_path: str) -> None:
-        with open(jsonl_path) as src, open(out_path, "w") as dst:
+        """Process all tasks in ``jsonl_path`` concurrently and write results."""
+        tasks = []
+        with open(jsonl_path) as src:
             for line in src:
                 task = json.loads(line)
                 tid = task["task_id"]
                 question = task["Question"]
-                context = self._get_context(tid)
-                with trace(workflow_name=f"GAIA {tid}"):
-                    answer, reasoning, verified = await self._answer(question, context)
-                out = {
-                    "task_id": tid,
-                    "model_answer": answer,
-                    "reasoning_trace": reasoning,
-                    "verified": verified,
-                }
+                
+                async def handle_task(tid: str, question: str) -> dict:
+                    context = self._get_context(tid)
+                    with trace(workflow_name=f"GAIA {tid}"):
+                        answer, reasoning, verified = await self._answer(question, context)
+                    return {
+                        "task_id": tid,
+                        "model_answer": answer,
+                        "reasoning_trace": reasoning,
+                        "verified": verified,
+                    }
+
+                tasks.append(asyncio.create_task(handle_task(tid, question)))
+
+        results = await asyncio.gather(*tasks)
+
+        with open(out_path, "w") as dst:
+            for out in results:
                 dst.write(json.dumps(out, ensure_ascii=False) + "\n")
 
     def _get_context(self, task_id: str) -> str:

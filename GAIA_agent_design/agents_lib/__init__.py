@@ -6,8 +6,8 @@ from .processors import (
     TextProcessorAgent,
     DocxProcessorAgent,
     ExcelProcessorAgent,
-    PDFProcessorAgent,
-    ImageOCRAgent,
+    PDFVisionAgent,
+    ImageVisionAgent,
     AudioSTTAgent,
 )
 
@@ -16,8 +16,8 @@ __all__ = [
     "TextProcessorAgent",
     "DocxProcessorAgent",
     "ExcelProcessorAgent",
-    "PDFProcessorAgent",
-    "ImageOCRAgent",
+    "PDFVisionAgent",
+    "ImageVisionAgent",
     "AudioSTTAgent",
     "PROCESSORS",
     "choose_processor",
