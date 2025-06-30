@@ -19,7 +19,6 @@ from .image_vision_agent import ImageVisionAgent
 from .audio_stt_agent import AudioSTTAgent
 from .pptx_processor import PPTXProcessorAgent
 from .pdb_processor import PDBProcessorAgent
-from .zip_processor import ZipProcessorAgent
 
 PROCESSORS = {
     "text": TextProcessorAgent(),
@@ -30,7 +29,6 @@ PROCESSORS = {
     "audio": AudioSTTAgent(),
     "pptx": PPTXProcessorAgent(),
     "pdb": PDBProcessorAgent(),
-    "zip": ZipProcessorAgent(),
 }
 
 
@@ -48,7 +46,9 @@ def choose_processor(mime: str):
     if mime.startswith("audio/"):
         return PROCESSORS["audio"]
     if "zip" in mime:
-        return PROCESSORS["zip"]
+        from .zip_processor import ZipProcessorAgent
+
+        return ZipProcessorAgent()
     if "presentation" in mime or mime.endswith("pptx"):
         return PROCESSORS["pptx"]
     if "pdb" in mime:

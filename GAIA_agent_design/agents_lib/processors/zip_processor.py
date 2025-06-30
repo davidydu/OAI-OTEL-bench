@@ -12,7 +12,6 @@ except Exception:  # pragma: no cover - optional dependency may be missing
     magic = None
 
 from ..file_router import Attachment
-from .processor_utils import choose_processor
 
 
 class ZipProcessorAgent:
@@ -46,6 +45,7 @@ class ZipProcessorAgent:
                         pass
                 if not mime:
                     mime, _ = mimetypes.guess_type(name)
+                from .processor_utils import choose_processor
                 processor = choose_processor(mime or "application/octet-stream")
                 att_inner = Attachment(
                     path=Path(name),
