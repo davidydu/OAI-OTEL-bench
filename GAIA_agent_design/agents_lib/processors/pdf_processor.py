@@ -16,7 +16,13 @@ class PDFProcessorAgent:
     def process(self, att: Attachment) -> str:
         """Extract text from a PDF file."""
         text_parts: List[str] = []
-        with pdfplumber.open(att.path) as pdf:
+        if att.path.exists():
+            pdf = pdfplumber.open(att.path)
+        else:
+            from io import BytesIO
+
+            pdf = pdfplumber.open(BytesIO(att.bytes))
+        with pdf:
             for page in pdf.pages:
                 text = page.extract_text() or ""
                 text_parts.append(text)

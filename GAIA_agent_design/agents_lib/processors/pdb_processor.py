@@ -10,8 +10,13 @@ class PDBProcessorAgent:
 
     def process(self, att: Attachment) -> str:
         parser = PDBParser(QUIET=True)
-        with att.path.open("rb") as handle:
-            structure = parser.get_structure("structure", handle)
+        if att.path.exists():
+            with att.path.open("rb") as handle:
+                structure = parser.get_structure("structure", handle)
+        else:
+            from io import BytesIO
+
+            structure = parser.get_structure("structure", BytesIO(att.bytes))
         chains = []
         for model in structure:
             for chain in model:
