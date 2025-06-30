@@ -1,14 +1,15 @@
 from __future__ import annotations
 
-from io import BytesIO
 from pptx import Presentation
+
+from ..file_router import Attachment
 
 
 class PPTXProcessorAgent:
     """Extract text from PowerPoint presentations."""
 
-    def process(self, raw: bytes, mime_type: str) -> str:
-        pres = Presentation(BytesIO(raw))
+    def process(self, att: Attachment) -> str:
+        pres = Presentation(att.path)
         texts = []
         for slide in pres.slides:
             for shape in slide.shapes:

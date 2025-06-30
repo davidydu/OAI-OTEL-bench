@@ -35,7 +35,7 @@ async def main(jsonl_path: str, out_base: str, runs: int) -> None:
         out_path = parent / f"{stem}_{i}.jsonl"
         print(f"[Run {i}/{runs}] Writing to {out_path}")
         tasks.append(asyncio.create_task(manager.run(jsonl_path, str(out_path))))
-        await manager.run(jsonl_path, str(out_path))
+
     await asyncio.gather(*tasks)
 
 

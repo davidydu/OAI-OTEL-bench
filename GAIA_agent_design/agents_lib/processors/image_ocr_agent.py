@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from io import BytesIO
 from typing import Dict
+
+from ..file_router import Attachment
 import base64
 import openai
 
@@ -50,11 +52,11 @@ class ImageOCRAgent:
     def __init__(self) -> None:
         self._cache: Dict[str, str] = {}
 
-    def process(self, raw: bytes, mime_type: str) -> str:
-        key = str(hash(raw))
+    def process(self, att: Attachment) -> str:
+        key = str(hash(att.bytes))
         if key in self._cache:
             return self._cache[key]
-        image = Image.open(BytesIO(raw))
+        image = Image.open(att.path)
         try:
             text = call_vision_api(image)
         except Exception:

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from io import BytesIO
 from typing import List
+
+from ..file_router import Attachment
 
 from openpyxl import load_workbook
 import csv
@@ -11,8 +12,9 @@ import io
 class ExcelProcessorAgent:
     """Convert Excel sheets to CSV-formatted text."""
 
-    def process(self, raw: bytes, mime_type: str) -> str:
-        wb = load_workbook(BytesIO(raw), data_only=False)
+    def process(self, att: Attachment) -> str:
+        """Convert an Excel file to CSV-formatted text."""
+        wb = load_workbook(att.path, data_only=False)
         texts: List[str] = []
         for sheet in wb.worksheets:
             output = io.StringIO()
