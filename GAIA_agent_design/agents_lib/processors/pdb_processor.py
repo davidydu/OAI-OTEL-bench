@@ -1,15 +1,17 @@
 from __future__ import annotations
 
-from io import BytesIO
 from Bio.PDB import PDBParser
+
+from ..file_router import Attachment
 
 
 class PDBProcessorAgent:
     """Extract a simple summary from PDB files."""
 
-    def process(self, raw: bytes, mime_type: str) -> str:
+    def process(self, att: Attachment) -> str:
         parser = PDBParser(QUIET=True)
-        structure = parser.get_structure("structure", BytesIO(raw))
+        with att.path.open("rb") as handle:
+            structure = parser.get_structure("structure", handle)
         chains = []
         for model in structure:
             for chain in model:

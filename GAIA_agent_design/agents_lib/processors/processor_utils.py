@@ -2,6 +2,13 @@ from __future__ import annotations
 from typing import Dict, Protocol
 from ..file_router import Attachment
 
+
+class FileProcessor(Protocol):
+    """Protocol for processor classes."""
+
+    def process(self, att: Attachment) -> str:
+        ...
+
 """Utilities for choosing the right processor for a given MIME type."""
 
 from .text_processor import TextProcessorAgent

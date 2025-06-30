@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from io import BytesIO
 from zipfile import ZipFile
+from pathlib import Path
 import logging
 import mimetypes
 
@@ -10,6 +11,7 @@ try:
 except Exception:  # pragma: no cover - optional dependency may be missing
     magic = None
 
+from ..file_router import Attachment
 from .processor_utils import choose_processor
 
 
@@ -28,8 +30,8 @@ class ZipProcessorAgent:
         else:
             self._magic = None
 
-    def process(self, raw: bytes, mime_type: str) -> str:
-        buf = BytesIO(raw)
+    def process(self, att: Attachment) -> str:
+        buf = BytesIO(att.bytes)
         texts = []
         with ZipFile(buf) as z:
             for name in z.namelist():
@@ -45,8 +47,9 @@ class ZipProcessorAgent:
                 if not mime:
                     mime, _ = mimetypes.guess_type(name)
                 processor = choose_processor(mime or "application/octet-stream")
+                att_inner = Attachment(path=Path(name), data=data, mime=mime or "application/octet-stream")
                 try:
-                    text = processor.process(data, mime or "application/octet-stream")
+                    text = processor.process(att_inner)
                 except Exception as e:
                     self.logger.warning("Failed processing %s: %s", name, e)
                     snippet = data[: self.MAX_BYTES]
