@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from agents import Agent
+from ...agents_lib.tools import transcribe_audio
 
 PROMPT = (
     "You are a helpful research assistant. You will be given a question "
@@ -34,4 +35,5 @@ planner_agent = Agent(
     instructions=PROMPT,
     model="o4-mini",
     output_type=SearchPlan,
+    tools=[transcribe_audio],
 )
