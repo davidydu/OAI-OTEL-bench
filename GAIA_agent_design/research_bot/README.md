@@ -17,7 +17,7 @@ The flow is:
 
 1. The user provides a question and optional media context.
 2. `planner_agent` produces a list of research items. Each item specifies a `source` of either `context` or `web`, a short reason, and a search question.
-3. For each item, `search_agent` runs the appropriate tool. If the source is `context`, it analyses the provided text using the Code Interpreter (and File Search if available). If the source is `web`, it performs a web search. All searches run in parallel.
+3. For each item, `search_agent` runs the appropriate tool while always receiving the extracted context from the media files. If the source is `context`, it focuses on analyzing that text using the Code Interpreter (and File Search if available). If the source is `web`, it still performs a web search but can reference the provided context. All searches run in parallel.
 4. `evaluator_agent` reviews the initial search results **once** and may request one additional round of research.
 5. Any extra searches are executed in parallel and the combined summaries are passed to `writer_agent`.
 6. `writer_agent` composes the reasoning trace and final answer.

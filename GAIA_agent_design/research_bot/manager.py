@@ -119,9 +119,10 @@ class GAIAResearchManager:
         return results
 
     async def _search(self, item: SearchItem, context: str) -> str | None:
-        prompt = f"Source: {item.source}\nQuery: {item.query}\nReason: {item.reason}"
-        if item.source == "context":
-            prompt += f"\nContext:\n{context}"
+        prompt = (
+            f"Source: {item.source}\nQuery: {item.query}\nReason: {item.reason}"
+            f"\nContext:\n{context}"
+        )
         try:
             result = await Runner.run(search_agent, prompt)
             return str(result.final_output)

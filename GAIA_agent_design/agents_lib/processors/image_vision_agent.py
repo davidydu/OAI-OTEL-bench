@@ -1,8 +1,5 @@
 from __future__ import annotations
 
-from hashlib import sha1
-from typing import Dict
-
 from ..file_router import Attachment
 
 from .vision_utils import process_image_bytes
