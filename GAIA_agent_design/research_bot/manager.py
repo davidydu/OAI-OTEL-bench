@@ -25,7 +25,6 @@ from .agents import (
 )
 
 
-
 class GAIAResearchManager:
     def __init__(self, media_dir: Path) -> None:
         self.media_dir = media_dir
@@ -39,11 +38,13 @@ class GAIAResearchManager:
                 task = json.loads(line)
                 tid = task["task_id"]
                 question = task["Question"]
-                
+
                 async def handle_task(tid: str, question: str) -> dict:
                     context = self._get_context(tid)
                     with trace(workflow_name=f"GAIA {tid}"):
-                        answer, reasoning, verified = await self._answer(question, context)
+                        answer, reasoning, verified = await self._answer(
+                            question, context
+                        )
                     return {
                         "task_id": tid,
                         "model_answer": answer,
@@ -61,7 +62,7 @@ class GAIAResearchManager:
 
     def _get_context(self, task_id: str) -> str:
         att = self.file_router.fetch(task_id)
-        if att.data is None or att.mime is None:
+        if att is None:
             return ""
         processor = choose_processor(att.mime)
         try:
@@ -102,7 +103,6 @@ class GAIAResearchManager:
         prompt = f"Question: {question}\nContext:\n{context}"
         result = await Runner.run(planner_agent, prompt)
         return result.final_output_as(SearchPlan)
-
 
     async def _perform_searches(self, plan: SearchPlan, context: str) -> list[str]:
         tasks = [

@@ -14,7 +14,12 @@ class ExcelProcessorAgent:
 
     def process(self, att: Attachment) -> str:
         """Convert an Excel file to CSV-formatted text."""
-        wb = load_workbook(att.path, data_only=False)
+        if att.path.exists():
+            wb = load_workbook(att.path, data_only=False)
+        else:
+            from io import BytesIO
+
+            wb = load_workbook(filename=BytesIO(att.bytes), data_only=False)
         texts: List[str] = []
         for sheet in wb.worksheets:
             output = io.StringIO()
