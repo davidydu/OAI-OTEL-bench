@@ -9,7 +9,12 @@ class PPTXProcessorAgent:
     """Extract text from PowerPoint presentations."""
 
     def process(self, att: Attachment) -> str:
-        pres = Presentation(att.path)
+        if att.path.exists():
+            pres = Presentation(att.path)
+        else:
+            from io import BytesIO
+
+            pres = Presentation(BytesIO(att.bytes))
         texts = []
         for slide in pres.slides:
             for shape in slide.shapes:

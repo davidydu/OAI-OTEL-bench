@@ -47,7 +47,11 @@ class ZipProcessorAgent:
                 if not mime:
                     mime, _ = mimetypes.guess_type(name)
                 processor = choose_processor(mime or "application/octet-stream")
-                att_inner = Attachment(path=Path(name), data=data, mime=mime or "application/octet-stream")
+                att_inner = Attachment(
+                    path=Path(name),
+                    mime=mime or "application/octet-stream",
+                    _data=data,
+                )
                 try:
                     text = processor.process(att_inner)
                 except Exception as e:
