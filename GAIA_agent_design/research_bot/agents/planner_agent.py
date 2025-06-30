@@ -35,5 +35,4 @@ planner_agent = Agent(
     instructions=PROMPT,
     model="o4-mini",
     output_type=SearchPlan,
-    tools=[transcribe_audio],
 )
