@@ -22,11 +22,11 @@ CoordinatorAgent
     │    ├─ TextProcessorAgent  # .txt, .json, .py
     │    ├─ DocxProcessorAgent  # .docx          (python-docx)
     │    ├─ ExcelProcessorAgent # .xls/.xlsx     (pandas)
-    │    ├─ PDFProcessorAgent   # .pdf           (pdfplumber + vision fallback)
+    │    ├─ PDFVisionAgent     # .pdf           (GPT-4o vision)
     │    ├─ PPTXProcessorAgent  # .pptx          (python-pptx)
     │    ├─ PDBProcessorAgent   # .pdb           (biopython)
     │    ├─ ZipProcessorAgent   # .zip           (extract + text)
-    │    ├─ ImageOCRAgent       # .png/.jpg      (GPT‑4o vision with OCR fallback)
+    │    ├─ ImageVisionAgent    # .png/.jpg      (GPT‑4o vision)
     │    └─ AudioSTTAgent       # .wav/.mp3      (Whisper / cloud STT)
     ├─ KnowledgeAgent           # QA: Plan→Act→Reflect with search/file tools
     ├─ WriteAgent               # Formats answer and reasoning into GAIA-spec JSONL
@@ -88,8 +88,8 @@ agents/tools/
 │   │   ├── text_processor.py
 │   │   ├── docx_processor.py
 │   │   ├── excel_processor.py
-│   │   ├── pdf_processor.py
-│   │   ├── image_ocr_agent.py
+│   │   ├── pdf_vision_agent.py
+│   │   ├── image_vision_agent.py
 │   │   └── audio_stt_agent.py
 │   ├── knowledge_agent.py        # KnowledgeAgent with WebSearchTool, FileSearchTool
 │   ├── verifier_agent.py         # Optional fact-checking agent

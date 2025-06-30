@@ -6,8 +6,8 @@ from ..file_router import Attachment
 class FileProcessor(Protocol):
     """Protocol for processor classes."""
 
-    def process(self, att: Attachment) -> str:
-        ...
+    def process(self, att: Attachment) -> str: ...
+
 
 """Utilities for choosing the right processor for a given MIME type."""
 
@@ -19,6 +19,7 @@ from .image_vision_agent import ImageVisionAgent
 from .audio_stt_agent import AudioSTTAgent
 from .pptx_processor import PPTXProcessorAgent
 from .pdb_processor import PDBProcessorAgent
+from .zip_processor import ZipProcessorAgent
 
 PROCESSORS = {
     "text": TextProcessorAgent(),
@@ -29,6 +30,7 @@ PROCESSORS = {
     "audio": AudioSTTAgent(),
     "pptx": PPTXProcessorAgent(),
     "pdb": PDBProcessorAgent(),
+    "zip": ZipProcessorAgent(),
 }
 
 
@@ -45,6 +47,8 @@ def choose_processor(mime: str):
         return PROCESSORS["image"]
     if mime.startswith("audio/"):
         return PROCESSORS["audio"]
+    if "zip" in mime:
+        return PROCESSORS["zip"]
     if "presentation" in mime or mime.endswith("pptx"):
         return PROCESSORS["pptx"]
     if "pdb" in mime:
