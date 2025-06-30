@@ -69,10 +69,7 @@ class GAIAResearchManager:
         processor = choose_processor(att.mime)
         for i in range(10):
             print(f"processor = {processor}")
-        try:
-            text = processor.process(att)
-        except Exception:
-            text = ""
+        text = processor.process(att)
         for i in range(10):
             print(f"text = {text}")
         return text
