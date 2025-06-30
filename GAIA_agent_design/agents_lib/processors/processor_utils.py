@@ -1,4 +1,6 @@
 from __future__ import annotations
+from typing import Dict, Protocol
+from ..file_router import Attachment
 
 """Utilities for choosing the right processor for a given MIME type."""
 

@@ -5,7 +5,7 @@ from typing import Dict
 
 from .vision_utils import process_image_bytes
 
-DEFAULT_PROMPT = "Extract any text from this image. If there is no text, describe the contents in detail."
+DEFAULT_PROMPT = "Extract any text from this image and describe all contents in detail."
 
 
 class ImageVisionAgent:

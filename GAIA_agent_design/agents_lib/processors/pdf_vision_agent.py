@@ -5,7 +5,7 @@ from typing import Dict
 
 from .vision_utils import process_pdf_bytes
 
-DEFAULT_PROMPT = "Extract useful text from this PDF or describe its contents."
+DEFAULT_PROMPT = "Extract any text from this image and describe all contents in detail."
 
 
 class PDFVisionAgent:

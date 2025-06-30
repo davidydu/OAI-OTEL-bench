@@ -1,62 +1,49 @@
 from __future__ import annotations
 
-import os
 import mimetypes
+from dataclasses import dataclass
+from hashlib import sha1
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Optional
 
-try:
-    import magic
-except Exception:  # pragma: no cover - optional dependency may be missing
-    magic = None
+@dataclass(frozen=True)
+class Attachment:
+    path: Path     # absolute path to the media file
+    data: bytes    # raw bytes (lazy‑loaded on first access)
+    mime: str      # best‑effort MIME type ("application/octet‑stream" fallback)
 
+    # Lazy property so processors that don’t need bytes avoid the read
+    @property
+    def bytes(self) -> bytes:  # noqa: D401 – read‑only convenience
+        return self.data
 
 class FileRouterAgent:
-    """Simple utility to fetch GAIA media files."""
+    """Central dispatcher that finds media files for GAIA tasks."""
 
     def __init__(self, media_dir: str | Path) -> None:
         self.media_dir = Path(media_dir)
-        if not self.media_dir.exists():
-            raise FileNotFoundError(f"Media directory {self.media_dir} not found")
-        # MIME detector
-        if magic:
-            try:
-                self._magic = magic.Magic(mime=True)
-            except Exception:
-                self._magic = None
-        else:
-            self._magic = None
-        # Build an index of task_id -> file path for quick lookup
-        self._index: Dict[str, Path] = {}
-        for fname in os.listdir(self.media_dir):
-            path = self.media_dir / fname
-            if path.is_file():
-                key = fname.split(".")[0]
-                if key not in self._index:
-                    self._index[key] = path
+        
+        # map basename → full path (first match wins)
+        self._index: Dict[str, Path] = {
+            p.stem: p for p in media_dir.iterdir() if p.is_file()
+        }
 
-    def fetch(self, task_id: str) -> Tuple[bytes | None, str | None]:
-        """Return raw bytes and detected MIME for the file matching ``task_id``."""
-        path = self._index.get(task_id)
-        if path is None:
-            # fall back to prefix search
-            matches = [f for f in os.listdir(self.media_dir) if f.startswith(task_id)]
-            if not matches:
-                return None, None
-            path = self.media_dir / matches[0]
-        with open(path, "rb") as fh:
-            data = fh.read()
+    def _guess_mime(self, path: Path) -> str:
+        mime, _ = mimetypes.guess_type(path.name)
+        return mime or "application/octet-stream"
 
-        mime_type = None
-        if self._magic is not None:
-            try:
-                mime_type = self._magic.from_buffer(data[:2048])
-            except Exception:
-                mime_type = None
+    def fetch(self, task_id: str, *, return_bytes: bool = False) -> Optional[Attachment]:
+        """Return the attachment for a GAIA task.
 
-        if not mime_type or mime_type == "application/octet-stream":
-            guessed, _ = mimetypes.guess_type(path.name)
-            if guessed:
-                mime_type = guessed
+        If *return_bytes* is True we mimic the old API and return a tuple
+        ``(bytes, mime)`` for legacy code.
+        """
+        path = self._index.get(task_id) or next((p for k, p in self._index.items() if k.startswith(task_id)), None)
+        if not path:
+            return None
 
-        return data, mime_type
+        mime = self._guess_mime(path)
+        if return_bytes:
+            return path.read_bytes(), mime                # ← legacy path
+
+        return Attachment(path=path, data=path.read_bytes(), mime=mime)

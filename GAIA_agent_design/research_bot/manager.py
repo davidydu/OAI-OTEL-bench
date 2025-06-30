@@ -60,12 +60,12 @@ class GAIAResearchManager:
                 dst.write(json.dumps(out, ensure_ascii=False) + "\n")
 
     def _get_context(self, task_id: str) -> str:
-        raw, mime = self.file_router.fetch(task_id)
-        if raw is None or mime is None:
+        att = self.file_router.fetch(task_id)
+        if att.data is None or att.mime is None:
             return ""
-        processor = choose_processor(mime)
+        processor = choose_processor(att.mime)
         try:
-            text = processor.process(raw, mime)
+            text = processor.process(att)
         except Exception:
             text = ""
         return text[:30000]
