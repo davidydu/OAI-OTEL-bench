@@ -33,11 +33,17 @@ attrs==25.3.0
     #   aiohttp
     #   jsonschema
     #   referencing
+azure-ai-agents==1.0.1
+    # via azure-ai-projects
 azure-ai-evaluation==1.8.0
+    # via -r requirements.in
+azure-ai-projects==1.0.0b12
     # via -r requirements.in
 azure-core==1.34.0
     # via
+    #   azure-ai-agents
     #   azure-ai-evaluation
+    #   azure-ai-projects
     #   azure-identity
     #   azure-monitor-opentelemetry-exporter
     #   azure-storage-blob
@@ -49,7 +55,9 @@ azure-identity==1.23.0
 azure-monitor-opentelemetry-exporter==1.0.0b39
     # via promptflow-devkit
 azure-storage-blob==12.25.1
-    # via azure-ai-evaluation
+    # via
+    #   azure-ai-evaluation
+    #   azure-ai-projects
 babel==2.17.0
     # via mkdocs-material
 backoff==2.2.1
@@ -271,6 +279,8 @@ instructor==1.9.0
     # via bespokelabs-curator
 isodate==0.7.2
     # via
+    #   azure-ai-agents
+    #   azure-ai-projects
     #   azure-storage-blob
     #   msrest
 itsdangerous==2.2.0
@@ -710,6 +720,8 @@ typing-extensions==4.14.0
     # via
     #   anthropic
     #   anyio
+    #   azure-ai-agents
+    #   azure-ai-projects
     #   azure-core
     #   azure-identity
     #   azure-storage-blob

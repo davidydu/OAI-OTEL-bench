@@ -52,9 +52,13 @@ oai_model_config = OpenAIModelConfiguration(
   api_key = os.getenv("OPENAI_API_KEY"),
   base_url = "https://api.openai.com/v1",
   model = "o4-mini",
+  type = "openai",
 )
 
-task_adherence_evaluator = TaskAdherenceEvaluator(model_config=oai_model_config)
+task_adherence_evaluator = TaskAdherenceEvaluator(
+  model_config=oai_model_config,
+  is_reasoning_model=True,
+)
 
 class VerificationResult(BaseModel):
   is_correct: bool
@@ -68,7 +72,7 @@ async def verifier_agent(
 ) -> VerificationResult:
     """Run the Azure Task Adherence evaluator and return a simplified result."""
 
-    result = await task_adherence_evaluator(
+    result = task_adherence_evaluator(
         query=query,
         response=response,
         tool_definitions=tool_definitions,
