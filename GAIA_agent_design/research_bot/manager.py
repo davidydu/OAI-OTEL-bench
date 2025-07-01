@@ -23,6 +23,7 @@ from .agents import (
     AnswerData,
     VerificationResult,
 )
+from ..agents_lib.tools import Message, MessageContent
 
 
 class GAIAResearchManager:
@@ -162,24 +163,24 @@ class GAIAResearchManager:
         )
 
         query = [
-            {"role": "system", "content": PROMPT},
-            {"role": "user", "content": [{"type": "text", "text": question}]},
+            Message(role="system", content=[MessageContent(type="text", text=PROMPT)]),
+            Message(role="user", content=[MessageContent(type="text", text=question)]),
         ]
         response = [
-            {
-                "role": "writer agent",
-                "content": [
-                    {"type": "text", "text": data.reasoning},
-                    {"type": "text", "text": data.answer},
+            Message(
+                role="writer agent",
+                content=[
+                    MessageContent(type="text", text=data.reasoning),
+                    MessageContent(type="text", text=data.answer),
                 ],
-            }
+            )
         ]
         
         result = await Runner.run(
             verifier_agent,
             {"query": query, "response": response, "tool_definitions": None},
         )
-        return result.final_output
+        return result.final_output_as(VerificationResult)
 
     def _format_issue(self, feedback: str) -> bool:
         """Return True if the verifier feedback looks like a formatting issue."""

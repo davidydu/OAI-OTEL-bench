@@ -8,6 +8,12 @@ from .image_gen_tool import get_image_generation_tool
 from .web_search_tool import get_web_search_tool
 from .audio_transcription_tool import transcribe_audio
 from .sandbox import run_python
+from .azure_evaluation_tool import (
+    azure_task_adherence,
+    VerificationResult,
+    Message,
+    MessageContent,
+)
 
 __all__ = [
     "get_code_interpreter_tool",
@@ -19,4 +25,8 @@ __all__ = [
     "get_web_search_tool",
     "transcribe_audio",
     "run_python",
+    "azure_task_adherence",
+    "VerificationResult",
+    "Message",
+    "MessageContent",
 ]
