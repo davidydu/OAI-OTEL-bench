@@ -40,11 +40,16 @@
 # )
 
 # Use Azure AI Evaluation Toolkit: TaskAdherenceEvaluator Class
-import os
+from __future__ import annotations
+
+import os, asyncio
 from typing import List, Optional
+from agents import Agent
 from pydantic import BaseModel
 from azure.ai.evaluation import TaskAdherenceEvaluator
 from azure.ai.evaluation._model_configurations import OpenAIModelConfiguration
+
+
 
 __all__ = ["VerificationResult", "verifier_agent"]
 
@@ -61,25 +66,34 @@ task_adherence_evaluator = TaskAdherenceEvaluator(
 )
 
 class VerificationResult(BaseModel):
-  is_correct: bool
+  score: int
   feedback: str
+  is_correct:bool
 
 
-async def verifier_agent(
+async def _verify_with_azure(
     query: List[dict],
     response: List[dict],
     tool_definitions: Optional[List[dict]] = None,
 ) -> VerificationResult:
     """Run the Azure Task Adherence evaluator and return a simplified result."""
-
-    result = task_adherence_evaluator(
+    result = await asyncio.tothread(
+      task_adherence_evaluator,
         query=query,
         response=response,
         tool_definitions=tool_definitions,
     )
 
     score = result.get("task_adherence_score", 0)
-    is_correct = score >= 4
     feedback = result.get("task_adherence_reason", "")
-    return VerificationResult(is_correct=is_correct, feedback=feedback)
+    is_correct = score >= 3
+    return VerificationResult(is_correct=is_correct, score=score, feedback=feedback)
+
+verifier_agent = Agent(
+  name="VerifierAgent",
+  instructions="Call the verifier_agent function and return results",
+  model="gpt-4o-mini",                
+  output_type=VerificationResult,
+  callable_fn=_verify_with_azure, 
+)
 

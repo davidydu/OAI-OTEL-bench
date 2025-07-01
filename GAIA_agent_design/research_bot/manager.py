@@ -131,7 +131,6 @@ class GAIAResearchManager:
             prompt += f"\nVerifier feedback: {feedback}"
         result = await Runner.run(evaluator_agent, prompt)
         return result.final_output_as(SearchPlan)
-        return result.final_output_as(SearchPlan)
 
     async def _write_answer(
         self,
@@ -175,7 +174,12 @@ class GAIAResearchManager:
                 ],
             }
         ]
-        return await verifier_agent(query=query, response=response)
+        
+        result = await Runner.run(
+            verifier_agent,
+            {"query": query, "response": response, "tool_definitions": None},
+        )
+        return result.final_output
 
     def _format_issue(self, feedback: str) -> bool:
         """Return True if the verifier feedback looks like a formatting issue."""
