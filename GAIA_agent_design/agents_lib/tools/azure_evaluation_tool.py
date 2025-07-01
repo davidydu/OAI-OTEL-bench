@@ -59,6 +59,6 @@ async def azure_task_adherence(
         response=[m.model_dump() for m in response],
         tool_definitions=None if tool_definitions is None else json.loads(tool_definitions),
     )
-    score = result.get("task_adherence_score", 0)
+    score = int(result.get("task_adherence", 0))
     feedback = result.get("task_adherence_reason", "")
     return VerificationResult(score=score, feedback=feedback, is_correct=score >= 3)
