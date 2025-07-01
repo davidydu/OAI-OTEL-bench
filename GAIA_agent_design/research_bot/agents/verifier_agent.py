@@ -9,7 +9,11 @@ __all__ = ["VerificationResult", "verifier_agent"]
 
 verifier_agent = Agent(
     name="VerifierAgent",
-    instructions="Use the azure_task_adherence tool to judge the response.",
+    instructions=(
+        "You receive a JSON payload with query and response messages. "
+        "Call the azure_task_adherence tool using that JSON as arguments and "
+        "return the result."
+    ),
     tools=[azure_task_adherence],
     model="gpt-4o-mini",
     model_settings=ModelSettings(tool_choice="required"),
