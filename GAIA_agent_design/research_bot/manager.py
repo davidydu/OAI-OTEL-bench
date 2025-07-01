@@ -64,14 +64,8 @@ class GAIAResearchManager:
         att = self.file_router.fetch(task_id)
         if att is None:
             return ""
-        for i in range(10):
-            print(f"att = {att}")
         processor = choose_processor(att.mime)
-        for i in range(10):
-            print(f"processor = {processor}")
         text = processor.process(att)
-        for i in range(10):
-            print(f"text = {text}")
         return text
 
     async def _answer(self, question: str, context: str) -> tuple[str, str, bool]:
