@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 from pathlib import Path
+from typing import cast
 
 from agents import Runner
 from agents.tracing import trace
@@ -192,7 +193,14 @@ class GAIAResearchManager:
         )
 
         result = await self._run_limited(verifier_agent, verifier_input)
-        return result.final_output_as(VerificationResult)
+        data = result.final_output
+        if isinstance(data, str):
+            try:
+                data = VerificationResult.model_validate_json(data)
+            except Exception:
+                data = VerificationResult(score=0, feedback="", is_correct=False)
+
+        return cast(VerificationResult, data)
         
     def _format_issue(self, feedback: str) -> bool:
         """Return True if the verifier feedback looks like a formatting issue."""
