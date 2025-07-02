@@ -27,9 +27,15 @@ from ..agents_lib.tools import Message, MessageContent
 
 
 class GAIAResearchManager:
-    def __init__(self, media_dir: Path) -> None:
+    def __init__(self, media_dir: Path, *, max_concurrency: int = 20) -> None:
         self.media_dir = media_dir
         self.file_router = FileRouterAgent(media_dir)
+        self._sem = asyncio.Semaphore(max_concurrency)
+
+    async def _run_limited(self, agent, prompt: str):
+        """Run an agent call while respecting the concurrency limit."""
+        async with self._sem:
+            return await Runner.run(agent, prompt)
 
     async def run(self, jsonl_path: str, out_path: str) -> None:
         """Process all tasks in ``jsonl_path`` concurrently and write results."""
@@ -99,7 +105,7 @@ class GAIAResearchManager:
 
     async def _plan_searches(self, question: str, context: str) -> SearchPlan:
         prompt = f"Question: {question}\nContext:\n{context}"
-        result = await Runner.run(planner_agent, prompt)
+        result = await self._run_limited(planner_agent, prompt)
         return result.final_output_as(SearchPlan)
 
     async def _perform_searches(self, plan: SearchPlan, context: str) -> list[str]:
@@ -119,7 +125,7 @@ class GAIAResearchManager:
             f"\nContext:\n{context}"
         )
         try:
-            result = await Runner.run(search_agent, prompt)
+            result = await self._run_limited(search_agent, prompt)
             return str(result.final_output)
         except Exception:
             return None
@@ -130,7 +136,7 @@ class GAIAResearchManager:
         prompt = f"Question: {question}\nCurrent summaries: {summaries}"
         if feedback:
             prompt += f"\nVerifier feedback: {feedback}"
-        result = await Runner.run(evaluator_agent, prompt)
+        result = await self._run_limited(evaluator_agent, prompt)
         return result.final_output_as(SearchPlan)
 
     async def _write_answer(
@@ -145,7 +151,7 @@ class GAIAResearchManager:
         )
         if feedback:
             input += f"\nVerifier feedback: {feedback}\nPlease correct your answer accordingly."
-        result = await Runner.run(writer_agent, input)
+        result = await self._run_limited(writer_agent, input)
         return result.final_output_as(AnswerData)
 
     async def _verify_answer(
@@ -185,7 +191,7 @@ class GAIAResearchManager:
             }
         )
 
-        result = await Runner.run(verifier_agent, verifier_input)
+        result = await self._run_limited(verifier_agent, verifier_input)
         return result.final_output_as(VerificationResult)
         
     def _format_issue(self, feedback: str) -> bool:
