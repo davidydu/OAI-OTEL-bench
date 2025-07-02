@@ -168,7 +168,7 @@ class GAIAResearchManager:
             If you are asked for a string, don't use articles, neither abbreviations (e.g. for cities), and write the digits in plain text unless specified otherwise. \
             If you are asked for a comma separated list, apply the above rules depending of whether the element to be put in the list is a number or a string."
             "There is no formatting requirement for your reasoning trace that leads to this asnwer, but your reasoning must make sense and soundly lead to the answer."
-            "You need to make sure in his final answer, the "FINAL ANSWER:" is dropped and only the actual answer is kept."
+            "You need to make sure in his final answer, the \"FINAL ANSWER:\" is dropped and only the actual answer is kept."
         )
 
         query = [
