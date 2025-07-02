@@ -1,0 +1,28 @@
+Accuracy: 57.14% (8/14)
+
+Mismatches:
+- Task ID: 5cfb274c-0207-4aa7-9575-6ac0bd95d9b2
+    Question: Each cell in the attached spreadsheet represents a plot of land. The color of the cell indicates who owns that plot. Green cells are plots owned by Earl Smith. Can Earl walk through every plot he owns (and no other plots) and return to his starting plot without backtracking? For this question, consider backtracking to be any instance where Earl would enter a plot of land he had already entered since leaving his starting plot.
+    Submission: 'FINAL ANSWER: No'
+    Reference : 'No'
+- Task ID: c526d8d6-5987-4da9-b24c-83466fa172f3
+    Question: In the NIH translation of the original 1913 Michaelis-Menten Paper, what is the velocity of a reaction to four decimal places using the final equation in the paper based on the information for Reaction 7 in the Excel file?
+    Submission: '0.0429'
+    Reference : '0.0424'
+- Task ID: 3da89939-209c-4086-8520-7eb734e6b4ef
+    Question: I was referencing each of the tables in the file from papers that were cited by the "Trans fatty acid contents in chocolates and chocolate wafers in Turkey" paper. I lost my own reference sheet and need to know which of the papers each table came from. The file may not use the full table caption. If the references in the"Trans fatty acid" paper bibliography were numbered starting with 1, give me the numbers in the order that they would be used to fill the cells in the Excel file from top to bottom, as a comma separated list.
+    Submission: '8,5,15,8,8,5'
+    Reference : '8, 29, 22, 1, 8, 26'
+- Task ID: 8d46b8d6-b38a-47ff-ac74-cda14cf2d19b
+    Question: What percentage of the total penguin population according to the upper estimates on english Wikipedia at the end of 2012 is made up by the penguins in this file that don't live on Dream Island or have beaks longer than 42mm? Round to the nearest five decimal places.
+    Submission: '0.00178'
+    Reference : '0.00033'
+- Task ID: 65afbc8a-89ca-4ad5-8d62-355bb401f61d
+    Question: You are given this Excel file as a map. You start on the START cell and move toward the END cell. You are allowed to move two cells per turn, and you may move up, down, left, or right. You may not move fewer than two cells, and you may not move backward. You must avoid moving onto any blue cells. On the eleventh turn, what is the 6-digit hex code (without prefix) of the color of the cell where you land after moving?
+    Submission: 'FFFF00'
+    Reference : 'F478A7'
+- Task ID: 4d51c4bf-4b0e-4f3d-897b-3f6687a7d9f2
+    Question: This spreadsheet contains a list of clients for a retractable awning company. Each client has ordered a new awning for the back of their house within the last 90 days. The company makes different designs depending on whether the awning is made to block sunrises or sunsets. In this region, houses with odd-numbered street addresses face east, and houses with even-numbered street addresses face west. How many of these clients will be receiving the sunset awning design?
+    Submission: '4'
+    Reference : '8'
+
