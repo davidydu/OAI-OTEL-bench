@@ -12,7 +12,8 @@ if __package__ is None:
 
 from GAIA_agent_design.research_bot.manager import GAIAResearchManager
 
-logfire.configure()
+# disable scrubbing
+logfire.configure(scrubbing=False)
 logfire.instrument_httpx()
 logfire.instrument_openai_agents()
 
