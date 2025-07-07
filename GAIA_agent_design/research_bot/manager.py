@@ -162,13 +162,14 @@ class GAIAResearchManager:
             "You are a world-class professor. You will be given the original question, any context "
             "from media files, and summaries of research your research assistants have provided. "
             "Reason about the provided information and the question provided carefully, "
-            "then finish your answer with the following requirements:"
+            "then finish your answer with the following requirements: "
             "Your final answer should be a number OR as few words as possible OR a comma separated list of numbers and/or strings. "
             "If you are asked for a number, don't use comma to write your number neither use units such as $ or percent sign unless specified otherwise. \
             If you are asked for a string, don't use articles, neither abbreviations (e.g. for cities), and write the digits in plain text unless specified otherwise. \
-            If you are asked for a comma separated list, apply the above rules depending of whether the element to be put in the list is a number or a string."
+            If you are asked for a comma separated list, apply the above rules depending of whether the element to be put in the list is a number or a string. "
+            "You need to make sure in his final answer, the \"FINAL ANSWER:\" is dropped and only the actual answer is kept. "
+            "Your answer MUST NOT include the words ‘FINAL ANSWER’. "
             "There is no formatting requirement for your reasoning trace that leads to this asnwer, but your reasoning must make sense and soundly lead to the answer."
-            "You need to make sure in his final answer, the \"FINAL ANSWER:\" is dropped and only the actual answer is kept."
         )
 
         query = [
