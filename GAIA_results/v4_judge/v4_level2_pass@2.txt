@@ -1,0 +1,161 @@
+Accuracy: 54.65% (47/86)
+
+Mismatches:
+- Task ID    : 17b5a6a3-bc87-42e8-b0fb-6ab0781ef2cc
+  Question   : I’m researching species that became invasive after people who kept them as pets released them. There’s a certain species of fish that was popularized as a pet by being the main character of the movie Finding Nemo. According to the USGS, where was this fish found as a nonnative species, before the year 2020? I need the answer formatted as the five-digit zip codes of the places the species was found, separated by commas if there is more than one place.
+  Submission : 'None'
+  Reference  : '34689'
+- Task ID    : 04a04a9b-226c-43fd-b319-d5e89743676f
+  Question   : If we assume all articles published by Nature in 2020 (articles, only, not book reviews/columns, etc) relied on statistical significance to justify their findings and they on average came to a p-value of 0.04, how many papers would be incorrect as to their claims of statistical significance? Round the value up to the next integer.
+  Submission : '112'
+  Reference  : '41'
+- Task ID    : 7619a514-5fa8-43ef-9143-83b66a43d7a4
+  Question   : According to github, when was Regression added to the oldest closed numpy.polynomial issue that has the Regression label in MM/DD/YY?
+  Submission : '07/03/24'
+  Reference  : '04/15/18'
+- Task ID    : 7dd30055-0198-452e-8c25-f73dbe27dcb8
+  Question   : Using the Biopython library in Python, parse the PDB file of the protein identified by the PDB ID 5wb7 from the RCSB Protein Data Bank. Calculate the distance between the first and second atoms as they are listed in the PDB file. Report the answer in Angstroms, rounded to the nearest picometer.
+  Submission : '1.47'
+  Reference  : '1.456'
+- Task ID    : 624cbf11-6a41-4692-af9c-36b3e5ca3130
+  Question   : What's the last line of the rhyme under the flavor name on the headstone visible in the background of the photo of the oldest flavor's headstone in the Ben & Jerry's online flavor graveyard as of the end of 2022?
+  Submission : 'Must have been the pistachios.'
+  Reference  : 'So we had to let it die.'
+- Task ID    : df6561b2-7ee5-4540-baab-5095f742716a
+  Question   : When you take the average of the standard population deviation of the red numbers and the standard sample deviation of the green numbers in this image using the statistics module in Python 3.11, what is the result rounded to the nearest three decimal points?
+  Submission : '17.470'
+  Reference  : '17.056'
+- Task ID    : 8b3379c0-0981-4f5b-8407-6444610cb212
+  Question   : What is the maximum length in meters of #9 in the first National Geographic short on YouTube that was ever released according to the Monterey Bay Aquarium website? Just give the number.
+  Submission : '3.3'
+  Reference  : '1.8'
+- Task ID    : a7feb290-76bb-4cb7-8800-7edaf7954f2f
+  Question   : How many High Energy Physics - Lattice articles listed in January 2020 on Arxiv had ps versions available?
+  Submission : '2'
+  Reference  : '31'
+- Task ID    : b4cc024b-3f5e-480e-b96a-6656493255b5
+  Question   : The photograph in the Whitney Museum of American Art's collection with accession number 2022.128 shows a person holding a book. Which military unit did the author of this book join in 1813? Answer without using articles.
+  Submission : 'Lützow Free Corps'
+  Reference  : 'Russian-German Legion'
+- Task ID    : e8cb5b03-41e0-4086-99e5-f6806cd97211
+  Question   : I went to Virtue restaurant & bar in Chicago for my birthday on March 22, 2021 and the main course I had was delicious!  Unfortunately, when I went back about a month later on April 21, it was no longer on the dinner menu.  Using the Wayback Machine, can you help me figure out which main course was on the dinner menu for Virtue on March 22, 2021 but not April 21, 2021? Answer using the singular form, without articles.
+  Submission : 'seafood étouffée'
+  Reference  : 'shrimp'
+- Task ID    : b9763138-c053-4832-9f55-86200cb1f99c
+  Question   : Compute the check digit the Tropicos ID for the Order Helotiales would have if it were an ISBN-10 number.
+  Submission : '2'
+  Reference  : '3'
+- Task ID    : 16d825ff-1623-4176-a5b5-42e0f5c2b0ac
+  Question   : What time was the Tri-Rail train that carried the most passengers on May 27, 2019 scheduled to arrive in Pompano Beach? Express your answer in the 12-hour digital clock format without leading zero if any, and include whether it is AM or PM.
+  Submission : 'unknown'
+  Reference  : '6:41 PM'
+- Task ID    : 2b3ef98c-cc05-450b-a719-711aee40ac65
+  Question   : Could you help me out with this assignment? Our professor sprung it on us at the end of class Friday, and I'm still trying to figure it out. The question he asked us was about an anagram. I've attached an audio recording of the question that he asked, so if you could please take a listen and give me the answer, I'd really appreciate the help. Please limit your response to the anagram text that could be generated from the original line which fulfills the professor's request, without any other commentary. Also, please don't include any punctuation in your response.
+  Submission : 'to be or not to be that is the question'
+  Reference  : 'To be or not to be that is the question whether tis nobler in the mind to suffer the slings and arrows of outrageous fortune'
+- Task ID    : bfcd99e1-0690-4b53-a85c-0174a8629083
+  Question   : How many applicants for the job in the PDF are only missing a single qualification?
+  Submission : '15'
+  Reference  : '17'
+- Task ID    : 2dfc4c37-fec1-4518-84a7-10095d30ad75
+  Question   : According to Box Office Mojo's 2020 Worldwide Box Office list, how many of the top 10 highest-grossing worldwide movies are also on the top 10 highest-grossing domestic movies? Your answer should be a numerical integer value.
+  Submission : '3'
+  Reference  : '6'
+- Task ID    : 9f41b083-683e-4dcf-9185-ccfeaa88fa45
+  Question   : How many pages if the 2023 IPCC report (85 pages version) mentions nuclear energy?
+  Submission : '15'
+  Reference  : '0'
+- Task ID    : ecbc4f94-95a3-4cc7-b255-6741a458a625
+  Question   : How many images are there in the latest 2022 Lego english wikipedia article?
+  Submission : '28'
+  Reference  : '13'
+- Task ID    : 71345b0a-9c7d-4b50-b2bf-937ec5879845
+  Question   : On a leap day before the year 2008, a joke was removed from the Wikipedia page for “Dragon”. What was the phrase that was removed? Give the phrase as it appeared on the page, but without punctuation.
+  Submission : 'Swamp dragon'
+  Reference  : 'Here be dragons'
+- Task ID    : 114d5fd0-e2ae-4b6d-a65a-870da2d19c08
+  Question   : In the endnote found in the second-to-last paragraph of page 11 of the book with the doi 10.2307/j.ctv9b2xdv, what date in November was the Wikipedia article accessed? Just give the day of the month.
+  Submission : '12'
+  Reference  : '4'
+- Task ID    : 8f80e01c-1296-4371-9486-bb3d68651a60
+  Question   : Using bass clef notes, what is the age of someone who has experienced the word spelled out in the sheet music by the note letters the total number of lines and notes minus the number of notes on lines in the image?
+  Submission : '8'
+  Reference  : '90'
+- Task ID    : c8b7e059-c60d-472e-ad64-3b04ae1166dc
+  Question   : The work referenced in footnote 397 of Federico Lauria's 2014 dissertation is also the source for the titles of two paintings in the Smithsonian American Art Museum's collection, as of August 2023. What is the absolute difference between the chapter numbers of the chapters that the titles of these two paintings quote?
+  Submission : '6'
+  Reference  : '8'
+- Task ID    : ded28325-3447-4c56-860f-e497d6fb3577
+  Question   : This is a secret message my friend gave me. It says where we should meet for our picnic on Friday. The only problem is, it’s encrypted in the Caesar cipher, so I can’t read it. Can you tell me what it says? This is the message:
+
+Zsmxsm sc sx Zyvilsec Zvkjk.
+  Submission : 'Picnic is in Polybius Plaza.'
+  Reference  : 'Picnic is in Ploybius Plaza.'
+- Task ID    : 6359a0b1-8f7b-499b-9336-840f9ab90688
+  Question   : What is the area of the green polygon in the attached file? The numbers in purple represent the lengths of the side they are next to.
+  Submission : '102.75'
+  Reference  : '39'
+- Task ID    : 0a3cd321-3e76-4622-911b-0fda2e5d6b1a
+  Question   : According to the World Bank, which countries had gross savings of over 35% of GDP for every year in the period 2001-2010? Give your answer as a comma-separated list of countries in alphabetical order. Use the countries most common names in english when answering.
+  Submission : 'China, Kuwait, Qatar, Singapore, United Arab Emirates'
+  Reference  : 'Brunei, China, Morocco, Singapore'
+- Task ID    : f2feb6a4-363c-4c09-a804-0db564eafd68
+  Question   : I’m thinking about selling my home, so I want to learn more about how homes in my area sold recently. I live in Pearl City, Hawaii, which is on the island of Oahu. I know two homes near me that sold in 2022 were 2072 Akaikai Loop, and 2017 Komo Mai Drive. Find which of those homes sold for more in 2022, and tell me how much it sold for. Don’t put commas or decimal places in the answer.
+  Submission : '2017 Komo Mai Drive 900000'
+  Reference  : '900000'
+- Task ID    : 0b260a57-3f3a-4405-9f29-6d7a1012dbfb
+  Question   : On ScienceDirect, what is the difference to 3 decimal places in the sample standard deviations of the number of Reference Works in each Life Science domain compared to Health Sciences as of 2022?
+  Submission : 'insufficient data'
+  Reference  : '0.269'
+- Task ID    : 0e9e85b8-52b9-4de4-b402-5f635ab9631f
+  Question   : What is the latest chronological year date written in the image on the webpage found when following the first citation reference link on the latest version of Carl Nebel's Wikipedia page as of August 2023?
+  Submission : '1851'
+  Reference  : '1927'
+- Task ID    : 20194330-9976-4043-8632-f8485c6c71b2
+  Question   : The YouTube channel Game Grumps began a Let’s Play of the game Sonic the Hedgehog (2006) in the year 2012. Thirty seconds into the first episode, a phrase is shown on the screen in white letters on a red background. How many times does the letter "E" appear in this phrase?
+  Submission : '0'
+  Reference  : '4'
+- Task ID    : 4d51c4bf-4b0e-4f3d-897b-3f6687a7d9f2
+  Question   : This spreadsheet contains a list of clients for a retractable awning company. Each client has ordered a new awning for the back of their house within the last 90 days. The company makes different designs depending on whether the awning is made to block sunrises or sunsets. In this region, houses with odd-numbered street addresses face east, and houses with even-numbered street addresses face west. How many of these clients will be receiving the sunset awning design?
+  Submission : '4'
+  Reference  : '8'
+- Task ID    : 65638e28-7f37-4fa7-b7b9-8c19bb609879
+  Question   : The book with the doi 10.1353/book.24372 concerns a certain neurologist. According to chapter 2 of the book, what author influenced this neurologist’s belief in “endopsychic myths”? Give the last name only.
+  Submission : 'Feuerbach'
+  Reference  : 'Kleinpaul'
+- Task ID    : 708b99c5-e4a7-49cb-a5cf-933c8d46470d
+  Question   : On the DeepFruits fruit detection graph on Connected Papers from 2016, what feature caused the largest bubble to be the size it is?
+  Submission : 'number of citations'
+  Reference  : 'Citations'
+- Task ID    : 42d4198c-5895-4f0a-b0c0-424a66465d83
+  Question   : I'm curious about how much information is available for popular video games before their release. Find the Wikipedia page for the 2019 game that won the British Academy Games Awards. How many revisions did that page have before the month listed as the game's release date on that Wikipedia page (as of the most recent entry from 2022)?
+  Submission : '1234'
+  Reference  : '60'
+- Task ID    : d5141ca5-e7a0-469f-bf3e-e773507c86e2
+  Question   : When was a picture of St. Thomas Aquinas first added to the Wikipedia page on the Principle of double effect? Answer using the format DD/MM/YYYY.
+  Submission : '03/08/2010'
+  Reference  : '19/02/2009'
+- Task ID    : 1dcc160f-c187-48c2-b68e-319bd4354f3d
+  Question   : According to Openreview.net, at the NeurIPS 2022 Conference, how many papers by an author named Yuri were accepted with a "certain" recommendation?
+  Submission : '0'
+  Reference  : '3'
+- Task ID    : b2c257e0-3ad7-4f05-b8e3-d9da973be36e
+  Question   : If this whole pint is made up of ice cream, how many percent above or below the US federal standards for butterfat content is it when using the standards as reported by Wikipedia in 2020? Answer as + or - a number rounded to one decimal place.
+  Submission : '+43.5'
+  Reference  : '+4.6'
+- Task ID    : e0c10771-d627-4fd7-9694-05348e54ee36
+  Question   : Take the gender split from the 2011 Bulgarian census about those who have completed tertiary education. Subtract the smaller number from the larger number, then return the difference in thousands of women. So if there were 30.1 thousand more men, you'd give "30.1"
+  Submission : '235'
+  Reference  : '234.9'
+- Task ID    : e29834fd-413a-455c-a33e-c3915b07401c
+  Question   : I'd like to learn more about some popular reality television competition shows. As of the end of the 44th season of the American version of Survivor, how many more unique winners have there been compared to the number of winners of American Idol?
+  Submission : '19'
+  Reference  : '21'
+- Task ID    : 08c0b6e9-1b43-4c2e-ae55-4e3fce2c2715
+  Question   : In the film Goldfinger, what color was the object that James Bond concealed himself and his companion Pussy Galore at the end of the film? If there are multiple colors, put them in a comma-separated list in alphabetical order.
+  Submission : 'red, white'
+  Reference  : 'orange, white'
+- Task ID    : 7a4a336d-dcfa-45a0-b014-824c7619e8de
+  Question   : At the two-minute mark in the YouTube video uploaded by the channel “GameGrumps” on May 14, 2017 as part of their playthrough of the game Mario Kart 8 Deluxe, the shows’ hosts are competing on one of the game’s racetracks. What was the world record time for that track in the game’s 150cc mode as of June 7, 2023? Express your answer in minutes and seconds, rounding the seconds to the nearest hundredth, e.g. 1:01.001.
+  Submission : '1:38.76'
+  Reference  : '1:41.614'

@@ -100,6 +100,8 @@ class GAIAResearchManager:
 
         feedback: str | None = None
         writer_count = 2
+        rounds = 0
+        max_rounds = 3
         while True:
             # data = await self._write_answer(question, context, results, feedback)
             # verification = await self._verify_answer(question, data)
@@ -118,8 +120,11 @@ class GAIAResearchManager:
                 for _ in range(writer_count)
             ]
 
-            judge_result = await self._judge_answers(question, context, results, answers, feedback)
-            if judge_result.consensus:
+            force_decision = rounds >= max_rounds - 1
+            judge_result = await self._judge_answers(
+                question, context, results, answers, feedback, force_decision
+            )
+            if judge_result.consensus or force_decision:
                 reasoning = "\n".join(a.reasoning for a in answers)
                 final = judge_result.final_answer or answers[0].answer
                 return final, reasoning, True
@@ -130,6 +135,7 @@ class GAIAResearchManager:
             if eval_plan.searches:
                 results.extend(await self._perform_searches(eval_plan, context))
                 feedback = None
+            rounds += 1
 
     async def _plan_searches(self, question: str, context: str) -> SearchPlan:
         prompt = f"Question: {question}\nContext:\n{context}"
@@ -246,13 +252,23 @@ class GAIAResearchManager:
         summaries: list[str],
         answers: list[AnswerData],
         feedback: str | None,
+        force_decision: bool,
     ) -> JudgeResult:
+        """Ask the JudgeAgent to compare writer answers and optionally make a
+        final decision.
+
+        If ``force_decision`` is True, the prompt includes ``force_decision:
+        true`` so the judge must choose the best answer even without
+        consensus.
+        """
         prompt = (
             f"Question: {question}\nContext: {context}\nResearch summaries: {summaries}"
             f"\nAnswers: {[{'reasoning': a.reasoning, 'answer': a.answer} for a in answers]}"
         )
         if feedback:
             prompt += f"\nPrevious feedback: {feedback}"
+        if force_decision:
+            prompt += "\nforce_decision: true"
         result = await self._run_limited(judge_agent, prompt)
         return result.final_output_as(JudgeResult)
         

@@ -12,7 +12,8 @@ PROMPT = (
     " 3) String—otherwise, both answers match when all whitespace and punctuation are removed and the remainder is compared case-insensitively. "
     " If the answer is `None`, treat it as the literal string 'None' before applying these rules. "
     "If they agree, return `consensus: true` and provide the agreed answer in `final_answer`. "
-    "If they do not agree, decide if it is clear which answer is correct. If so, provide the agreed answer in `final_answer`. If not, return `consensus: false` and provide feedback to help the writers converge." 
+    "If they do not agree, decide if it is clear which answer is correct. If so, provide the agreed answer in `final_answer`. If not, return `consensus: false` and provide feedback to help the writers converge. " 
+    "If the input states `force_decision: true`, you must choose the best answer even if writers disagree. In that case return `consensus: true` with your chosen answer in `final_answer`."
 )
 
 
