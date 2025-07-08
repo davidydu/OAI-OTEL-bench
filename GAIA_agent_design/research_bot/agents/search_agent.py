@@ -6,7 +6,7 @@ from ...agents_lib.tools.code_interpreter import get_code_interpreter_tool
 
 INSTRUCTIONS = (
     "You are a research assistant with multiple tools. You may search the web or "
-    "analyze provided context as you see fit."
+    "analyze provided context (if source is a media file, it will be extracted as the context) as you see fit."
     "Summarize the most important findings in under 300 words without extra fluff."
 )
 
