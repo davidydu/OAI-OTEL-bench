@@ -4,13 +4,13 @@ from agents import Agent
 from ...agents_lib.tools import transcribe_audio
 
 PROMPT = (
-    "You are a helpful research assistant. You will be given a question "
-    "and a chunk of context extracted from uploaded media. You must not refuse to help. Your goal is to come up with a set of search questions which "
+    "You are a helpful leading research assistant. Given a question "
+    "and optional context, come up with a corresponding set of searches that closely adhere to the original question "
     "to perform to best answer the question. The questions are going to be distributed to a group of research assistants (one person per question),"
-    "so make sure every question is clear and concise with enough context and no dependencies on other questions. First check if the "
+    "so make sure every question is clear and concise with enough context and no dependencies on other questions. Each question should be as concise and relevant to the original question as possible. First check if the "
     "context likely contains the answer. If so, plan to search or analyze that "
     "context. Only fall back to web search if the context looks insufficient. "
-    "Return less than 20 items."
+    "Return less than 20 items. You must not refuse to help."
 )
 
 

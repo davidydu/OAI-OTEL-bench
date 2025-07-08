@@ -1,0 +1,89 @@
+Accuracy: 26.92% (7/26)
+
+Mismatches:
+- Task ID    : 676e5e31-a554-4acc-9286-b60d90a92d26
+  Question   : In July 2, 1959 United States standards for grades of processed fruits, vegetables, and certain other products listed as dehydrated, consider the items in the "dried and dehydrated section" specifically marked as dehydrated along with any items in the Frozen/Chilled section that contain the whole name of the item, but not if they're marked Chilled. As of August 2023, what is the percentage (to the nearest percent) of those standards that have been superseded by a new version since the date given in the 1959 standards?
+  Submission : '16%'
+  Reference  : '86'
+- Task ID    : bec74516-02fc-48dc-b202-55e78d0e17cf
+  Question   : What is the average number of pre-2020 works on the open researcher and contributor identification pages of the people whose identification is in this file?
+  Submission : '12.6'
+  Reference  : '26.4'
+- Task ID    : 00d579ea-0889-4fd9-a771-2c8d79835c8d
+  Question   : Assuming scientists in the famous youtube video The Thinking Machine (Artificial Intelligence in the 1960s) were interviewed the same year, what is the name of the scientist predicting the sooner thinking machines or robots? Answer using the format First name Last name
+  Submission : 'Oliver Selfridge'
+  Reference  : 'Claude Shannon'
+- Task ID    : 384d0dd8-e8a4-4cfe-963c-d37f256e7662
+  Question   : In the NCATS PubChem compound database for Food Additive Status classification, find the compound that has a molecular weight of 100 g/mol or less, 6 heavy atoms, 1 or fewer hydrogen bond acceptors, and a complexity between 10 and 15. Of the shared gene-chemical co-occurrences between its two possible enzyme transformations, what is the PubChem CID of the heaviest by molecular weight?
+  Submission : '5791'
+  Reference  : '4192'
+- Task ID    : de9887f5-ead8-4727-876f-5a4078f8598c
+  Question   : What integer-rounded percentage of the total length of the harlequin shrimp recorded in Omar Valencfia-Mendez 2017 paper was the sea star fed to the same type of shrimp in G. Curt Fiedler's 2002 paper?
+  Submission : '160'
+  Reference  : '22'
+- Task ID    : 8131e2c0-0083-4265-9ce7-78c2d568425d
+  Question   : I was trying to remember how well the Cheater Beater performed in comparison to the Cheater when James tested it on his channel. I know that the Cheater still outperformed the Cheater Beater in terms of CFM. Could you please look that up for me, and report the CFM of both the Cheater and the Cheater Beater? I'm not sure if he made any changes to his testing, but this was back in season 4, so just report the value from that season. Please format your response like this: CFM number for Cheater, CFM number for Cheater beater
+  Submission : ''
+  Reference  : '101.376, 84.348'
+- Task ID    : 72c06643-a2fa-4186-aa5c-9ec33ae9b445
+  Question   : What is the volume in milliliters of a system comprised of 0.312 kg Freon-12 refrigerant when placed at the bottom of the Marianas Trench and allowed to stabilize at the Trench's peak temperature, rounded to the nearest mL? Provide your answer as just an integer value.
+  Submission : '220'
+  Reference  : '55'
+- Task ID    : ebbc1f13-d24d-40df-9068-adcf735b4240
+  Question   : The Latin root of the Yola word "gimlie" shares a spelling with a Spanish word. What is the Google translation of the source title for the 1994 example sentence for that word in the Collins Spanish-to-English dictionary online? Answer in plain text, without punctuation.
+  Submission : 'Change 16'
+  Reference  : 'The World of the Twenty First Century'
+- Task ID    : c526d8d6-5987-4da9-b24c-83466fa172f3
+  Question   : In the NIH translation of the original 1913 Michaelis-Menten Paper, what is the velocity of a reaction to four decimal places using the final equation in the paper based on the information for Reaction 7 in the Excel file?
+  Submission : '0.0429'
+  Reference  : '0.0424'
+- Task ID    : 3da89939-209c-4086-8520-7eb734e6b4ef
+  Question   : I was referencing each of the tables in the file from papers that were cited by the "Trans fatty acid contents in chocolates and chocolate wafers in Turkey" paper. I lost my own reference sheet and need to know which of the papers each table came from. The file may not use the full table caption. If the references in the"Trans fatty acid" paper bibliography were numbered starting with 1, give me the numbers in the order that they would be used to fill the cells in the Excel file from top to bottom, as a comma separated list.
+  Submission : '1,5,3,4,8,2'
+  Reference  : '8, 29, 22, 1, 8, 26'
+- Task ID    : 8d46b8d6-b38a-47ff-ac74-cda14cf2d19b
+  Question   : What percentage of the total penguin population according to the upper estimates on english Wikipedia at the end of 2012 is made up by the penguins in this file that don't live on Dream Island or have beaks longer than 42mm? Round to the nearest five decimal places.
+  Submission : '0.00116'
+  Reference  : '0.00033'
+- Task ID    : 851e570a-e3de-4d84-bcfa-cc85578baa59
+  Question   : I thought we could try a fun word puzzle together :)
+
+I've got a Boggle board here:
+
+ABRL
+EITE
+IONS
+FPEI
+
+I'd like to know the longest word that can be generated from the board. Please find the longest English language word that can be generated from this board. If more than one word of the same length exists at the maximum word length, please report the longest word that comes first, alphabetically. Oh, and I know that there might be different wordlists available for Boggle, so let's please just use the words_alpha dictionary found at https://github.com/dwyl/english-words as the dictionary for our game.
+  Submission : 'repletion'
+  Reference  : 'Briniest'
+- Task ID    : 50f58759-7bd6-406f-9b0d-5692beb2a926
+  Question   : How many times was a Twitter/X post cited as a reference on the english Wikipedia pages for each day of August in the last June 2023 versions of the pages?
+  Submission : '0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0'
+  Reference  : '3'
+- Task ID    : 872bfbb1-9ccf-49f6-8c5f-aa22818ccd66
+  Question   : Which of the fruits shown in the 2008 painting "Embroidery from Uzbekistan" were served as part of the October 1949 breakfast menu for the ocean liner that was later used as a floating prop for the film "The Last Voyage"? Give the items as a comma-separated list, ordering them in clockwise order based on their arrangement in the painting starting from the 12 o'clock position. Use the plural form of each fruit.
+  Submission : 'grapes, apples'
+  Reference  : 'pears, bananas'
+- Task ID    : c3a79cfe-8206-451f-aca8-3fec8ebe51d3
+  Question   : The year is 2022. I am at the National Air and Space Museum east of the Potomac River. I want to go to Fire Station 301 DCA ARFF using the metro. I go in the wrong direction and end up at the station closest to Cleveland Elementary School. How many metro stations am I away from my original destination if I don't change lines? Your answer should be a numerical integer value.
+  Submission : '20'
+  Reference  : '8'
+- Task ID    : ad2b4d70-9314-4fe6-bfbe-894a45f6055f
+  Question   : Eva Draconis has a personal website which can be accessed on her YouTube page. What is the meaning of the only symbol seen in the top banner that has a curved line that isn't a circle or a portion of a circle? Answer without punctuation.
+  Submission : 'War is not here this is land of peace'
+  Reference  : 'War is not here this is a land of peace'
+- Task ID    : 5b2a14e8-6e59-479c-80e3-4696e8980152
+  Question   : The brand that makes these harnesses the dogs are wearing in the attached pic shares stories from their ambassadors on their website. What meat is mentioned in the story added Dec 8th 2022?
+  Submission : 'salmon'
+  Reference  : 'bacon'
+- Task ID    : 5f982798-16b9-4051-ab57-cfc7ebdb2a91
+  Question   : I read a paper about multiwavelength observations of fast radio bursts back in March 2021 on Arxiv, and it had a fascinating diagram of an X-ray time profile. There was a similar burst-1 diagram in another paper from one of the same authors about fast radio bursts back in July 2020, but I can't recall what the difference in seconds in the measured time span was. How many more seconds did one measure than the other? Just give the number.
+  Submission : '0'
+  Reference  : '0.2'
+- Task ID    : 0512426f-4d28-49f0-be77-06d05daec096
+  Question   : In the YouTube 360 VR video from March 2018 narrated by the voice actor of Lord of the Rings' Gollum, what number was mentioned by the narrator directly after dinosaurs were first shown in the video?
+  Submission : '160'
+  Reference  : '100000000'
+

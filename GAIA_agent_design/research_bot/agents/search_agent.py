@@ -21,5 +21,5 @@ search_agent = Agent(
     instructions=INSTRUCTIONS,
     tools=TOOLS,
     model_settings=ModelSettings(tool_choice="required"),
-    model="gpt-4o",
+    model="gpt-4.1",
 )
