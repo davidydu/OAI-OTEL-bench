@@ -179,8 +179,21 @@ class GAIAResearchManager:
         )
         if feedback:
             input += f"\nJudge feedback: {feedback}\nPlease correct your answer accordingly."
-        result = await self._run_limited(writer_agent, input)
-        return result.final_output_as(AnswerData)
+        attempt = 0
+        while True:
+            result = await self._run_limited(writer_agent, input)
+            try:
+                return result.final_output_as(AnswerData)
+            except Exception:  # noqa: BLE001
+                attempt += 1
+                if attempt >= 3:
+                    raise
+                # Request the writer to correct the formatting on retry
+                input += (
+                    "\nThe previous response was not valid JSON. "
+                    "Please return only a JSON object with 'reasoning' and "
+                    "'answer' fields."
+                )
 
     # async def _verify_answer(
     #     self, question: str, data: AnswerData
