@@ -37,7 +37,10 @@ async def main(jsonl_path: str, out_base: str, runs: int, max_concurrency: int) 
         print(f"[Run {i}/{runs}] Writing to {out_path}")
         tasks.append(asyncio.create_task(manager.run(jsonl_path, str(out_path))))
 
-    await asyncio.gather(*tasks)
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    for idx, res in enumerate(results, 1):
+        if isinstance(res, Exception):
+            print(f"[Run {idx}] failed: {res}")
 
 
 if __name__ == "__main__":

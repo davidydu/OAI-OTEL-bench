@@ -49,25 +49,36 @@ class GAIAResearchManager:
                 tid = task["task_id"]
                 question = task["Question"]
 
-                async def handle_task(tid: str, question: str) -> dict:
-                    context = self._get_context(tid)
-                    with trace(workflow_name=f"GAIA {tid}"):
-                        answer, reasoning, verified = await self._answer(
-                            question, context
-                        )
-                    return {
-                        "task_id": tid,
-                        "model_answer": answer,
-                        "reasoning_trace": reasoning,
-                        "verified": verified,
-                    }
+                async def handle_task(tid: str = tid, question: str = question) -> dict:
+                    """Process a single GAIA task and return the result dict.
 
-                tasks.append(asyncio.create_task(handle_task(tid, question)))
+                    Any exception raised by the underlying agents is caught so that a
+                    failure in one task does not cancel the remaining work.
+                    """
+                    try:
+                        context = self._get_context(tid)
+                        with trace(workflow_name=f"GAIA {tid}"):
+                            answer, reasoning, verified = await self._answer(
+                                question, context
+                            )
+                        return {
+                            "task_id": tid,
+                            "model_answer": answer,
+                            "reasoning_trace": reasoning,
+                        }
+                    except Exception as exc:  # noqa: BLE001
+                        # propagate the error information rather than raising
+                        return {"task_id": tid, "error": str(exc)}
 
-        results = await asyncio.gather(*tasks)
+                tasks.append(asyncio.create_task(handle_task()))
+
+        # gather all task results without failing on the first exception
+        results = await asyncio.gather(*tasks, return_exceptions=True)
 
         with open(out_path, "w") as dst:
             for out in results:
+                if isinstance(out, Exception):
+                    out = {"error": str(out)}
                 dst.write(json.dumps(out, ensure_ascii=False) + "\n")
 
     def _get_context(self, task_id: str) -> str:
