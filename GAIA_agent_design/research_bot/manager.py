@@ -19,10 +19,12 @@ from .agents import (
     planner_agent,
     search_agent,
     writer_agent,
-    verifier_agent,
+    # verifier_agent,
     evaluator_agent,
+    judge_agent,
     AnswerData,
-    VerificationResult,
+    # VerificationResult,
+    JudgeResult,
 )
 from ..agents_lib.tools import Message, MessageContent
 
@@ -86,23 +88,37 @@ class GAIAResearchManager:
             results.extend(await self._perform_searches(eval_plan, context))
 
         feedback: str | None = None
+        writer_count = 2
         while True:
-            data = await self._write_answer(question, context, results, feedback)
-            verification = await self._verify_answer(question, data)
-            if verification.is_correct:
-                return data.answer, data.reasoning, True
+            # data = await self._write_answer(question, context, results, feedback)
+            # verification = await self._verify_answer(question, data)
+            # if verification.is_correct:
+            #     return data.answer, data.reasoning, True
 
-            feedback = verification.feedback
-            if self._format_issue(feedback):
-                # Writer corrects the format with verifier feedback
-                continue
+            # feedback = verification.feedback
+            # if self._format_issue(feedback):
+            #     # Writer corrects the format with verifier feedback
+            #     continue
 
-            # Otherwise the answer may be wrong. Ask evaluator if more research
-            # is needed before rewriting the answer.
+            # # Otherwise the answer may be wrong. Ask evaluator if more research
+            # # is needed before rewriting the answer.
+            answers = [
+                await self._write_answer(question, context, results, feedback)
+                for _ in range(writer_count)
+            ]
+
+            judge_result = await self._judge_answers(question, context, results, answers, feedback)
+            if judge_result.consensus:
+                reasoning = "\n".join(a.reasoning for a in answers)
+                final = judge_result.final_answer or answers[0].answer
+                return final, reasoning, True
+
+            feedback = judge_result.feedback
+
             eval_plan = await self._evaluate_results(question, results, feedback)
             if eval_plan.searches:
                 results.extend(await self._perform_searches(eval_plan, context))
-            feedback = None
+                feedback = None
 
     async def _plan_searches(self, question: str, context: str) -> SearchPlan:
         prompt = f"Question: {question}\nContext:\n{context}"
@@ -136,7 +152,7 @@ class GAIAResearchManager:
     ) -> SearchPlan:
         prompt = f"Question: {question}\nCurrent summaries: {summaries}"
         if feedback:
-            prompt += f"\nVerifier feedback: {feedback}"
+            prompt += f"\nJudge feedback: {feedback}"
         result = await self._run_limited(evaluator_agent, prompt)
         return result.final_output_as(SearchPlan)
 
@@ -151,56 +167,74 @@ class GAIAResearchManager:
             f"Question: {question}\nContext: {context}\nResearch summaries: {summaries}"
         )
         if feedback:
-            input += f"\nVerifier feedback: {feedback}\nPlease correct your answer accordingly."
+            input += f"\nJudge feedback: {feedback}\nPlease correct your answer accordingly."
         result = await self._run_limited(writer_agent, input)
         return result.final_output_as(AnswerData)
 
-    async def _verify_answer(
-        self, question: str, data: AnswerData
-    ) -> VerificationResult:
-        PROMPT = (
-            "Check that the answer field satisfies the following requirements: "
-            "The answer should be a number OR as few words as possible OR a comma separated list of numbers and/or strings. "
-            "If asked for a number, don't use comma to write your number neither use units such as $ or percent sign unless specified otherwise. \
-            If asked for a string, don't use articles, neither abbreviations (e.g. for cities), and write the digits in plain text unless specified otherwise. \
-            If asked for a comma separated list, apply the above rules depending of whether the element to be put in the list is a number or a string. "
-            "There is no requirement for the format of the reasoning trace. Don't worry about the reasoning trace at all."
-        )
+    # async def _verify_answer(
+    #     self, question: str, data: AnswerData
+    # ) -> VerificationResult:
+    #     PROMPT = (
+    #         "Check that the answer field satisfies the following requirements: "
+    #         "The answer should be a number OR as few words as possible OR a comma separated list of numbers and/or strings. "
+    #         "If asked for a number, don't use comma to write your number neither use units such as $ or percent sign unless specified otherwise. \
+    #         If asked for a string, don't use articles, neither abbreviations (e.g. for cities), and write the digits in plain text unless specified otherwise. \
+    #         If asked for a comma separated list, apply the above rules depending of whether the element to be put in the list is a number or a string. "
+    #         "There is no requirement for the format of the reasoning trace. Don't worry about the reasoning trace at all."
+    #     )
 
-        query = [
-            Message(role="system", content=[MessageContent(type="text", text=PROMPT)]),
-            Message(role="user", content=[MessageContent(type="text", text=question)]),
-        ]
-        response = [
-            Message(
-                role="writer agent",
-                content=[
-                    MessageContent(type="text", text=data.reasoning),
-                    MessageContent(type="text", text=data.answer),
-                ],
-            )
-        ]
+    #     query = [
+    #         Message(role="system", content=[MessageContent(type="text", text=PROMPT)]),
+    #         Message(role="user", content=[MessageContent(type="text", text=question)]),
+    #     ]
+    #     response = [
+    #         Message(
+    #             role="writer agent",
+    #             content=[
+    #                 MessageContent(type="text", text=data.reasoning),
+    #                 MessageContent(type="text", text=data.answer),
+    #             ],
+    #         )
+    #     ]
         
-        verifier_input = json.dumps(
-            {
-                "query": [m.model_dump() for m in query],
-                "response": [m.model_dump() for m in response],
-                "tool_definitions": None,
-            }
+    #     verifier_input = json.dumps(
+    #         {
+    #             "query": [m.model_dump() for m in query],
+    #             "response": [m.model_dump() for m in response],
+    #             "tool_definitions": None,
+    #         }
+    #     )
+
+    #     result = await self._run_limited(verifier_agent, verifier_input)
+    #     data = result.final_output
+    #     if isinstance(data, str):
+    #         try:
+    #             data = VerificationResult.model_validate_json(data)
+    #         except Exception:
+    #             data = VerificationResult(score=0, feedback="", is_correct=False)
+
+    #     return cast(VerificationResult, data)
+
+    async def _judge_answers(
+        self,
+        question: str,
+        context: str,
+        summaries: list[str],
+        answers: list[AnswerData],
+        feedback: str | None,
+    ) -> JudgeResult:
+        prompt = (
+            f"Question: {question}\nContext: {context}\nResearch summaries: {summaries}"
+            f"\nAnswers: {[{'reasoning': a.reasoning, 'answer': a.answer} for a in answers]}"
         )
-
-        result = await self._run_limited(verifier_agent, verifier_input)
-        data = result.final_output
-        if isinstance(data, str):
-            try:
-                data = VerificationResult.model_validate_json(data)
-            except Exception:
-                data = VerificationResult(score=0, feedback="", is_correct=False)
-
-        return cast(VerificationResult, data)
+        if feedback:
+            prompt += f"\nPrevious feedback: {feedback}"
+        result = await self._run_limited(judge_agent, prompt)
+        return result.final_output_as(JudgeResult)
         
-    def _format_issue(self, feedback: str) -> bool:
-        """Return True if the verifier feedback looks like a formatting issue."""
-        text = feedback.lower()
-        keywords = ["format", "unit", "round", "case"]
-        return any(k in text for k in keywords)
+    # def _format_issue(self, feedback: str) -> bool:
+    #     """Return True if the verifier feedback looks like a formatting issue."""
+    #     text = feedback.lower()
+    #     keywords = ["format", "unit", "round", "case"]
+    #     return any(k in text for k in keywords)
+

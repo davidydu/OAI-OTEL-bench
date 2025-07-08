@@ -30,7 +30,7 @@ CoordinatorAgent
     │    └─ AudioSTTAgent       # .wav/.mp3      (Whisper / cloud STT)
     ├─ KnowledgeAgent           # QA: Plan→Act→Reflect with search/file tools
     ├─ WriteAgent               # Formats answer and reasoning into GAIA-spec JSONL
-    ├─ VerifierAgent            # Post-write format & correctness check
+    ├─ JudgeAgent               # Writers debate, judge checks consensus
     └─ SubmissionWriter         # Persists final JSONL submission
 ```
 
@@ -42,17 +42,10 @@ CoordinatorAgent
 
 3. **WriteAgent** takes the raw model output and serializes it into the GAIA JSONL schema, splitting out `model_answer` and `reasoning_trace`.
 
-4. **VerifierAgent** consumes the written JSONL entry, inspects both the `reasoning_trace` and the `model_answer`, and checks:
-
-   * **Format compliance** (units, rounding, number vs string, comma use)
-   * **Consistency** (answer matches reasoning, no contradictions)
-   * **Basic correctness** (e.g. re-calculate simple numeric steps or re-run unit conversions)
-
-   If a violation is detected, it can:
-
-   * Flag the entry for retry
-   * Auto-correct minor format or rounding mistakes
-   * Append a `verified: false` tag or add a corrective note
+4. **Writer debate + JudgeAgent**: multiple WriterAgents propose answers.
+   JudgeAgent reviews all answers along with the context and decides if they
+   agree. If consensus is not reached, it provides feedback and the writers
+   iterate until convergence.
 
 5. **SubmissionWriter** finalizes and writes out the verified (or flagged) JSONL submission ready for GAIA scoring.
 

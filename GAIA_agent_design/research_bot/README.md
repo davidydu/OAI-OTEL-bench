@@ -20,8 +20,8 @@ The flow is:
 3. For each item, `search_agent` runs the appropriate tool while always receiving the extracted context from the media files. If the source is `context`, it focuses on analyzing that text using the Code Interpreter (and File Search if available). If the source is `web`, it still performs a web search but can reference the provided context. All searches run in parallel.
 4. `evaluator_agent` reviews the initial search results **once** and may request one additional round of research.
 5. Any extra searches are executed in parallel and the combined summaries are passed to `writer_agent`.
-6. `writer_agent` composes the reasoning trace and final answer.
-7. `verifier_agent` judges the answer. If formatting is off, the writer corrects it; if the reasoning appears wrong, the evaluator decides whether more research is necessary before rewriting.
+6. `writer_agent` composes the reasoning trace and final answer. Multiple writers may be run in parallel.
+7. `judge_agent` compares the writers' answers and provides feedback until they reach consensus.
 
 ## Suggested improvements
 
