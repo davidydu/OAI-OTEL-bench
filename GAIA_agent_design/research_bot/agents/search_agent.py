@@ -12,7 +12,7 @@ INSTRUCTIONS = (
     "When appropriate, such as doing web searches, you can run both the websearch tool and a deeper GPTResearcher search to gather more detailed information."
 )
 
-TOOLS = [WebSearchTool]
+TOOLS = [WebSearchTool()]
 file_search = get_file_search_tool()
 if file_search is not None:
     TOOLS.append(file_search)
