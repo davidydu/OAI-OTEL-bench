@@ -22,6 +22,11 @@ from .agents import (
     # verifier_agent,
     evaluator_agent,
     judge_agent,
+    reviewer_agent,
+    build_review_prompt,
+    reviser_agent,
+    build_reviser_prompt,
+    RevisionData,
     AnswerData,
     # VerificationResult,
     JudgeResult,
@@ -98,6 +103,8 @@ class GAIAResearchManager:
         if eval_plan.searches:
             results.extend(await self._perform_searches(eval_plan, context))
 
+        results = await self._review_summaries(results)
+
         feedback: str | None = None
         writer_count = 2
         rounds = 0
@@ -172,6 +179,30 @@ class GAIAResearchManager:
             prompt += f"\nJudge feedback: {feedback}"
         result = await self._run_limited(evaluator_agent, prompt)
         return result.final_output_as(SearchPlan)
+
+
+    async def _review_summaries(self, summaries: list[str]) -> list[str]:
+        """Iteratively review and revise search summaries."""
+        guidelines = [
+            "Ensure factual accuracy",
+            "Keep the text concise",
+            "Use complete sentences",
+        ]
+        draft = "\n".join(summaries)
+        notes: str | None = None
+        max_iter = 3
+        for i in range(max_iter):
+            prompt = build_review_prompt(draft, guidelines, notes)
+            review = await self._run_limited(reviewer_agent, prompt)
+            review_text = str(review.final_output).strip()
+            if not review_text or review_text.lower() == "none":
+                break
+            rev_prompt = build_reviser_prompt(draft, review_text)
+            revision = await self._run_limited(reviser_agent, rev_prompt)
+            data = revision.final_output_as(RevisionData)
+            draft = data.draft
+            notes = data.revision_notes
+        return draft.splitlines()
 
     async def _write_answer(
         self,
