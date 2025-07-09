@@ -25,6 +25,8 @@ argcomplete==3.6.2
     # via promptflow-devkit
 arxiv==2.2.0
     # via gpt-researcher
+asyncio-atexit==1.0.1
+    # via zendriver
 attrs==25.3.0
     # via
     #   aiohttp
@@ -129,6 +131,7 @@ deprecated==1.2.18
     #   opentelemetry-api
     #   opentelemetry-exporter-otlp-proto-http
     #   opentelemetry-semantic-conventions
+    #   zendriver
 distro==1.9.0
     # via openai
 docopt==0.6.2
@@ -176,6 +179,8 @@ googleapis-common-protos==1.70.0
     # via opentelemetry-exporter-otlp-proto-http
 gpt-researcher==0.13.3
     # via -r requirements.in
+grapheme==0.6.0
+    # via zendriver
 greenlet==3.2.3 ; (python_full_version < '3.14' and platform_machine == 'AMD64') or (python_full_version < '3.14' and platform_machine == 'WIN32') or (python_full_version < '3.14' and platform_machine == 'aarch64') or (python_full_version < '3.14' and platform_machine == 'amd64') or (python_full_version < '3.14' and platform_machine == 'ppc64le') or (python_full_version < '3.14' and platform_machine == 'win32') or (python_full_version < '3.14' and platform_machine == 'x86_64')
     # via sqlalchemy
 griffe==1.7.3
@@ -197,6 +202,7 @@ httpx==0.28.1
     #   mcp
     #   openai
     #   promptflow-devkit
+    #   tavily-python
     #   unstructured-client
 httpx-sse==0.4.0
     # via
@@ -324,6 +330,8 @@ msrest==0.7.1
     # via
     #   azure-ai-evaluation
     #   azure-monitor-opentelemetry-exporter
+mss==10.0.0
+    # via zendriver
 multidict==6.6.3
     # via
     #   aiohttp
@@ -563,6 +571,7 @@ requests==2.32.4
     #   opentelemetry-exporter-otlp-proto-http
     #   requests-oauthlib
     #   requests-toolbelt
+    #   tavily-python
     #   tiktoken
     #   unstructured
     #   unstructured-client
@@ -620,6 +629,8 @@ strictyaml==1.7.3
     # via promptflow-devkit
 tabulate==0.9.0
     # via promptflow-devkit
+tavily-python==0.7.9
+    # via -r requirements.in
 tenacity==9.1.2
     # via
     #   langchain-community
@@ -629,6 +640,7 @@ tiktoken==0.9.0
     #   gpt-researcher
     #   langchain-openai
     #   promptflow-tracing
+    #   tavily-python
 tinycss2==1.4.0
     # via
     #   cssselect2
@@ -704,6 +716,7 @@ websockets==15.0.1
     # via
     #   gpt-researcher
     #   openai-agents
+    #   zendriver
 werkzeug==3.1.3
     # via
     #   flask
@@ -721,6 +734,8 @@ xlsxwriter==3.2.5
     # via python-pptx
 yarl==1.20.1
     # via aiohttp
+zendriver==0.10.2
+    # via -r requirements.in
 zipp==3.23.0
     # via importlib-metadata
 zopfli==0.2.3.post1
