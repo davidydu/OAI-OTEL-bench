@@ -12,15 +12,16 @@ from ..agents_lib.file_router import FileRouterAgent
 from ..agents_lib.processors import choose_processor
 
 from .agents import (
-    SearchPlan,
-    SearchItem,
-    SearchPlan,
-    SearchItem,
-    planner_agent,
-    search_agent,
+    # SearchPlan,
+    # SearchItem,
+    # SearchPlan,
+    # SearchItem,
+    # planner_agent,
+    # search_agent,
+    research_agent,
     writer_agent,
     # verifier_agent,
-    evaluator_agent,
+    # evaluator_agent,
     judge_agent,
     # reviewer_agent,
     # build_review_prompt,
@@ -95,15 +96,16 @@ class GAIAResearchManager:
         return text
 
     async def _answer(self, question: str, context: str) -> tuple[str, str, bool]:
-        plan = await self._plan_searches(question, context)
-        results = await self._perform_searches(plan, context)
+        # plan = await self._plan_searches(question, context)
+        # results = await self._perform_searches(plan, context)
+        results = await self._run_research(question, context)
 
-        # The evaluator only gets one chance to review the initial search results
-        eval_plan = await self._evaluate_results(question, results, None)
-        if eval_plan.searches:
-            results.extend(await self._perform_searches(eval_plan, context))
+        # # The evaluator only gets one chance to review the initial search results
+        # eval_plan = await self._evaluate_results(question, results, None)
+        # if eval_plan.searches:
+        #     results.extend(await self._perform_searches(eval_plan, context))
 
-        # results = await self._review_summaries(results)
+        # # results = await self._review_summaries(results)
 
         feedback: str | None = None
         writer_count = 2
@@ -138,47 +140,47 @@ class GAIAResearchManager:
 
             feedback = judge_result.feedback
 
-            eval_plan = await self._evaluate_results(question, results, feedback)
-            if eval_plan.searches:
-                results.extend(await self._perform_searches(eval_plan, context))
-                feedback = None
+            # eval_plan = await self._evaluate_results(question, results, feedback)
+            # if eval_plan.searches:
+            #     results.extend(await self._perform_searches(eval_plan, context))
+            #     feedback = None
             rounds += 1
 
-    async def _plan_searches(self, question: str, context: str) -> SearchPlan:
-        prompt = f"Question: {question}\nContext:\n{context}"
-        result = await self._run_limited(planner_agent, prompt)
-        return result.final_output_as(SearchPlan)
+    # async def _plan_searches(self, question: str, context: str) -> SearchPlan:
+    #     prompt = f"Question: {question}\nContext:\n{context}"
+    #     result = await self._run_limited(planner_agent, prompt)
+    #     return result.final_output_as(SearchPlan)
 
-    async def _perform_searches(self, plan: SearchPlan, context: str) -> list[str]:
-        tasks = [
-            asyncio.create_task(self._search(item, context)) for item in plan.searches
-        ]
-        results = []
-        for task in asyncio.as_completed(tasks):
-            r = await task
-            if r is not None:
-                results.append(r)
-        return results
+    # async def _perform_searches(self, plan: SearchPlan, context: str) -> list[str]:
+    #     tasks = [
+    #         asyncio.create_task(self._search(item, context)) for item in plan.searches
+    #     ]
+    #     results = []
+    #     for task in asyncio.as_completed(tasks):
+    #         r = await task
+    #         if r is not None:
+    #             results.append(r)
+    #     return results
 
-    async def _search(self, item: SearchItem, context: str) -> str | None:
-        prompt = (
-            f"Source: {item.source}\nQuery: {item.query}\nReason: {item.reason}"
-            f"\nContext:\n{context}"
-        )
-        try:
-            result = await self._run_limited(search_agent, prompt)
-            return str(result.final_output)
-        except Exception:
-            return None
+    # async def _search(self, item: SearchItem, context: str) -> str | None:
+    #     prompt = (
+    #         f"Source: {item.source}\nQuery: {item.query}\nReason: {item.reason}"
+    #         f"\nContext:\n{context}"
+    #     )
+    #     try:
+    #         result = await self._run_limited(search_agent, prompt)
+    #         return str(result.final_output)
+    #     except Exception:
+    #         return None
 
-    async def _evaluate_results(
-        self, question: str, summaries: list[str], feedback: str | None
-    ) -> SearchPlan:
-        prompt = f"Question: {question}\nCurrent summaries: {summaries}"
-        if feedback:
-            prompt += f"\nJudge feedback: {feedback}"
-        result = await self._run_limited(evaluator_agent, prompt)
-        return result.final_output_as(SearchPlan)
+    # async def _evaluate_results(
+    #     self, question: str, summaries: list[str], feedback: str | None
+    # ) -> SearchPlan:
+    #     prompt = f"Question: {question}\nCurrent summaries: {summaries}"
+    #     if feedback:
+    #         prompt += f"\nJudge feedback: {feedback}"
+    #     result = await self._run_limited(evaluator_agent, prompt)
+    #     return result.final_output_as(SearchPlan)
 
 
     # async def _review_summaries(self, summaries: list[str]) -> list[str]:
@@ -204,6 +206,12 @@ class GAIAResearchManager:
     #         draft = data.draft
     #         notes = data.revision_notes
     #     return draft.splitlines()
+
+    async def _run_research(self, question: str, context: str) -> list[str]:
+        """Use the research agent to gather information."""
+        prompt = f"Question: {question}\nContext:\n{context}"
+        result = await self._run_limited(research_agent, prompt)
+        return [str(result.final_output)]
 
     async def _write_answer(
         self,
