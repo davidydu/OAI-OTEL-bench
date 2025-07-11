@@ -1,0 +1,90 @@
+Accuracy: 62.26% (33/53)
+
+Mismatches:
+- Task ID    : e1fc63a2-da7a-432f-be78-7c4a95598703
+  Question   : If Eliud Kipchoge could maintain his record-making marathon pace indefinitely, how many thousand hours would it take him to run the distance between the Earth and the Moon its closest approach? Please use the minimum perigee value on the Wikipedia page for the Moon when carrying out your calculation. Round your result to the nearest 1000 hours and do not use any comma separators if necessary.
+  Submission : '17000'
+  Reference  : '17'
+- Task ID    : 5d0080cb-90d7-4712-bc33-848150e917d3
+  Question   : What was the volume in m^3 of the fish bag that was calculated in the University of Leicester paper "Can Hiccup Supply Enough Fish to Maintain a Dragon’s Diet?"
+  Submission : '8.6'
+  Reference  : '0.1777'
+- Task ID    : a1e91b78-d3d8-4675-bb8d-62741b4b68a6
+  Question   : In the video https://www.youtube.com/watch?v=L1vXCYZAYYM, what is the highest number of bird species to be on camera simultaneously?
+  Submission : '5'
+  Reference  : '3'
+- Task ID    : 46719c30-f4c3-4cad-be07-d5cb21eee6bb
+  Question   : Of the authors (First M. Last) that worked on the paper "Pie Menus or Linear Menus, Which Is Better?" in 2015, what was the title of the first paper authored by the one that had authored prior papers?
+  Submission : 'Anthropomorphic vs. Non-anthropomorphic Software Interface Feedback for Online Systems Usage'
+  Reference  : 'Mapping Human Oriented Information to Software Agents for Online Systems Usage'
+- Task ID    : 4b6bb5f7-f634-410e-815d-e673ab7f8632
+  Question   : In Series 9, Episode 11 of Doctor Who, the Doctor is trapped inside an ever-shifting maze. What is this location called in the official script for the episode? Give the setting exactly as it appears in the first scene heading.
+  Submission : 'INT. CASTLE – DAY'
+  Reference  : 'THE CASTLE'
+- Task ID    : 72e110e7-464c-453c-a309-90a95aed6538
+  Question   : Under DDC 633 on Bielefeld University Library's BASE, as of 2020, from what country was the unknown language article with a flag unique from the others?
+  Submission : 'Taiwan'
+  Reference  : 'Guatemala'
+- Task ID    : cca530fc-4052-43b2-b130-b30968d8aa44
+  Question   : Review the chess position provided in the image. It is black's turn. Provide the correct next move for black which guarantees a win. Please provide your response in algebraic notation.
+  Submission : 'Qe1+'
+  Reference  : 'Rd5'
+- Task ID    : 5188369a-3bbe-43d8-8b94-11558f909a08
+  Question   : What writer is quoted by Merriam-Webster for the Word of the Day from June 27, 2022?
+  Submission : 'none'
+  Reference  : 'Annie Levin'
+- Task ID    : 9318445f-fe6a-4e1b-acbf-c68228c9906a
+  Question   : As a comma separated list with no whitespace, using the provided image provide all the fractions that use / as the fraction line and the answers to the sample problems. Order the list by the order in which the fractions appear.
+  Submission : '3/4,1/4,3/4,3/4,2/4,1/2,5/35,7/21,30/5,30/5,2/4,1/2,6/8,3/4,4/60,1/15,30/90,1/3,8/18,4/9,9/72,1/8,44/46,22/23,206/340,103/170'
+  Reference  : '3/4,1/4,3/4,3/4,2/4,1/2,5/35,7/21,30/5,30/5,3/4,1/15,1/3,4/9,1/8,32/23,103/170'
+- Task ID    : 65afbc8a-89ca-4ad5-8d62-355bb401f61d
+  Question   : You are given this Excel file as a map. You start on the START cell and move toward the END cell. You are allowed to move two cells per turn, and you may move up, down, left, or right. You may not move fewer than two cells, and you may not move backward. You must avoid moving onto any blue cells. On the eleventh turn, what is the 6-digit hex code (without prefix) of the color of the cell where you land after moving?
+  Submission : 'none'
+  Reference  : 'F478A7'
+- Task ID    : 3cef3a44-215e-4aed-8e3b-b1e3f08063b7
+  Question   : I'm making a grocery list for my mom, but she's a professor of botany and she's a real stickler when it comes to categorizing things. I need to add different foods to different categories on the grocery list, but if I make a mistake, she won't buy anything inserted in the wrong category. Here's the list I have so far:
+
+milk, eggs, flour, whole bean coffee, Oreos, sweet potatoes, fresh basil, plums, green beans, rice, corn, bell pepper, whole allspice, acorns, broccoli, celery, zucchini, lettuce, peanuts
+
+I need to make headings for the fruits and vegetables. Could you please create a list of just the vegetables from my list? If you could do that, then I can figure out how to categorize the rest of the list into the appropriate categories. But remember that my mom is a real stickler, so make sure that no botanical fruits end up on the vegetable list, or she won't get them when she's at the store. Please alphabetize the list of vegetables, and place each item in a comma separated list.
+  Submission : 'broccoli, celery, lettuce, sweet potatoes'
+  Reference  : 'broccoli, celery, fresh basil, lettuce, sweet potatoes'
+- Task ID    : d0633230-7067-47a9-9dbf-ee11e0a2cdd6
+  Question   : In the Scikit-Learn July 2017 changelog, what other predictor base command received a bug fix? Just give the name, not a path.
+  Submission : 'RANSACRegressor'
+  Reference  : 'BaseLabelPropagation'
+- Task ID    : 0383a3ee-47a7-41a4-b493-519bdefe0488
+  Question   : On the BBC Earth YouTube video of the Top 5 Silliest Animal Moments, what species of bird is featured?
+  Submission : 'lyrebird'
+  Reference  : 'Rockhopper penguin'
+- Task ID    : e142056d-56ab-4352-b091-b56054bd1359
+  Question   : Bob was invited to participate in a game show, and he advanced to the final round. The final round offered Bob the chance to win a large sum by playing a game against the host. The host has 30 shiny prop coins, each of which is worth $1,000 if Bob manages to win them by playing the game. The host hides the coins in three different prize boxes and then shuffles their order. The only rule restricting the host's coin placement is that one box must contain at least 2 coins, and one box must contain 6 more coins than another box. In order to play, Bob must submit three guesses, one guess for the number of coins in each box. The box is then opened and the number of coins is revealed. If Bob's guess is a number greater than the number of coins in the box, Bob earns no coins. If Bob guesses a number equal to or less than the number of coins in the box, Bob wins a number of coins equal to his guess.
+
+If Bob plays uses the optimal strategy, what's the minimum amount of money he can win from the game?
+  Submission : '12000'
+  Reference  : '16000'
+- Task ID    : 7673d772-ef80-4f0f-a602-1bf4485c9b43
+  Question   : On Cornell Law School website's legal information institute, under the fifth section of federal rules alphabetically, what word was deleted in the last amendment to the first rule in the article that has "witnesses" in the most titles as of 2021?
+  Submission : 'except'
+  Reference  : 'inference'
+- Task ID    : c365c1c7-a3db-4d5e-a9a1-66f56eae7865
+  Question   : Of the cities within the United States where U.S. presidents were born, which two are the farthest apart from the westernmost to the easternmost going east, giving the city names only? Give them to me in alphabetical order, in a comma-separated list
+  Submission : 'Honolulu, Milton'
+  Reference  : 'Braintree, Honolulu'
+- Task ID    : 7d4a7d1d-cac6-44a8-96e8-ea9584a70825
+  Question   : According to Girls Who Code, how long did it take in years for the percentage of computer scientists that were women to change by 13% from a starting point of 37%?
+  Submission : '19'
+  Reference  : '22'
+- Task ID    : 23dd907f-1261-4488-b21c-e9185af91d5e
+  Question   : In Audre Lorde’s poem “Father Son and Holy Ghost”, what is the number of the stanza in which some lines are indented?
+  Submission : '1'
+  Reference  : '2'
+- Task ID    : a0c07678-e491-4bbc-8f0b-07405144218f
+  Question   : Who are the pitchers with the number before and after Taishō Tamai's number as of July 2023? Give them to me in the form Pitcher Before, Pitcher After, use their last names only, in Roman characters.
+  Submission : 'Yamasaki, Uehara'
+  Reference  : 'Yoshida, Uehara'
+- Task ID    : 5a0c1adf-205e-4841-a666-7c3ef95def9d
+  Question   : What is the first name of the only Malko Competition recipient from the 20th Century (after 1977) whose nationality on record is a country that no longer exists?
+  Submission : 'Gotthard'
+  Reference  : 'Claus'
+

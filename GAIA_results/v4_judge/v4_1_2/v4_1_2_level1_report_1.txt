@@ -1,0 +1,78 @@
+Accuracy: 66.04% (35/53)
+
+Mismatches:
+- Task ID    : e1fc63a2-da7a-432f-be78-7c4a95598703
+  Question   : If Eliud Kipchoge could maintain his record-making marathon pace indefinitely, how many thousand hours would it take him to run the distance between the Earth and the Moon its closest approach? Please use the minimum perigee value on the Wikipedia page for the Moon when carrying out your calculation. Round your result to the nearest 1000 hours and do not use any comma separators if necessary.
+  Submission : '17000'
+  Reference  : '17'
+- Task ID    : 8e867cd7-cff9-4e6c-867a-ff5ddc2550be
+  Question   : How many studio albums were published by Mercedes Sosa between 2000 and 2009 (included)? You can use the latest 2022 version of english wikipedia.
+  Submission : '4'
+  Reference  : '3'
+- Task ID    : a1e91b78-d3d8-4675-bb8d-62741b4b68a6
+  Question   : In the video https://www.youtube.com/watch?v=L1vXCYZAYYM, what is the highest number of bird species to be on camera simultaneously?
+  Submission : '40'
+  Reference  : '3'
+- Task ID    : 46719c30-f4c3-4cad-be07-d5cb21eee6bb
+  Question   : Of the authors (First M. Last) that worked on the paper "Pie Menus or Linear Menus, Which Is Better?" in 2015, what was the title of the first paper authored by the one that had authored prior papers?
+  Submission : 'Evaluation of an Anthropomorphic User Interface in a Travel Reservation Context and Affordances'
+  Reference  : 'Mapping Human Oriented Information to Software Agents for Online Systems Usage'
+- Task ID    : 4b6bb5f7-f634-410e-815d-e673ab7f8632
+  Question   : In Series 9, Episode 11 of Doctor Who, the Doctor is trapped inside an ever-shifting maze. What is this location called in the official script for the episode? Give the setting exactly as it appears in the first scene heading.
+  Submission : 'EXT. CASTLE – DAY'
+  Reference  : 'THE CASTLE'
+- Task ID    : 72e110e7-464c-453c-a309-90a95aed6538
+  Question   : Under DDC 633 on Bielefeld University Library's BASE, as of 2020, from what country was the unknown language article with a flag unique from the others?
+  Submission : 'Brazil'
+  Reference  : 'Guatemala'
+- Task ID    : cca530fc-4052-43b2-b130-b30968d8aa44
+  Question   : Review the chess position provided in the image. It is black's turn. Provide the correct next move for black which guarantees a win. Please provide your response in algebraic notation.
+  Submission : 'Qd1+'
+  Reference  : 'Rd5'
+- Task ID    : 5188369a-3bbe-43d8-8b94-11558f909a08
+  Question   : What writer is quoted by Merriam-Webster for the Word of the Day from June 27, 2022?
+  Submission : 'Francis Bacon'
+  Reference  : 'Annie Levin'
+- Task ID    : 9318445f-fe6a-4e1b-acbf-c68228c9906a
+  Question   : As a comma separated list with no whitespace, using the provided image provide all the fractions that use / as the fraction line and the answers to the sample problems. Order the list by the order in which the fractions appear.
+  Submission : '3/4,1/4,3/4,1/4,2/4,1/2,2/4,1/2,5/35,7/21,30/5,6/8,4/60,30/90,8/18,9/72,44/46,206/340,3/4,1/15,1/3,4/9,1/8,22/23,103/170'
+  Reference  : '3/4,1/4,3/4,3/4,2/4,1/2,5/35,7/21,30/5,30/5,3/4,1/15,1/3,4/9,1/8,32/23,103/170'
+- Task ID    : d0633230-7067-47a9-9dbf-ee11e0a2cdd6
+  Question   : In the Scikit-Learn July 2017 changelog, what other predictor base command received a bug fix? Just give the name, not a path.
+  Submission : 'clone'
+  Reference  : 'BaseLabelPropagation'
+- Task ID    : 0383a3ee-47a7-41a4-b493-519bdefe0488
+  Question   : On the BBC Earth YouTube video of the Top 5 Silliest Animal Moments, what species of bird is featured?
+  Submission : 'lyrebird'
+  Reference  : 'Rockhopper penguin'
+- Task ID    : e142056d-56ab-4352-b091-b56054bd1359
+  Question   : Bob was invited to participate in a game show, and he advanced to the final round. The final round offered Bob the chance to win a large sum by playing a game against the host. The host has 30 shiny prop coins, each of which is worth $1,000 if Bob manages to win them by playing the game. The host hides the coins in three different prize boxes and then shuffles their order. The only rule restricting the host's coin placement is that one box must contain at least 2 coins, and one box must contain 6 more coins than another box. In order to play, Bob must submit three guesses, one guess for the number of coins in each box. The box is then opened and the number of coins is revealed. If Bob's guess is a number greater than the number of coins in the box, Bob earns no coins. If Bob guesses a number equal to or less than the number of coins in the box, Bob wins a number of coins equal to his guess.
+
+If Bob plays uses the optimal strategy, what's the minimum amount of money he can win from the game?
+  Submission : '12000'
+  Reference  : '16000'
+- Task ID    : 7673d772-ef80-4f0f-a602-1bf4485c9b43
+  Question   : On Cornell Law School website's legal information institute, under the fifth section of federal rules alphabetically, what word was deleted in the last amendment to the first rule in the article that has "witnesses" in the most titles as of 2021?
+  Submission : 'except'
+  Reference  : 'inference'
+- Task ID    : c365c1c7-a3db-4d5e-a9a1-66f56eae7865
+  Question   : Of the cities within the United States where U.S. presidents were born, which two are the farthest apart from the westernmost to the easternmost going east, giving the city names only? Give them to me in alphabetical order, in a comma-separated list
+  Submission : 'Honolulu, Quincy'
+  Reference  : 'Braintree, Honolulu'
+- Task ID    : 7d4a7d1d-cac6-44a8-96e8-ea9584a70825
+  Question   : According to Girls Who Code, how long did it take in years for the percentage of computer scientists that were women to change by 13% from a starting point of 37%?
+  Submission : '27'
+  Reference  : '22'
+- Task ID    : dc22a632-937f-4e6a-b72f-ba0ff3f5ff97
+  Question   : What was the complete title of the book in which two James Beard Award winners recommended the restaurant where Ali Khan enjoyed a New Mexican staple in his cost-conscious TV show that started in 2015? Write the numbers in plain text if there are some in the title.
+  Submission : 'Chef’s Night Out: From Four-Star Restaurants to Neighborhood Favorites: One Hundred Top Chefs Tell You Where (and How!) to Enjoy America’s Best'
+  Reference  : "Five Hundred Things To Eat Before It's Too Late: and the Very Best Places to Eat Them"
+- Task ID    : 23dd907f-1261-4488-b21c-e9185af91d5e
+  Question   : In Audre Lorde’s poem “Father Son and Holy Ghost”, what is the number of the stanza in which some lines are indented?
+  Submission : '1'
+  Reference  : '2'
+- Task ID    : a0c07678-e491-4bbc-8f0b-07405144218f
+  Question   : Who are the pitchers with the number before and after Taishō Tamai's number as of July 2023? Give them to me in the form Pitcher Before, Pitcher After, use their last names only, in Roman characters.
+  Submission : 'Yamasaki, Uehara'
+  Reference  : 'Yoshida, Uehara'
+
