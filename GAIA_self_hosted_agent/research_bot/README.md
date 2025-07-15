@@ -1,0 +1,56 @@
+# Research bot
+
+This is a simple example of a multi-agent research bot. To run it:
+
+```bash
+python -m GAIA_agent_design.research_bot.main
+```
+
+This example can parse a variety of GAIA media types. Supported formats include
+TXT/JSON/PY, DOCX, XLSX/CSV, PPTX, PDF, PDB, ZIP archives, PNG/JPG images, and
+MP3 audio. Image and PDF files are routed through an OpenAI vision model before
+falling back to local OCR when necessary.
+
+## Architecture
+
+The flow is:
+
+1. The user provides a question and optional media context.
+2. `planner_agent` produces a list of research items. Each item specifies a `source` of either `context` or `web`, a short reason, and a search question.
+3. For each item, `search_agent` runs the appropriate tool while always receiving the extracted context from the media files. If the source is `context`, it focuses on analyzing that text using the Code Interpreter (and File Search if available). If the source is `web`, it still performs a web search but can reference the provided context. All searches run in parallel.
+4. `evaluator_agent` reviews the initial search results **once** and may request one additional round of research.
+5. Any extra searches are executed in parallel and the combined summaries are passed to `writer_agent`.
+6. `writer_agent` composes the reasoning trace and final answer. Multiple writers may be run in parallel.
+7. `judge_agent` compares the writers' answers and provides feedback until they reach consensus.
+
+## Suggested improvements
+
+If you're building your own research bot, some ideas to add to this are:
+
+1. Retrieval: Add support for fetching relevant information from a vector store. You could use the File Search tool for this.
+2. Image and file upload: Allow users to attach PDFs or other files, as baseline context for the research.
+3. More planning and thinking: Models often produce better results given more time to think. Improve the planning process to come up with a better plan, and add an evaluation step so that the model can choose to improve its results, search for more stuff, etc.
+4. Code execution: Allow running code, which is useful for data analysis.
+
+## Local sandbox for code execution
+
+When the Code Interpreter tool is unavailable, you can run Python snippets in a
+local sandbox using the helper in `agents_lib.tools.sandbox`. The `run_python`
+function executes the given code in a temporary directory with telemetry spans.
+Example:
+
+```python
+from GAIA_agent_design.agents_lib.tools import run_python
+
+output = run_python("""
+from Bio.PDB import PDBParser
+parser = PDBParser(QUIET=True)
+structure = parser.get_structure('5WB7', '5wb7.pdb')
+first_atom = list(structure.get_atoms())[0]
+print(first_atom.get_coord())
+""")
+print(output)
+```
+
+This keeps the execution isolated and records a `sandbox.run_python` span so it
+appears in your Logfire traces.
