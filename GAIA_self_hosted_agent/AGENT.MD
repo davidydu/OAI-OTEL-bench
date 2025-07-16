@@ -1,120 +1,62 @@
-# GAIA Benchmark Agents System
+# GAIA Agent Self-Hosting Technical Plan
 
-This document outlines the goals and architecture of a multi-agent system designed to automatically run and evaluate the GAIA benchmark using the [openai-agents-python](https://github.com/openai/openai-agents-python) codebase and examples.
+## Overview
+This document outlines the technical plan to adapt the GAIA Agent codebase to use self-hosted models via SGLang on RunPod, replacing the dependency on OpenAI’s models. The plan includes understanding the existing codebase, setting up SGLang, deploying on RunPod, modifying the GAIA code, enhancing logging and telemetry, extracting sparsity patterns, and testing the integration.
 
-## Goals
+## 1. Understand the Current GAIA Agent Codebase
+- **Codebase Structure**: The `GAIA_agent_design` folder uses the `openai-agents-python` SDK, relying on OpenAI models (e.g., o4-mini, o3, gpt-4.1) for tasks like planning, searching, writing, evaluating, and judging. These are implemented in `research_bot/agents`.
+- **Media Processing**: Logic for media processing resides in `agents_lib` (e.g., `processors/*`, `tools/*`).
+- **Orchestration**: The `GAIAResearchManager` in `research_bot/manager.py` orchestrates agent calls.
 
-* **Automate GAIA evaluation**: Ingest each GAIA task (media + metadata), process inputs, and output a structured JSONL submission.
-* **Minimize hallucination**: Ground every step in real data using tools (MCP filesystem, WebSearchTool, FileSearchTool, OCR, STT, etc.).
-* **Leverage examples**: Reuse patterns and code from `openai-agents-python/examples`, including:
+## 2. Set Up SGLang for Self-Hosted Models
+- **Installation**:
+  - Install `sglang[all]>=0.4.9.post2` using `pip` or `uv`, along with dependencies like `FlashInfer` and `torch 2.7.1` (refer to SGLang documentation).
+  - Alternatively, use Docker for installation as per SGLang’s instructions.
+- **Backend**:
+  - SGLang provides OpenAI-compatible REST endpoints (e.g., `chat/completions`, `completions`). See SGLang’s OpenAI API – Completions tutorial for setup details.
 
-  * `examples/mcp/filesystem_example` for file I/O via MCP
-  * `examples/web_search` for `WebSearchTool`
-  * `examples/file_search` for `FileSearchTool`
-  * `examples/voice/static` for audio pipelines (STT)
+## 3. Use RunPod for Hosting
+- **RunPod Setup**:
+  - Build a RunPod Docker image with SGLang installed and the chosen model (e.g., Qwen). Follow RunPod documentation for building custom images.
+  - In the serverless entrypoint (similar to RunPod’s sentiment analysis example), start the SGLang backend server and expose endpoints.
+  - Optionally, run `sglang-api-server` inside the RunPod container for API compatibility.
+- **Configuration**:
+  - Use the `runpod` Python package to package and deploy serverless workers.
+  - Example: Start the worker with `runpod.serverless.start({"handler": handler})`.
 
-## High-Level Architecture
+## 4. Modify GAIA Code for Self-Hosting
+- **Codebase Adaptation**:
+  - Duplicate the `GAIA_agent_design` folder (already done as `GAIA_self_hosted_agent`).
+  - Update agent configurations in `research_bot/agents/*.py` to point to RunPod-hosted SGLang endpoints instead of OpenAI’s API.
+  - If using SGLang’s OpenAI-compatible API, specify `base_url=<runpod_endpoint>` when creating `Agent` instances, keeping model names intact.
+- **Model Parameters**:
+  - Add SGLang-specific parameters (e.g., expert parallelism, quantization) via `ModelSettings` or request payloads, as outlined in SGLang documentation.
+- **Environment Configuration**:
+  - Update `config.yaml` or other config structures to include RunPod credentials (API keys or tokens) and SGLang endpoint URLs.
 
-```text
-CoordinatorAgent
-    ├─ FileRouterAgent          # secure file I/O via MCP or native code
-    ├─ ProcessorAgents          # format-specific parsing → plain text
-    │    ├─ TextProcessorAgent  # .txt, .json, .py
-    │    ├─ DocxProcessorAgent  # .docx          (python-docx)
-    │    ├─ ExcelProcessorAgent # .xls/.xlsx     (pandas)
-    │    ├─ PDFVisionAgent     # .pdf           (GPT-4o vision)
-    │    ├─ PPTXProcessorAgent  # .pptx          (python-pptx)
-    │    ├─ PDBProcessorAgent   # .pdb           (biopython)
-    │    ├─ ZipProcessorAgent   # .zip           (extract + text)
-    │    ├─ ImageVisionAgent    # .png/.jpg      (GPT‑4o vision)
-    │    └─ AudioSTTAgent       # .wav/.mp3      (Whisper / cloud STT)
-    ├─ KnowledgeAgent           # QA: Plan→Act→Reflect with search/file tools
-    ├─ WriteAgent               # Formats answer and reasoning into GAIA-spec JSONL
-    ├─ JudgeAgent               # Writers debate, judge checks consensus
-    └─ SubmissionWriter         # Persists final JSONL submission
-```
+## 5. Logging and Telemetry
+- **Existing Instrumentation**:
+  - Retain `Logfire` and `OpenTelemetry` instrumentation as implemented in `src/telemetry.py`.
+  - Ensure SGLang client requests use `httpx` or similar to capture spans.
+- **Enhanced Metrics**:
+  - Optionally extend instrumentation to log additional metrics, such as activation sparsity (see below).
 
-### Expanded Flow
+## 6. Extract Sparsity Patterns
+- **Implementation**:
+  - If SGLang provides hooks for activation tensors, use its Python API to intercept them.
+  - For models like Qwen, modify the model’s forward pass or implement a wrapper to compute per-layer sparsity (`(tensor==0).float().mean()`).
+- **Storage**:
+  - Store sparsity metrics in a CSV file or as custom attributes on `Logfire` spans for later analysis.
 
-1. **CoordinatorAgent** kicks off a run for each question: reads metadata, invokes FileRouterAgent and ProcessorAgents, and collects all extracted text.
+## 7. Testing and Iteration
+- **Deployment**:
+  - Build and deploy the RunPod container.
+  - Verify that the SGLang server responds correctly to `chat/completions` requests.
+- **Unit Tests**:
+  - Update GAIA agent unit tests to ensure compatibility with the self-hosted endpoint.
+- **Workflow Testing**:
+  - Run GAIA workflows locally against the RunPod endpoint.
+  - Collect traces to verify the integration and ensure no disruptions in functionality.
 
-2. **KnowledgeAgent** receives the question + aggregated context, performs searches or file lookups as needed, and outputs a candidate `FINAL ANSWER:` plus reasoning trace.
-
-3. **WriteAgent** takes the raw model output and serializes it into the GAIA JSONL schema, splitting out `model_answer` and `reasoning_trace`.
-
-4. **Writer debate + JudgeAgent**: multiple WriterAgents propose answers.
-   JudgeAgent reviews all answers along with the context and decides if they
-   agree. If consensus is not reached, it provides feedback and the writers
-   iterate until convergence.
-
-5. **SubmissionWriter** finalizes and writes out the verified (or flagged) JSONL submission ready for GAIA scoring.
-
-### Additional Accuracy Mechanisms
-
-* **Dual-pass verification**: run a second, lightweight agent to independently answer the same question and compare outputs.
-* **Regex-based format enforcement**: define strict patterns for numeric answers (e.g. `^\d+(\.\d{1,2})?$` for two-decimal numbers) and reject mismatches.
-* **Confidence thresholds**: leverage LLM token probabilities or explicit “I am confident at X%” statements to decide when to trigger a human review or retrial.
-* **Cache and dedupe**: store past question-answer pairs to avoid re-computation and reduce rate-limit errors.
-* **Human-in-the-loop checkpointing**: for Level 4–5 tasks, insert manual validation steps where high stakes demand it.
-* **Ensemble scoring**: aggregate answers from multiple model variants or prompt templates, then pick the majority or highest-confidence response.
-
-## Tools Directory Layout
-
-```
-agents/tools/
-├── web_search_tool.py       # factory for WebSearchTool (user_location config)
-├── file_search_tool.py      # factory for FileSearchTool (vector_store_ids, results)
-├── computer_tool.py         # factory for ComputerTool & LocalShellTool
-├── code_interpreter.py      # factory for CodeInterpreterTool
-├── image_gen_tool.py        # factory for ImageGenerationTool
-└── hosted_mcp_tool.py       # factory for HostedMCPTool (MCP server URL & params)
-```
-
-## Directory Structure
-
-```
-.
-├── agents/
-│   ├── coordinator.py            # CoordinatorAgent implementation
-│   ├── file_router.py            # FileRouterAgent
-│   ├── processors/
-│   │   ├── text_processor.py
-│   │   ├── docx_processor.py
-│   │   ├── excel_processor.py
-│   │   ├── pdf_vision_agent.py
-│   │   ├── image_vision_agent.py
-│   │   └── audio_stt_agent.py
-│   ├── knowledge_agent.py        # KnowledgeAgent with WebSearchTool, FileSearchTool
-│   ├── verifier_agent.py         # Optional fact-checking agent
-│   └── tools/                    # OpenAI Agents SDK tool factories
-│       ├── web_search_tool.py
-│       ├── file_search_tool.py
-│       ├── computer_tool.py
-│       ├── code_interpreter.py
-│       ├── image_gen_tool.py
-│       └── hosted_mcp_tool.py
-├── gaia_media/                   # media and JSONL data for GAIA
-├── run_gaia.py                   # top-level orchestration script
-└── requirements.txt              # dependencies (openai-agents-python, python-docx, etc.)
-```
-
-## References
-
-* **openai-agents-python/examples/mcp/filesystem\_example**: secure file I/O via MCP
-* **openai-agents-python/examples folder in general**
-* **openai-agents-python/examples/web\_search**: WebSearchTool usage
-* **openai-agents-python/examples/file\_search**: FileSearchTool usage
-* **openai-agents-python/examples/voice/static**: audio STT pipelines
-
-This blueprint will guide incremental implementation, testing, and extension of your GAIA benchmark agent system. langfristig, each component can be refined, prompt‑tuned, and instrumented with LogFire traces for full transparency.
-
-### Media processing pipeline
-
-Media files are handled according to type:
-
-* **Images (PNG/JPEG):** sent directly to GPT‑4o via `ImageVisionAgent` which returns OCR text or a brief description.
-* **PDFs:** uploaded to the vision API with `PDFVisionAgent` so the model can read native text or scanned pages.
-* **Audio:** processed with Whisper in `AudioSTTAgent`.
-* **Other formats:** converted to plain text using the corresponding processor (docx, pptx, spreadsheets, archives, etc.).
-
-The resulting text or summary is then used as context for the planner agent.
+## Summary
+This plan reuses the existing GAIA agent codebase while redirecting model inference to a self-hosted SGLang backend on RunPod. Key changes include updating agent configurations, integrating SGLang endpoints, enhancing telemetry for sparsity metrics, and thorough testing to ensure a seamless transition.
