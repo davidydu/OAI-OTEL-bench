@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from agents import Agent
+from ... import sglang_client
 
 PROMPT = (
     "You evaluate answers from multiple writer agents. "
@@ -26,6 +27,6 @@ class JudgeResult(BaseModel):
 judge_agent = Agent(
     name="JudgeAgent",
     instructions=PROMPT,
-    model="o4-mini",
+    model=sglang_client.SGLANG_MODEL,
     output_type=JudgeResult,
 )

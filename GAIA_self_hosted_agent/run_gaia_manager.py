@@ -10,7 +10,8 @@ import logfire
 if __package__ is None:
     sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from GAIA_agent_design.research_bot.manager import GAIAResearchManager
+from GAIA_self_hosted_agent.research_bot.manager import GAIAResearchManager
+from GAIA_self_hosted_agent import sglang_client
 
 # disable scrubbing
 logfire.configure(scrubbing=False)
@@ -23,7 +24,7 @@ async def main(jsonl_path: str, out_base: str, runs: int, max_concurrency: int) 
     Run the GAIAResearchManager `runs` times, writing each submission to
     out_base_1.jsonl, out_base_2.jsonl, ..., out_base_N.jsonl
     """
-    media_dir = Path("GAIA_agent_design/gaia_media").resolve()
+    media_dir = Path("GAIA_self_hosted_agent/gaia_media").resolve()
     manager = GAIAResearchManager(media_dir, max_concurrency=max_concurrency)
 
     # strip any extension from the base, to avoid double ".jsonl.jsonl"

@@ -34,6 +34,9 @@ This updated technical plan adapts the GAIA Agent codebase to use self-hosted mo
   - Retain model names if supported by SGLang for compatibility.
 - **Configuration Management**:
   - Store pod endpoint URL, model name, and SGLang parameters in environment variables or update `config.yaml` for use by `GAIAResearchManager`.
+    - `SGLANG_BASE_URL`: Base URL of the pod's OpenAI-compatible endpoint (e.g., `http://<pod_ip>:8000/v1`).
+    - `SGLANG_API_KEY`: Optional API key if authentication is enabled.
+    - `SGLANG_MODEL`: Default model name for the agents (defaults to `qwen`).
 - **Remove Serverless Logic**:
   - Eliminate references to `runpod.serverless.start`, as the persistent pod replaces the serverless worker model.
 

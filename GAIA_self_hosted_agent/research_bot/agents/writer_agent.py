@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from agents import Agent
+from ... import sglang_client
 
 PROMPT = (
     "You are a world-class professor. You will be given the original question, any context "
@@ -25,6 +26,6 @@ class AnswerData(BaseModel):
 writer_agent = Agent(
     name="WriterAgent",
     instructions=PROMPT,
-    model="o3",
+    model=sglang_client.SGLANG_MODEL,
     output_type=AnswerData,
 )

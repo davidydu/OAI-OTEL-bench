@@ -5,6 +5,7 @@ from pathlib import Path
 import logfire
 
 from .manager import GAIAResearchManager
+from .. import sglang_client
 
 logfire.configure()
 logfire.instrument_httpx()
@@ -12,7 +13,7 @@ logfire.instrument_openai_agents()
 
 
 async def main(jsonl_path: str, out_path: str) -> None:
-    media_dir = Path("GAIA_agent_design/gaia_media").resolve()
+    media_dir = Path("GAIA_self_hosted_agent/gaia_media").resolve()
     manager = GAIAResearchManager(media_dir)
     await manager.run(jsonl_path, out_path)
 

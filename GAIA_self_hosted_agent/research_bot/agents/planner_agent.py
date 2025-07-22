@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 from agents import Agent
 from ...agents_lib.tools import transcribe_audio
+from ... import sglang_client
 
 PROMPT = (
     "You are a helpful leading research assistant. Given a question "
@@ -33,6 +34,6 @@ class SearchPlan(BaseModel):
 planner_agent = Agent(
     name="PlannerAgent",
     instructions=PROMPT,
-    model="o4-mini",
+    model=sglang_client.SGLANG_MODEL,
     output_type=SearchPlan,
 )

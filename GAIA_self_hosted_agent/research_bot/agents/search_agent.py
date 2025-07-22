@@ -1,5 +1,6 @@
 from agents import Agent, WebSearchTool
 from agents.model_settings import ModelSettings
+from ... import sglang_client
 
 from ...agents_lib.tools.file_search_tool import get_file_search_tool
 from ...agents_lib.tools.code_interpreter import get_code_interpreter_tool
@@ -22,5 +23,5 @@ search_agent = Agent(
     instructions=INSTRUCTIONS,
     tools=TOOLS,
     model_settings=ModelSettings(tool_choice="required"),
-    model="gpt-4.1",
+    model=sglang_client.SGLANG_MODEL,
 )

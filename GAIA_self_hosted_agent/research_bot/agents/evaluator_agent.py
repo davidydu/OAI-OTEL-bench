@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 from agents import Agent
+from ... import sglang_client
 
 from .planner_agent import SearchItem, SearchPlan
 
@@ -18,5 +19,5 @@ evaluator_agent = Agent(
     name="EvaluatorAgent",
     instructions=INSTRUCTIONS,
     output_type=SearchPlan,
-    model="o4-mini",
+    model=sglang_client.SGLANG_MODEL,
 )
