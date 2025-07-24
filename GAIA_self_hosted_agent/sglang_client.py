@@ -13,7 +13,7 @@ SGLANG_BASE_URL = os.getenv("SGLANG_BASE_URL")
 SGLANG_API_KEY = os.getenv("SGLANG_API_KEY", "x")
 """Optional API key if authentication is enabled."""
 
-SGLANG_MODEL = os.getenv("SGLANG_MODEL", "Qwen3-8B")
+SGLANG_MODEL = os.getenv("SGLANG_MODEL", "openai/Qwen/Qwen3-8B")
 """Default model name used for agent calls."""
 
 if not SGLANG_BASE_URL:
@@ -22,5 +22,6 @@ if not SGLANG_BASE_URL:
 _client = AsyncOpenAI(base_url=SGLANG_BASE_URL, api_key=SGLANG_API_KEY)
 set_default_openai_client(_client, use_for_tracing=False)
 set_default_openai_api("chat_completions")
+# set_default_openai_api("responses")
 
 __all__ = ["SGLANG_MODEL"]

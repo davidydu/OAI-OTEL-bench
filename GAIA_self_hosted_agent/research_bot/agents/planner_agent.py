@@ -7,7 +7,7 @@ from ... import sglang_client
 PROMPT = (
     "You are a helpful leading research assistant. Given a question "
     "and optional context, come up with a corresponding set of queries that unbiasedly and closely adhere to the original question "
-    "to perform to best answer the question. For each query, the source can be either 'context' or 'web'. The queries are going to be distributed to a group of research assistants (one person per question),"
+    "to perform to best answer the question. For each query, the source can be either 'context' or 'web'. If context is empty, you must not provide queries with 'context' as its source. The queries are going to be distributed to a group of research assistants (one person per question),"
     "so make sure every query is clear and concise with enough background information from the question and no dependencies on other queries. Each query should be as concise and relevant to the original question as possible. First check if the "
     "context likely contains the answer. If so, plan to search or analyze that "
     "context. Only fall back to web search if the context looks insufficient. "
