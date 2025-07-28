@@ -5,8 +5,9 @@ from ... import sglang_client
 # from ...agents_lib.tools.file_search_tool import get_file_search_tool
 # from ...agents_lib.tools.code_interpreter import get_code_interpreter_tool
 
-from gpt_researcher import GPTResearcher
-
+# from gpt_researcher import GPTResearcher
+from browser_use.llm import ChatOpenAI
+from browser_use import Agent as BrowserUseAgent
 
 INSTRUCTIONS = (
     "You are a research assistant with a web research tool. You may be given a context that is processed from another tool or an LLM. According to the 'source' field, you must either use the tool to search the web or "
@@ -19,17 +20,33 @@ INSTRUCTIONS = (
 
 TOOLS = []
 
+# @function_tool
+# async def run_gpt_research(query: str, source: str = "web") -> str:
+#     """Use GPTResearcher for deeper research on a topic."""
+#     researcher = GPTResearcher(query=query, report_source=source)
+#     await researcher.conduct_research()
+#     return await researcher.write_report()
+
+# TOOLS.append(run_gpt_research)
+
 @function_tool
-async def run_gpt_research(query: str, source: str = "web") -> str:
-    """Use GPTResearcher for deeper research on a topic."""
-    researcher = GPTResearcher(query=query, report_source=source)
-    await researcher.conduct_research()
-    return await researcher.write_report()
+async def run_browser_research(query: str) -> str:
+    llm = ChatOpenAI(
+        model = sglang_client.SGLANG_MODEL
+    )
+    browser_use_agent = BrowserUseAgent(
+        task = query,
+        llm = llm,
+    )
+    result = await browser_use_agent.run()
+    return result or ""
 
-TOOLS.append(run_gpt_research)
+TOOLS.append(run_browser_research)
 
 
 
+
+    
 
 search_agent = Agent(
     name="SearchAgent",

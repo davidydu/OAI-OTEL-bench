@@ -22,3 +22,4 @@ azure-ai-evaluation
 azure-ai-projects
 sglang[all]>=0.4.9.post2
 runpod
+browser-use

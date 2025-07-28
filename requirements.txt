@@ -28,10 +28,12 @@ annotated-types==0.7.0
 anthropic==0.47.2
     # via
     #   bespokelabs-curator
+    #   langchain-anthropic
     #   sglang
 anyio==4.9.0
     # via
     #   anthropic
+    #   browser-use
     #   httpx
     #   mcp
     #   openai
@@ -82,6 +84,8 @@ backrefs==5.9
     # via mkdocs-material
 bcrypt==4.3.0
     # via paramiko
+beautifulsoup4==4.13.4
+    # via markdownify
 bespokelabs-curator==0.1.26
     # via -r requirements.in
 biopython==1.85
@@ -91,7 +95,9 @@ blinker==1.9.0
 blobfile==3.0.0
     # via sglang
 boto3==1.39.7
-    # via runpod
+    # via
+    #   langchain-aws
+    #   runpod
 botocore==1.39.7
     # via
     #   boto3
@@ -100,6 +106,8 @@ brotli==1.1.0 ; platform_python_implementation == 'CPython'
     # via aiohttp
 brotlicffi==1.1.0.0 ; platform_python_implementation != 'CPython'
     # via aiohttp
+browser-use==0.2.5
+    # via -r requirements.in
 build==1.2.2.post1
     # via sglang
 cachetools==5.5.2
@@ -120,6 +128,7 @@ cffi==1.17.1
     #   pyzmq
     #   sounddevice
     #   soundfile
+    #   zstandard
 cfgv==3.4.0
     # via pre-commit
 charset-normalizer==3.4.2
@@ -173,6 +182,8 @@ cuda-python==12.9.0
     #   sglang
 cycler==0.12.1
     # via matplotlib
+cython==3.1.2 ; platform_system != 'darwin' and sys_platform == 'darwin'
+    # via screeninfo
 datasets==3.6.0
     # via
     #   bespokelabs-curator
@@ -181,6 +192,8 @@ decorator==5.2.1
     # via ipython
 decord==0.6.0
     # via sglang
+defusedxml==0.7.1
+    # via langchain-anthropic
 deprecated==1.2.18
     # via
     #   opentelemetry-api
@@ -222,6 +235,8 @@ executing==2.2.0
     # via
     #   logfire
     #   stack-data
+faiss-cpu==1.11.0.post1
+    # via browser-use
 fastapi==0.115.14
     # via
     #   promptflow-core
@@ -241,7 +256,9 @@ filelock==3.18.0
     #   transformers
     #   virtualenv
 filetype==1.2.0
-    # via promptflow-core
+    # via
+    #   langchain-google-genai
+    #   promptflow-core
 fixedint==0.1.6
     # via azure-monitor-opentelemetry-exporter
 flashinfer-python==0.2.7.post1
@@ -272,8 +289,12 @@ gitdb==4.0.12
     # via gitpython
 gitpython==3.1.44
     # via promptflow-devkit
+google-ai-generativelanguage==0.6.18
+    # via langchain-google-genai
 google-api-core==2.25.1
     # via
+    #   browser-use
+    #   google-ai-generativelanguage
     #   google-cloud-aiplatform
     #   google-cloud-bigquery
     #   google-cloud-core
@@ -281,6 +302,7 @@ google-api-core==2.25.1
     #   google-cloud-storage
 google-auth==2.40.3
     # via
+    #   google-ai-generativelanguage
     #   google-api-core
     #   google-cloud-aiplatform
     #   google-cloud-bigquery
@@ -313,8 +335,11 @@ googleapis-common-protos==1.70.0
     #   grpc-google-iam-v1
     #   grpcio-status
     #   opentelemetry-exporter-otlp-proto-http
-greenlet==3.2.3 ; (python_full_version < '3.14' and platform_machine == 'AMD64') or (python_full_version < '3.14' and platform_machine == 'WIN32') or (python_full_version < '3.14' and platform_machine == 'aarch64') or (python_full_version < '3.14' and platform_machine == 'amd64') or (python_full_version < '3.14' and platform_machine == 'ppc64le') or (python_full_version < '3.14' and platform_machine == 'win32') or (python_full_version < '3.14' and platform_machine == 'x86_64')
-    # via sqlalchemy
+greenlet==3.2.3
+    # via
+    #   patchright
+    #   playwright
+    #   sqlalchemy
 griffe==1.7.3
     # via openai-agents
 grpc-google-iam-v1==0.14.2
@@ -325,16 +350,21 @@ grpcio==1.73.1
     #   googleapis-common-protos
     #   grpc-google-iam-v1
     #   grpcio-status
+    #   qdrant-client
 grpcio-status==1.71.2
     # via google-api-core
 h11==0.16.0
     # via
     #   httpcore
     #   uvicorn
+h2==4.2.0
+    # via httpx
 hf-transfer==0.1.9
     # via sglang
 hf-xet==1.1.5 ; platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64'
     # via huggingface-hub
+hpack==4.1.0
+    # via h2
 httpcore==1.0.9
     # via httpx
 httptools==0.6.4
@@ -343,13 +373,17 @@ httpx==0.28.1
     # via
     #   anthropic
     #   azure-ai-evaluation
+    #   browser-use
     #   fastapi
     #   fastapi-cloud-cli
+    #   langsmith
     #   litellm
     #   mcp
     #   mistralai
+    #   ollama
     #   openai
     #   promptflow-devkit
+    #   qdrant-client
 httpx-sse==0.4.0
     # via mcp
 huggingface-hub==0.33.1
@@ -359,6 +393,8 @@ huggingface-hub==0.33.1
     #   timm
     #   tokenizers
     #   transformers
+hyperframe==6.1.0
+    # via h2
 identify==2.6.12
     # via pre-commit
 idna==3.10
@@ -428,6 +464,10 @@ jmespath==1.0.1
     #   botocore
 joblib==1.5.1
     # via nltk
+jsonpatch==1.33
+    # via langchain-core
+jsonpointer==3.0.0
+    # via jsonpatch
 jsonschema==4.24.0
     # via
     #   flask-restx
@@ -441,6 +481,39 @@ keyring==24.3.1
     # via promptflow-devkit
 kiwisolver==1.4.8
     # via matplotlib
+langchain==0.3.22
+    # via browser-use
+langchain-anthropic==0.3.3
+    # via browser-use
+langchain-aws==0.2.19
+    # via browser-use
+langchain-core==0.3.49
+    # via
+    #   browser-use
+    #   langchain
+    #   langchain-anthropic
+    #   langchain-aws
+    #   langchain-deepseek
+    #   langchain-google-genai
+    #   langchain-ollama
+    #   langchain-openai
+    #   langchain-text-splitters
+langchain-deepseek==0.1.3
+    # via browser-use
+langchain-google-genai==2.1.2
+    # via browser-use
+langchain-ollama==0.3.0
+    # via browser-use
+langchain-openai==0.3.11
+    # via
+    #   browser-use
+    #   langchain-deepseek
+langchain-text-splitters==0.3.7
+    # via langchain
+langsmith==0.3.45
+    # via
+    #   langchain
+    #   langchain-core
 lark==1.2.2
     # via outlines
 litellm==1.61.3
@@ -463,6 +536,8 @@ markdown==3.8.2
     #   pymdown-extensions
 markdown-it-py==3.0.0
     # via rich
+markdownify==1.1.0
+    # via browser-use
 markupsafe==3.0.2
     # via
     #   flask
@@ -479,6 +554,8 @@ mcp==1.9.4
     # via openai-agents
 mdurl==0.1.2
     # via markdown-it-py
+mem0ai==0.1.93
+    # via browser-use
 mergedeep==1.3.4
     # via
     #   mkdocs
@@ -546,12 +623,15 @@ numpy==2.3.0
     #   contourpy
     #   datasets
     #   decord
+    #   faiss-cpu
     #   flashinfer-python
+    #   langchain-aws
     #   matplotlib
     #   mlx-lm
     #   openai-agents
     #   outlines
     #   pandas
+    #   qdrant-client
     #   scipy
     #   sglang
     #   shapely
@@ -601,11 +681,15 @@ nvidia-nvtx-cu12==12.6.77 ; platform_machine == 'x86_64' and sys_platform == 'li
     # via torch
 oauthlib==3.3.1
     # via requests-oauthlib
+ollama==0.5.1
+    # via langchain-ollama
 openai==1.88.0
     # via
     #   azure-ai-evaluation
     #   instructor
+    #   langchain-openai
     #   litellm
+    #   mem0ai
     #   openai-agents
     #   promptflow-tracing
     #   sglang
@@ -656,18 +740,22 @@ opentelemetry-util-http==0.54b1
 orjson==3.11.0
     # via
     #   fastapi
+    #   langsmith
     #   sglang
 outlines==0.1.11
     # via sglang
 outlines-core==0.1.26
     # via outlines
-packaging==25.0
+packaging==24.2
     # via
     #   build
     #   datasets
+    #   faiss-cpu
     #   google-cloud-aiplatform
     #   google-cloud-bigquery
     #   huggingface-hub
+    #   langchain-core
+    #   langsmith
     #   marshmallow
     #   matplotlib
     #   mkdocs
@@ -690,6 +778,8 @@ parso==0.8.4
     # via jedi
 partial-json-parser==0.2.1.1.post6
     # via sglang
+patchright==1.52.5
+    # via browser-use
 pathspec==0.12.1
     # via mkdocs
 pdf2image==1.17.0
@@ -716,8 +806,15 @@ platformdirs==4.3.8
     # via
     #   mkdocs-get-deps
     #   virtualenv
+playwright==1.54.0
+    # via browser-use
+portalocker==3.2.0
+    # via qdrant-client
 posthog==3.25.0
-    # via bespokelabs-curator
+    # via
+    #   bespokelabs-curator
+    #   browser-use
+    #   mem0ai
 pre-commit==4.2.0
     # via instructor
 prettytable==3.16.0
@@ -742,11 +839,13 @@ propcache==0.3.2
     #   yarl
 proto-plus==1.26.1
     # via
+    #   google-ai-generativelanguage
     #   google-api-core
     #   google-cloud-aiplatform
     #   google-cloud-resource-manager
 protobuf==5.29.5
     # via
+    #   google-ai-generativelanguage
     #   google-api-core
     #   google-cloud-aiplatform
     #   google-cloud-resource-manager
@@ -757,11 +856,15 @@ protobuf==5.29.5
     #   mlx-lm
     #   opentelemetry-proto
     #   proto-plus
+    #   qdrant-client
 psutil==7.0.0
     # via
     #   azure-monitor-opentelemetry-exporter
+    #   browser-use
     #   promptflow-core
     #   sglang
+psycopg2-binary==2.9.10
+    # via mem0ai
 ptyprocess==0.7.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
     # via pexpect
 pure-eval==0.2.3
@@ -786,27 +889,37 @@ pycparser==2.22
     # via cffi
 pycryptodomex==3.23.0
     # via blobfile
-pydantic==2.11.7
+pydantic==2.10.6
     # via
     #   -r requirements.in
     #   anthropic
     #   bespokelabs-curator
+    #   browser-use
     #   compressed-tensors
     #   fastapi
     #   fastapi-cloud-cli
     #   google-cloud-aiplatform
     #   instructor
+    #   langchain
+    #   langchain-anthropic
+    #   langchain-aws
+    #   langchain-core
+    #   langchain-google-genai
+    #   langsmith
     #   litellm
     #   mcp
+    #   mem0ai
     #   mistralai
+    #   ollama
     #   openai
     #   openai-agents
     #   outlines
     #   pydantic-extra-types
     #   pydantic-settings
+    #   qdrant-client
     #   sglang
     #   xgrammar
-pydantic-core==2.33.2
+pydantic-core==2.27.2
     # via
     #   instructor
     #   pydantic
@@ -820,6 +933,10 @@ pydash==7.0.7
     # via promptflow-devkit
 pydub==0.25.1
     # via -r requirements.in
+pyee==13.0.0
+    # via
+    #   patchright
+    #   playwright
 pygments==2.19.1
     # via
     #   ipython
@@ -838,10 +955,720 @@ pynvml==12.0.0
     # via
     #   flashinfer-python
     #   sglang
+pyobjc==11.1 ; platform_system == 'darwin'
+    # via browser-use
+pyobjc-core==11.1 ; platform_system == 'darwin' or sys_platform == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-accessibility
+    #   pyobjc-framework-accounts
+    #   pyobjc-framework-addressbook
+    #   pyobjc-framework-adservices
+    #   pyobjc-framework-adsupport
+    #   pyobjc-framework-applescriptkit
+    #   pyobjc-framework-applescriptobjc
+    #   pyobjc-framework-applicationservices
+    #   pyobjc-framework-apptrackingtransparency
+    #   pyobjc-framework-audiovideobridging
+    #   pyobjc-framework-authenticationservices
+    #   pyobjc-framework-automaticassessmentconfiguration
+    #   pyobjc-framework-automator
+    #   pyobjc-framework-avfoundation
+    #   pyobjc-framework-avkit
+    #   pyobjc-framework-avrouting
+    #   pyobjc-framework-backgroundassets
+    #   pyobjc-framework-browserenginekit
+    #   pyobjc-framework-businesschat
+    #   pyobjc-framework-calendarstore
+    #   pyobjc-framework-callkit
+    #   pyobjc-framework-carbon
+    #   pyobjc-framework-cfnetwork
+    #   pyobjc-framework-cinematic
+    #   pyobjc-framework-classkit
+    #   pyobjc-framework-cloudkit
+    #   pyobjc-framework-cocoa
+    #   pyobjc-framework-collaboration
+    #   pyobjc-framework-colorsync
+    #   pyobjc-framework-contacts
+    #   pyobjc-framework-contactsui
+    #   pyobjc-framework-coreaudio
+    #   pyobjc-framework-coreaudiokit
+    #   pyobjc-framework-corebluetooth
+    #   pyobjc-framework-coredata
+    #   pyobjc-framework-corehaptics
+    #   pyobjc-framework-corelocation
+    #   pyobjc-framework-coremedia
+    #   pyobjc-framework-coremediaio
+    #   pyobjc-framework-coremidi
+    #   pyobjc-framework-coreml
+    #   pyobjc-framework-coremotion
+    #   pyobjc-framework-coreservices
+    #   pyobjc-framework-corespotlight
+    #   pyobjc-framework-coretext
+    #   pyobjc-framework-corewlan
+    #   pyobjc-framework-cryptotokenkit
+    #   pyobjc-framework-datadetection
+    #   pyobjc-framework-devicecheck
+    #   pyobjc-framework-devicediscoveryextension
+    #   pyobjc-framework-dictionaryservices
+    #   pyobjc-framework-discrecording
+    #   pyobjc-framework-discrecordingui
+    #   pyobjc-framework-diskarbitration
+    #   pyobjc-framework-dvdplayback
+    #   pyobjc-framework-eventkit
+    #   pyobjc-framework-exceptionhandling
+    #   pyobjc-framework-executionpolicy
+    #   pyobjc-framework-extensionkit
+    #   pyobjc-framework-externalaccessory
+    #   pyobjc-framework-fileprovider
+    #   pyobjc-framework-fileproviderui
+    #   pyobjc-framework-findersync
+    #   pyobjc-framework-fsevents
+    #   pyobjc-framework-fskit
+    #   pyobjc-framework-gamecenter
+    #   pyobjc-framework-gamecontroller
+    #   pyobjc-framework-gamekit
+    #   pyobjc-framework-gameplaykit
+    #   pyobjc-framework-healthkit
+    #   pyobjc-framework-imagecapturecore
+    #   pyobjc-framework-inputmethodkit
+    #   pyobjc-framework-installerplugins
+    #   pyobjc-framework-instantmessage
+    #   pyobjc-framework-intents
+    #   pyobjc-framework-intentsui
+    #   pyobjc-framework-iobluetooth
+    #   pyobjc-framework-iobluetoothui
+    #   pyobjc-framework-iosurface
+    #   pyobjc-framework-ituneslibrary
+    #   pyobjc-framework-kernelmanagement
+    #   pyobjc-framework-latentsemanticmapping
+    #   pyobjc-framework-launchservices
+    #   pyobjc-framework-libdispatch
+    #   pyobjc-framework-libxpc
+    #   pyobjc-framework-linkpresentation
+    #   pyobjc-framework-localauthentication
+    #   pyobjc-framework-localauthenticationembeddedui
+    #   pyobjc-framework-mailkit
+    #   pyobjc-framework-mapkit
+    #   pyobjc-framework-mediaaccessibility
+    #   pyobjc-framework-mediaextension
+    #   pyobjc-framework-medialibrary
+    #   pyobjc-framework-mediaplayer
+    #   pyobjc-framework-mediatoolbox
+    #   pyobjc-framework-metal
+    #   pyobjc-framework-metalfx
+    #   pyobjc-framework-metalkit
+    #   pyobjc-framework-metalperformanceshaders
+    #   pyobjc-framework-metalperformanceshadersgraph
+    #   pyobjc-framework-metrickit
+    #   pyobjc-framework-mlcompute
+    #   pyobjc-framework-modelio
+    #   pyobjc-framework-multipeerconnectivity
+    #   pyobjc-framework-naturallanguage
+    #   pyobjc-framework-netfs
+    #   pyobjc-framework-network
+    #   pyobjc-framework-networkextension
+    #   pyobjc-framework-notificationcenter
+    #   pyobjc-framework-opendirectory
+    #   pyobjc-framework-osakit
+    #   pyobjc-framework-oslog
+    #   pyobjc-framework-passkit
+    #   pyobjc-framework-pencilkit
+    #   pyobjc-framework-phase
+    #   pyobjc-framework-photos
+    #   pyobjc-framework-photosui
+    #   pyobjc-framework-preferencepanes
+    #   pyobjc-framework-pushkit
+    #   pyobjc-framework-quartz
+    #   pyobjc-framework-quicklookthumbnailing
+    #   pyobjc-framework-replaykit
+    #   pyobjc-framework-safariservices
+    #   pyobjc-framework-safetykit
+    #   pyobjc-framework-scenekit
+    #   pyobjc-framework-screencapturekit
+    #   pyobjc-framework-screensaver
+    #   pyobjc-framework-screentime
+    #   pyobjc-framework-scriptingbridge
+    #   pyobjc-framework-searchkit
+    #   pyobjc-framework-security
+    #   pyobjc-framework-securityfoundation
+    #   pyobjc-framework-securityinterface
+    #   pyobjc-framework-securityui
+    #   pyobjc-framework-sensitivecontentanalysis
+    #   pyobjc-framework-servicemanagement
+    #   pyobjc-framework-sharedwithyou
+    #   pyobjc-framework-sharedwithyoucore
+    #   pyobjc-framework-shazamkit
+    #   pyobjc-framework-social
+    #   pyobjc-framework-soundanalysis
+    #   pyobjc-framework-speech
+    #   pyobjc-framework-spritekit
+    #   pyobjc-framework-storekit
+    #   pyobjc-framework-symbols
+    #   pyobjc-framework-syncservices
+    #   pyobjc-framework-systemconfiguration
+    #   pyobjc-framework-systemextensions
+    #   pyobjc-framework-threadnetwork
+    #   pyobjc-framework-uniformtypeidentifiers
+    #   pyobjc-framework-usernotifications
+    #   pyobjc-framework-usernotificationsui
+    #   pyobjc-framework-videosubscriberaccount
+    #   pyobjc-framework-videotoolbox
+    #   pyobjc-framework-virtualization
+    #   pyobjc-framework-vision
+    #   pyobjc-framework-webkit
+pyobjc-framework-accessibility==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-accounts==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-cloudkit
+pyobjc-framework-addressbook==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-adservices==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-adsupport==11.1 ; platform_release >= '18.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-applescriptkit==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-applescriptobjc==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-applicationservices==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-apptrackingtransparency==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-audiovideobridging==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-authenticationservices==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-automaticassessmentconfiguration==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-automator==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-avfoundation==11.1 ; platform_release >= '11.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-cinematic
+    #   pyobjc-framework-mediaextension
+    #   pyobjc-framework-mediaplayer
+    #   pyobjc-framework-phase
+pyobjc-framework-avkit==11.1 ; platform_release >= '13.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-avrouting==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-backgroundassets==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-browserenginekit==11.1 ; platform_release >= '23.4' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-businesschat==11.1 ; platform_release >= '18.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-calendarstore==11.1 ; platform_release >= '9.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-callkit==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-carbon==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-cfnetwork==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-cinematic==11.1 ; platform_release >= '23.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-classkit==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-cloudkit==11.1 ; platform_release >= '14.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-cocoa==11.1 ; platform_system == 'darwin' or sys_platform == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-accessibility
+    #   pyobjc-framework-accounts
+    #   pyobjc-framework-addressbook
+    #   pyobjc-framework-adservices
+    #   pyobjc-framework-adsupport
+    #   pyobjc-framework-applescriptkit
+    #   pyobjc-framework-applescriptobjc
+    #   pyobjc-framework-applicationservices
+    #   pyobjc-framework-apptrackingtransparency
+    #   pyobjc-framework-audiovideobridging
+    #   pyobjc-framework-authenticationservices
+    #   pyobjc-framework-automaticassessmentconfiguration
+    #   pyobjc-framework-automator
+    #   pyobjc-framework-avfoundation
+    #   pyobjc-framework-avkit
+    #   pyobjc-framework-avrouting
+    #   pyobjc-framework-backgroundassets
+    #   pyobjc-framework-browserenginekit
+    #   pyobjc-framework-businesschat
+    #   pyobjc-framework-calendarstore
+    #   pyobjc-framework-callkit
+    #   pyobjc-framework-carbon
+    #   pyobjc-framework-cfnetwork
+    #   pyobjc-framework-cinematic
+    #   pyobjc-framework-classkit
+    #   pyobjc-framework-cloudkit
+    #   pyobjc-framework-collaboration
+    #   pyobjc-framework-colorsync
+    #   pyobjc-framework-contacts
+    #   pyobjc-framework-contactsui
+    #   pyobjc-framework-coreaudio
+    #   pyobjc-framework-coreaudiokit
+    #   pyobjc-framework-corebluetooth
+    #   pyobjc-framework-coredata
+    #   pyobjc-framework-corehaptics
+    #   pyobjc-framework-corelocation
+    #   pyobjc-framework-coremedia
+    #   pyobjc-framework-coremediaio
+    #   pyobjc-framework-coremidi
+    #   pyobjc-framework-coreml
+    #   pyobjc-framework-coremotion
+    #   pyobjc-framework-coreservices
+    #   pyobjc-framework-corespotlight
+    #   pyobjc-framework-coretext
+    #   pyobjc-framework-corewlan
+    #   pyobjc-framework-cryptotokenkit
+    #   pyobjc-framework-datadetection
+    #   pyobjc-framework-devicecheck
+    #   pyobjc-framework-devicediscoveryextension
+    #   pyobjc-framework-discrecording
+    #   pyobjc-framework-discrecordingui
+    #   pyobjc-framework-diskarbitration
+    #   pyobjc-framework-dvdplayback
+    #   pyobjc-framework-eventkit
+    #   pyobjc-framework-exceptionhandling
+    #   pyobjc-framework-executionpolicy
+    #   pyobjc-framework-extensionkit
+    #   pyobjc-framework-externalaccessory
+    #   pyobjc-framework-fileprovider
+    #   pyobjc-framework-findersync
+    #   pyobjc-framework-fsevents
+    #   pyobjc-framework-fskit
+    #   pyobjc-framework-gamecenter
+    #   pyobjc-framework-gamecontroller
+    #   pyobjc-framework-gamekit
+    #   pyobjc-framework-gameplaykit
+    #   pyobjc-framework-healthkit
+    #   pyobjc-framework-imagecapturecore
+    #   pyobjc-framework-inputmethodkit
+    #   pyobjc-framework-installerplugins
+    #   pyobjc-framework-instantmessage
+    #   pyobjc-framework-intents
+    #   pyobjc-framework-iobluetooth
+    #   pyobjc-framework-iosurface
+    #   pyobjc-framework-ituneslibrary
+    #   pyobjc-framework-kernelmanagement
+    #   pyobjc-framework-latentsemanticmapping
+    #   pyobjc-framework-libdispatch
+    #   pyobjc-framework-libxpc
+    #   pyobjc-framework-linkpresentation
+    #   pyobjc-framework-localauthentication
+    #   pyobjc-framework-localauthenticationembeddedui
+    #   pyobjc-framework-mailkit
+    #   pyobjc-framework-mapkit
+    #   pyobjc-framework-mediaaccessibility
+    #   pyobjc-framework-mediaextension
+    #   pyobjc-framework-medialibrary
+    #   pyobjc-framework-mediatoolbox
+    #   pyobjc-framework-metal
+    #   pyobjc-framework-metalkit
+    #   pyobjc-framework-metrickit
+    #   pyobjc-framework-mlcompute
+    #   pyobjc-framework-modelio
+    #   pyobjc-framework-multipeerconnectivity
+    #   pyobjc-framework-naturallanguage
+    #   pyobjc-framework-netfs
+    #   pyobjc-framework-network
+    #   pyobjc-framework-networkextension
+    #   pyobjc-framework-notificationcenter
+    #   pyobjc-framework-opendirectory
+    #   pyobjc-framework-osakit
+    #   pyobjc-framework-oslog
+    #   pyobjc-framework-passkit
+    #   pyobjc-framework-pencilkit
+    #   pyobjc-framework-photos
+    #   pyobjc-framework-photosui
+    #   pyobjc-framework-preferencepanes
+    #   pyobjc-framework-pushkit
+    #   pyobjc-framework-quartz
+    #   pyobjc-framework-quicklookthumbnailing
+    #   pyobjc-framework-replaykit
+    #   pyobjc-framework-safariservices
+    #   pyobjc-framework-safetykit
+    #   pyobjc-framework-scenekit
+    #   pyobjc-framework-screencapturekit
+    #   pyobjc-framework-screensaver
+    #   pyobjc-framework-screentime
+    #   pyobjc-framework-scriptingbridge
+    #   pyobjc-framework-security
+    #   pyobjc-framework-securityfoundation
+    #   pyobjc-framework-securityinterface
+    #   pyobjc-framework-securityui
+    #   pyobjc-framework-sensitivecontentanalysis
+    #   pyobjc-framework-servicemanagement
+    #   pyobjc-framework-sharedwithyoucore
+    #   pyobjc-framework-shazamkit
+    #   pyobjc-framework-social
+    #   pyobjc-framework-soundanalysis
+    #   pyobjc-framework-speech
+    #   pyobjc-framework-spritekit
+    #   pyobjc-framework-storekit
+    #   pyobjc-framework-symbols
+    #   pyobjc-framework-syncservices
+    #   pyobjc-framework-systemconfiguration
+    #   pyobjc-framework-systemextensions
+    #   pyobjc-framework-threadnetwork
+    #   pyobjc-framework-uniformtypeidentifiers
+    #   pyobjc-framework-usernotifications
+    #   pyobjc-framework-usernotificationsui
+    #   pyobjc-framework-videosubscriberaccount
+    #   pyobjc-framework-videotoolbox
+    #   pyobjc-framework-virtualization
+    #   pyobjc-framework-vision
+    #   pyobjc-framework-webkit
+    #   screeninfo
+pyobjc-framework-collaboration==11.1 ; platform_release >= '9.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-colorsync==11.1 ; platform_release >= '17.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-contacts==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-contactsui
+pyobjc-framework-contactsui==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-coreaudio==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-avfoundation
+    #   pyobjc-framework-browserenginekit
+    #   pyobjc-framework-coreaudiokit
+pyobjc-framework-coreaudiokit==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-corebluetooth==11.1 ; platform_release >= '14.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-coredata==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-cloudkit
+    #   pyobjc-framework-syncservices
+pyobjc-framework-corehaptics==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-corelocation==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-cloudkit
+    #   pyobjc-framework-mapkit
+pyobjc-framework-coremedia==11.1 ; platform_release >= '11.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-avfoundation
+    #   pyobjc-framework-browserenginekit
+    #   pyobjc-framework-cinematic
+    #   pyobjc-framework-mediaextension
+    #   pyobjc-framework-oslog
+    #   pyobjc-framework-screencapturekit
+    #   pyobjc-framework-videotoolbox
+pyobjc-framework-coremediaio==11.1 ; platform_release >= '11.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-coremidi==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-coreml==11.1 ; platform_release >= '17.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-vision
+pyobjc-framework-coremotion==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-coreservices==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-dictionaryservices
+    #   pyobjc-framework-launchservices
+    #   pyobjc-framework-searchkit
+pyobjc-framework-corespotlight==11.1 ; platform_release >= '17.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-coretext==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-applicationservices
+pyobjc-framework-corewlan==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-cryptotokenkit==11.1 ; platform_release >= '14.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-datadetection==11.1 ; platform_release >= '21.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-devicecheck==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-devicediscoveryextension==11.1 ; platform_release >= '24.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-dictionaryservices==11.1 ; platform_release >= '9.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-discrecording==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-discrecordingui
+pyobjc-framework-discrecordingui==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-diskarbitration==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-dvdplayback==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-eventkit==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-exceptionhandling==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-executionpolicy==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-extensionkit==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-externalaccessory==11.1 ; platform_release >= '17.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-fileprovider==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-fileproviderui
+pyobjc-framework-fileproviderui==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-findersync==11.1 ; platform_release >= '14.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-fsevents==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-coreservices
+pyobjc-framework-fskit==11.1 ; platform_release >= '24.4' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-gamecenter==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-gamecontroller==11.1 ; platform_release >= '13.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-gamekit==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-gameplaykit==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-healthkit==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-imagecapturecore==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-inputmethodkit==11.1 ; platform_release >= '9.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-installerplugins==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-instantmessage==11.1 ; platform_release >= '9.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-intents==11.1 ; platform_release >= '16.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-intentsui
+pyobjc-framework-intentsui==11.1 ; platform_release >= '21.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-iobluetooth==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-iobluetoothui
+pyobjc-framework-iobluetoothui==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-iosurface==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-ituneslibrary==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-kernelmanagement==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-latentsemanticmapping==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-launchservices==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-libdispatch==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-libxpc==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-linkpresentation==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-localauthentication==11.1 ; platform_release >= '14.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-localauthenticationembeddedui
+pyobjc-framework-localauthenticationembeddedui==11.1 ; platform_release >= '21.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-mailkit==11.1 ; platform_release >= '21.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-mapkit==11.1 ; platform_release >= '13.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-mediaaccessibility==11.1 ; platform_release >= '13.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-mediaextension==11.1 ; platform_release >= '24.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-medialibrary==11.1 ; platform_release >= '13.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-mediaplayer==11.1 ; platform_release >= '16.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-mediatoolbox==11.1 ; platform_release >= '13.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-metal==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-cinematic
+    #   pyobjc-framework-metalfx
+    #   pyobjc-framework-metalkit
+    #   pyobjc-framework-metalperformanceshaders
+pyobjc-framework-metalfx==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-metalkit==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-metalperformanceshaders==11.1 ; platform_release >= '17.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-metalperformanceshadersgraph
+pyobjc-framework-metalperformanceshadersgraph==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-metrickit==11.1 ; platform_release >= '21.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-mlcompute==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-modelio==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-multipeerconnectivity==11.1 ; platform_release >= '14.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-naturallanguage==11.1 ; platform_release >= '18.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-netfs==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-network==11.1 ; platform_release >= '18.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-networkextension==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-notificationcenter==11.1 ; platform_release >= '14.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-opendirectory==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-osakit==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-oslog==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-passkit==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-pencilkit==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-phase==11.1 ; platform_release >= '21.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-photos==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-photosui==11.1 ; platform_release >= '15.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-preferencepanes==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-pushkit==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-quartz==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-accessibility
+    #   pyobjc-framework-applicationservices
+    #   pyobjc-framework-avfoundation
+    #   pyobjc-framework-avkit
+    #   pyobjc-framework-browserenginekit
+    #   pyobjc-framework-coretext
+    #   pyobjc-framework-gamekit
+    #   pyobjc-framework-instantmessage
+    #   pyobjc-framework-linkpresentation
+    #   pyobjc-framework-mapkit
+    #   pyobjc-framework-medialibrary
+    #   pyobjc-framework-modelio
+    #   pyobjc-framework-oslog
+    #   pyobjc-framework-quicklookthumbnailing
+    #   pyobjc-framework-safetykit
+    #   pyobjc-framework-scenekit
+    #   pyobjc-framework-sensitivecontentanalysis
+    #   pyobjc-framework-spritekit
+    #   pyobjc-framework-videotoolbox
+    #   pyobjc-framework-vision
+pyobjc-framework-quicklookthumbnailing==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-replaykit==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-safariservices==11.1 ; platform_release >= '16.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-safetykit==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-scenekit==11.1 ; platform_release >= '11.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-screencapturekit==11.1 ; platform_release >= '21.4' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-screensaver==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-screentime==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-scriptingbridge==11.1 ; platform_release >= '9.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-searchkit==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-security==11.1 ; platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-localauthentication
+    #   pyobjc-framework-securityfoundation
+    #   pyobjc-framework-securityinterface
+    #   pyobjc-framework-securityui
+pyobjc-framework-securityfoundation==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-securityinterface==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-securityui==11.1 ; platform_release >= '24.4' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-sensitivecontentanalysis==11.1 ; platform_release >= '23.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-servicemanagement==11.1 ; platform_release >= '10.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-sharedwithyou==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-sharedwithyoucore==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-sharedwithyou
+pyobjc-framework-shazamkit==11.1 ; platform_release >= '21.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-social==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-soundanalysis==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-speech==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-spritekit==11.1 ; platform_release >= '13.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-gameplaykit
+pyobjc-framework-storekit==11.1 ; platform_release >= '11.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-symbols==11.1 ; platform_release >= '23.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-syncservices==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-systemconfiguration==11.1 ; platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-systemextensions==11.1 ; platform_release >= '19.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-threadnetwork==11.1 ; platform_release >= '22.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-uniformtypeidentifiers==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-usernotifications==11.1 ; platform_release >= '18.0' and platform_system == 'darwin'
+    # via
+    #   pyobjc
+    #   pyobjc-framework-usernotificationsui
+pyobjc-framework-usernotificationsui==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-videosubscriberaccount==11.1 ; platform_release >= '18.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-videotoolbox==11.1 ; platform_release >= '12.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-virtualization==11.1 ; platform_release >= '20.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-vision==11.1 ; platform_release >= '17.0' and platform_system == 'darwin'
+    # via pyobjc
+pyobjc-framework-webkit==11.1 ; platform_system == 'darwin'
+    # via pyobjc
 pyparsing==3.2.3
     # via matplotlib
 pypdfium2==4.30.1
     # via pdfplumber
+pyperclip==1.9.0
+    # via browser-use
 pyproject-hooks==1.2.0
     # via build
 pytesseract==0.3.13
@@ -861,6 +1688,7 @@ python-docx==1.2.0
     # via -r requirements.in
 python-dotenv==1.1.0
     # via
+    #   browser-use
     #   litellm
     #   promptflow-devkit
     #   pydantic-settings
@@ -874,13 +1702,15 @@ python-multipart==0.0.20
     #   sglang
 python-pptx==1.0.2
     # via -r requirements.in
-pytz==2025.2
+pytz==2024.2
     # via
     #   flask-restx
+    #   mem0ai
     #   pandas
 pywin32==310 ; sys_platform == 'win32'
     # via
     #   cuda-bindings
+    #   portalocker
     #   promptflow-devkit
 pywin32-ctypes==0.2.3 ; sys_platform == 'win32'
     # via keyring
@@ -890,6 +1720,8 @@ pyyaml==6.0.2
     #   datasets
     #   fastapi
     #   huggingface-hub
+    #   langchain
+    #   langchain-core
     #   mkdocs
     #   mkdocs-get-deps
     #   mlx-lm
@@ -903,6 +1735,8 @@ pyyaml-env-tag==1.1
     # via mkdocs
 pyzmq==27.0.0
     # via sglang
+qdrant-client==1.15.0
+    # via mem0ai
 referencing==0.36.2
     # via
     #   jsonschema
@@ -916,6 +1750,7 @@ regex==2024.11.6
 requests==2.32.4
     # via
     #   azure-core
+    #   browser-use
     #   datasets
     #   flashinfer-python
     #   google-api-core
@@ -923,6 +1758,8 @@ requests==2.32.4
     #   google-cloud-storage
     #   huggingface-hub
     #   instructor
+    #   langchain
+    #   langsmith
     #   mkdocs-material
     #   modelscope
     #   msal
@@ -932,12 +1769,15 @@ requests==2.32.4
     #   outlines
     #   posthog
     #   requests-oauthlib
+    #   requests-toolbelt
     #   runpod
     #   sglang
     #   tiktoken
     #   transformers
 requests-oauthlib==2.0.0
     # via msrest
+requests-toolbelt==1.0.0
+    # via langsmith
 rich==13.9.4
     # via
     #   bespokelabs-curator
@@ -973,6 +1813,8 @@ safetensors==0.5.3
     #   transformers
 scipy==1.16.0
     # via sglang
+screeninfo==0.8.1 ; platform_system != 'darwin'
+    # via browser-use
 secretstorage==3.3.3 ; sys_platform == 'linux'
     # via keyring
 sentencepiece==0.2.0
@@ -997,6 +1839,7 @@ shellingham==1.5.4
 six==1.17.0
     # via
     #   azure-core
+    #   markdownify
     #   posthog
     #   python-dateutil
 smmap==5.0.2
@@ -1010,8 +1853,13 @@ sounddevice==0.5.2
     # via -r requirements.in
 soundfile==0.13.1
     # via sglang
+soupsieve==2.7
+    # via beautifulsoup4
 sqlalchemy==2.0.41
-    # via promptflow-devkit
+    # via
+    #   langchain
+    #   mem0ai
+    #   promptflow-devkit
 sse-starlette==2.3.6
     # via mcp
 stack-data==0.6.3
@@ -1027,10 +1875,13 @@ sympy==1.14.0
 tabulate==0.9.0
     # via promptflow-devkit
 tenacity==9.1.2
-    # via instructor
+    # via
+    #   instructor
+    #   langchain-core
 tiktoken==0.9.0
     # via
     #   bespokelabs-curator
+    #   langchain-openai
     #   litellm
     #   promptflow-tracing
     #   sglang
@@ -1108,8 +1959,11 @@ typing-extensions==4.14.0
     #   azure-core
     #   azure-identity
     #   azure-storage-blob
+    #   beautifulsoup4
+    #   browser-use
     #   fastapi
     #   huggingface-hub
+    #   langchain-core
     #   logfire
     #   openai
     #   openai-agents
@@ -1119,6 +1973,7 @@ typing-extensions==4.14.0
     #   pydantic-core
     #   pydantic-extra-types
     #   pydash
+    #   pyee
     #   python-docx
     #   python-pptx
     #   referencing
@@ -1130,7 +1985,6 @@ typing-extensions==4.14.0
 typing-inspection==0.4.1
     # via
     #   mistralai
-    #   pydantic
     #   pydantic-settings
 tzdata==2025.2
     # via pandas
@@ -1141,10 +1995,13 @@ urllib3==2.4.0
     #   blobfile
     #   botocore
     #   modelscope
+    #   qdrant-client
     #   requests
     #   runpod
     #   sentry-sdk
     #   types-requests
+uuid7==0.1.0
+    # via browser-use
 uvicorn==0.34.3
     # via
     #   fastapi
@@ -1198,3 +2055,5 @@ yarl==1.20.1
     # via aiohttp
 zipp==3.23.0
     # via importlib-metadata
+zstandard==0.23.0
+    # via langsmith
