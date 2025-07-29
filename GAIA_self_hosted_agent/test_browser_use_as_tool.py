@@ -30,13 +30,13 @@ TOOLS = []
 @function_tool
 async def run_browser_research(query: str) -> str:
     llm = ChatOpenAI(
-        model="Qwen/Qwen3-30B-A3B",
-        base_url="https://0hu9bptnhz0xva-8000.proxy.runpod.net/v1",
+        model="google/gemma-3-27b-it",
+        base_url=sglang_client.SGLANG_BASE_URL,
     )
     browser_use_agent = BrowserUseAgent(
         task = query,
         llm = llm,
-        use_vision = False,
+        # use_vision = False,
     )
     result = await browser_use_agent.run()
     return result.final_result() or ""
@@ -47,7 +47,7 @@ TOOLS.append(run_browser_research)
 async def main():
     research_agent = Agent(
         name="SearchAgent",
-        instructions="Respond with an answer.",
+        instructions="Feed the original question as the search tool query word for word. Respond with an answer.",
         tools=TOOLS,
         model_settings=ModelSettings(tool_choice="required"),
         model=sglang_client.SGLANG_MODEL,

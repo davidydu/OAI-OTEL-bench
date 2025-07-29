@@ -10,7 +10,7 @@ from browser_use.llm import ChatOpenAI
 from browser_use import Agent as BrowserUseAgent
 
 INSTRUCTIONS = (
-    "You are a research assistant with a web research tool. You may be given a context that is processed from another tool or an LLM. According to the 'source' field, you must either use the tool to search the web or "
+    "You are a research assistant with a browser research tool. You may be given a context that is processed from another tool or an LLM. According to the 'source' field, you must either use the tool to search the web or "
     "analyze provided context (if source is a file, it will be extracted as the context)."
     "When searching web, you must use the research tool to gather information until it is sufficient to answer the query."
     "To use the research tool, give the run_gpt_researcb function a clear, concise query with enough context. Do not use the tools for more than 3 times."
@@ -32,21 +32,20 @@ TOOLS = []
 @function_tool
 async def run_browser_research(query: str) -> str:
     llm = ChatOpenAI(
-        model = sglang_client.SGLANG_MODEL
+        model="Qwen/Qwen3-30B-A3B",
+        base_url=sglang_client.SGLANG_BASE_URL
     )
     browser_use_agent = BrowserUseAgent(
         task = query,
         llm = llm,
+        use_vision = False,
     )
     result = await browser_use_agent.run()
-    return result or ""
+    return result.final_result() or ""
 
 TOOLS.append(run_browser_research)
 
 
-
-
-    
 
 search_agent = Agent(
     name="SearchAgent",
