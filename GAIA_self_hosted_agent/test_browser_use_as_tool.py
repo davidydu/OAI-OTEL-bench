@@ -30,7 +30,7 @@ TOOLS = []
 @function_tool
 async def run_browser_research(query: str) -> str:
     llm = ChatOpenAI(
-        model="google/gemma-3-27b-it",
+        model="Qwen/Qwen2.5-VL-32B-Instruct",
         base_url=sglang_client.SGLANG_BASE_URL,
     )
     browser_use_agent = BrowserUseAgent(

@@ -14,13 +14,10 @@ aiohttp==3.12.13
     #   instructor
     #   litellm
     #   runpod
-    #   sglang
 aiohttp-retry==2.9.1
     # via runpod
 aiosignal==1.3.2
     # via aiohttp
-airportsdata==20250706
-    # via outlines
 aniso8601==10.0.1
     # via flask-restx
 annotated-types==0.7.0
@@ -29,7 +26,6 @@ anthropic==0.47.2
     # via
     #   bespokelabs-curator
     #   langchain-anthropic
-    #   sglang
 anyio==4.9.0
     # via
     #   anthropic
@@ -42,8 +38,6 @@ anyio==4.9.0
     #   watchfiles
 argcomplete==3.6.2
     # via promptflow-devkit
-asttokens==3.0.0
-    # via stack-data
 attrs==25.3.0
     # via
     #   aiohttp
@@ -92,8 +86,6 @@ biopython==1.85
     # via -r requirements.in
 blinker==1.9.0
     # via flask
-blobfile==3.0.0
-    # via sglang
 boto3==1.39.7
     # via
     #   langchain-aws
@@ -108,8 +100,6 @@ brotlicffi==1.1.0.0 ; platform_python_implementation != 'CPython'
     # via aiohttp
 browser-use==0.2.5
     # via -r requirements.in
-build==1.2.2.post1
-    # via sglang
 cachetools==5.5.2
     # via google-auth
 certifi==2025.6.15
@@ -125,9 +115,7 @@ cffi==1.17.1
     #   cryptography
     #   pycares
     #   pynacl
-    #   pyzmq
     #   sounddevice
-    #   soundfile
     #   zstandard
 cfgv==3.4.0
     # via pre-commit
@@ -145,22 +133,16 @@ click==8.2.1
     #   runpod
     #   typer
     #   uvicorn
-cloudpickle==3.1.1
-    # via outlines
 colorama==0.4.6
     # via
-    #   build
     #   click
     #   griffe
-    #   ipython
     #   mkdocs
     #   mkdocs-material
     #   promptflow-devkit
     #   runpod
     #   tqdm
     #   uvicorn
-compressed-tensors==0.10.2
-    # via sglang
 contourpy==1.3.2
     # via matplotlib
 cryptography==45.0.4
@@ -174,24 +156,12 @@ cryptography==45.0.4
     #   pyjwt
     #   runpod
     #   secretstorage
-cuda-bindings==12.9.0
-    # via cuda-python
-cuda-python==12.9.0
-    # via
-    #   flashinfer-python
-    #   sglang
 cycler==0.12.1
     # via matplotlib
 cython==3.1.2 ; platform_system != 'darwin' and sys_platform == 'darwin'
     # via screeninfo
 datasets==3.6.0
-    # via
-    #   bespokelabs-curator
-    #   sglang
-decorator==5.2.1
-    # via ipython
-decord==0.6.0
-    # via sglang
+    # via bespokelabs-curator
 defusedxml==0.7.1
     # via langchain-anthropic
 deprecated==1.2.18
@@ -203,8 +173,6 @@ dill==0.3.8
     # via
     #   datasets
     #   multiprocess
-diskcache==5.6.3
-    # via outlines
 distlib==0.3.9
     # via virtualenv
 distro==1.9.0
@@ -219,10 +187,6 @@ docstring-parser==0.16
     #   google-cloud-aiplatform
     #   instructor
     #   promptflow-core
-einops==0.8.1
-    # via
-    #   flashinfer-python
-    #   sglang
 email-validator==2.2.0
     # via
     #   fastapi
@@ -232,28 +196,22 @@ et-xmlfile==2.0.0
 eval-type-backport==0.2.2
     # via mistralai
 executing==2.2.0
-    # via
-    #   logfire
-    #   stack-data
+    # via logfire
 faiss-cpu==1.11.0.post1
     # via browser-use
 fastapi==0.115.14
     # via
     #   promptflow-core
     #   runpod
-    #   sglang
 fastapi-cli==0.0.8
     # via fastapi
 fastapi-cloud-cli==0.1.4
     # via fastapi-cli
 filelock==3.18.0
     # via
-    #   blobfile
     #   datasets
     #   huggingface-hub
     #   promptflow-devkit
-    #   torch
-    #   transformers
     #   virtualenv
 filetype==1.2.0
     # via
@@ -261,8 +219,6 @@ filetype==1.2.0
     #   promptflow-core
 fixedint==0.1.6
     # via azure-monitor-opentelemetry-exporter
-flashinfer-python==0.2.7.post1
-    # via sglang
 flask==3.1.1
     # via
     #   flask-cors
@@ -282,7 +238,6 @@ fsspec==2025.3.0
     # via
     #   datasets
     #   huggingface-hub
-    #   torch
 ghp-import==2.1.0
     # via mkdocs
 gitdb==4.0.12
@@ -359,8 +314,6 @@ h11==0.16.0
     #   uvicorn
 h2==4.2.0
     # via httpx
-hf-transfer==0.1.9
-    # via sglang
 hf-xet==1.1.5 ; platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'arm64' or platform_machine == 'x86_64'
     # via huggingface-hub
 hpack==4.1.0
@@ -389,10 +342,7 @@ httpx-sse==0.4.0
 huggingface-hub==0.33.1
     # via
     #   datasets
-    #   sglang
-    #   timm
     #   tokenizers
-    #   transformers
 hyperframe==6.1.0
     # via h2
 identify==2.6.12
@@ -414,15 +364,6 @@ inquirerpy==0.3.4
     # via runpod
 instructor==1.9.0
     # via bespokelabs-curator
-interegular==0.3.3
-    # via
-    #   outlines
-    #   outlines-core
-    #   sglang
-ipython==9.4.0
-    # via sglang
-ipython-pygments-lexers==1.1.1
-    # via ipython
 isodate==0.7.2
     # via
     #   azure-ai-agents
@@ -435,8 +376,6 @@ itsdangerous==2.2.0
     #   flask
 jaraco-classes==3.4.0
     # via keyring
-jedi==0.19.2
-    # via ipython
 jeepney==0.9.0 ; sys_platform == 'linux'
     # via
     #   keyring
@@ -450,9 +389,6 @@ jinja2==3.1.6
     #   litellm
     #   mkdocs
     #   mkdocs-material
-    #   mlx-lm
-    #   outlines
-    #   torch
 jiter==0.10.0
     # via
     #   anthropic
@@ -472,8 +408,6 @@ jsonschema==4.24.0
     # via
     #   flask-restx
     #   litellm
-    #   outlines
-    #   outlines-core
     #   promptflow-core
 jsonschema-specifications==2025.4.1
     # via jsonschema
@@ -514,19 +448,12 @@ langsmith==0.3.45
     # via
     #   langchain
     #   langchain-core
-lark==1.2.2
-    # via outlines
 litellm==1.61.3
-    # via
-    #   bespokelabs-curator
-    #   sglang
-llguidance==0.7.30
-    # via sglang
+    # via bespokelabs-curator
 logfire==3.21.1
     # via -r requirements.in
 lxml==5.4.0
     # via
-    #   blobfile
     #   python-docx
     #   python-pptx
 markdown==3.8.2
@@ -548,8 +475,6 @@ marshmallow==3.26.1
     # via promptflow-devkit
 matplotlib==3.10.3
     # via bespokelabs-curator
-matplotlib-inline==0.1.7
-    # via ipython
 mcp==1.9.4
     # via openai-agents
 mdurl==0.1.2
@@ -572,26 +497,16 @@ mkdocs-material==9.6.15
     # via instructor
 mkdocs-material-extensions==1.3.1
     # via mkdocs-material
-mlx==0.26.3 ; platform_machine == 'arm64' and sys_platform == 'darwin'
-    # via mlx-lm
-mlx-lm==0.26.0 ; platform_machine == 'arm64' and sys_platform == 'darwin'
-    # via xgrammar
-modelscope==1.28.0
-    # via sglang
 monotonic==1.6
     # via posthog
 more-itertools==10.7.0
     # via jaraco-classes
-mpmath==1.3.0
-    # via sympy
 msal==1.32.3
     # via
     #   azure-identity
     #   msal-extensions
 msal-extensions==1.3.1
     # via azure-identity
-msgspec==0.19.0
-    # via sglang
 msrest==0.7.1
     # via
     #   azure-ai-evaluation
@@ -603,16 +518,7 @@ multidict==6.6.3
 multiprocess==0.70.16
     # via datasets
 nest-asyncio==1.6.0
-    # via
-    #   bespokelabs-curator
-    #   outlines
-networkx==3.5
-    # via torch
-ninja==1.11.1.4
-    # via
-    #   flashinfer-python
-    #   sglang
-    #   xgrammar
+    # via bespokelabs-curator
 nltk==3.9.1
     # via azure-ai-evaluation
 nodeenv==1.9.1
@@ -622,63 +528,13 @@ numpy==2.3.0
     #   biopython
     #   contourpy
     #   datasets
-    #   decord
     #   faiss-cpu
-    #   flashinfer-python
     #   langchain-aws
     #   matplotlib
-    #   mlx-lm
     #   openai-agents
-    #   outlines
     #   pandas
     #   qdrant-client
-    #   scipy
-    #   sglang
     #   shapely
-    #   soundfile
-    #   torchvision
-    #   transformers
-nvidia-cublas-cu12==12.6.4.1 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via
-    #   nvidia-cudnn-cu12
-    #   nvidia-cusolver-cu12
-    #   torch
-nvidia-cuda-cupti-cu12==12.6.80 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cuda-nvrtc-cu12==12.6.77 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cuda-runtime-cu12==12.6.77 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cudnn-cu12==9.5.1.17 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cufft-cu12==11.3.0.4 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cufile-cu12==1.11.1.6 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-curand-cu12==10.3.7.77 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cusolver-cu12==11.7.1.2 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-cusparse-cu12==12.5.4.2 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via
-    #   nvidia-cusolver-cu12
-    #   torch
-nvidia-cusparselt-cu12==0.6.3 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-ml-py==12.575.51
-    # via pynvml
-nvidia-nccl-cu12==2.26.2 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
-nvidia-nvjitlink-cu12==12.6.85 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via
-    #   nvidia-cufft-cu12
-    #   nvidia-cusolver-cu12
-    #   nvidia-cusparse-cu12
-    #   torch
-nvidia-nvshmem-cu12==3.3.9
-    # via flashinfer-python
-nvidia-nvtx-cu12==12.6.77 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via torch
 oauthlib==3.3.1
     # via requests-oauthlib
 ollama==0.5.1
@@ -692,7 +548,6 @@ openai==1.88.0
     #   mem0ai
     #   openai-agents
     #   promptflow-tracing
-    #   sglang
 openai-agents==0.0.19
     # via -r requirements.in
 openpyxl==3.1.5
@@ -741,14 +596,8 @@ orjson==3.11.0
     # via
     #   fastapi
     #   langsmith
-    #   sglang
-outlines==0.1.11
-    # via sglang
-outlines-core==0.1.26
-    # via outlines
 packaging==24.2
     # via
-    #   build
     #   datasets
     #   faiss-cpu
     #   google-cloud-aiplatform
@@ -761,8 +610,6 @@ packaging==24.2
     #   mkdocs
     #   opentelemetry-instrumentation
     #   pytesseract
-    #   sglang
-    #   transformers
 paginate==0.5.7
     # via mkdocs-material
 pandas==2.2.2
@@ -774,10 +621,6 @@ pandas==2.2.2
     #   promptflow-devkit
 paramiko==3.5.1
     # via runpod
-parso==0.8.4
-    # via jedi
-partial-json-parser==0.2.1.1.post6
-    # via sglang
 patchright==1.52.5
     # via browser-use
 pathspec==0.12.1
@@ -788,8 +631,6 @@ pdfminer-six==20250506
     # via pdfplumber
 pdfplumber==0.11.7
     # via -r requirements.in
-pexpect==4.9.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
-    # via ipython
 pfzy==0.3.4
     # via inquirerpy
 pillow==11.0.0
@@ -800,8 +641,6 @@ pillow==11.0.0
     #   promptflow-devkit
     #   pytesseract
     #   python-pptx
-    #   sglang
-    #   torchvision
 platformdirs==4.3.8
     # via
     #   mkdocs-get-deps
@@ -819,12 +658,8 @@ pre-commit==4.2.0
     # via instructor
 prettytable==3.16.0
     # via runpod
-prometheus-client==0.22.1
-    # via sglang
 prompt-toolkit==3.0.51
-    # via
-    #   inquirerpy
-    #   ipython
+    # via inquirerpy
 promptflow-core==1.18.1
     # via
     #   azure-ai-evaluation
@@ -853,7 +688,6 @@ protobuf==5.29.5
     #   grpc-google-iam-v1
     #   grpcio-status
     #   logfire
-    #   mlx-lm
     #   opentelemetry-proto
     #   proto-plus
     #   qdrant-client
@@ -862,13 +696,8 @@ psutil==7.0.0
     #   azure-monitor-opentelemetry-exporter
     #   browser-use
     #   promptflow-core
-    #   sglang
 psycopg2-binary==2.9.10
     # via mem0ai
-ptyprocess==0.7.0 ; sys_platform != 'emscripten' and sys_platform != 'win32'
-    # via pexpect
-pure-eval==0.2.3
-    # via stack-data
 py-cpuinfo==9.0.0
     # via runpod
 pyarrow==20.0.0
@@ -879,23 +708,16 @@ pyasn1==0.6.1
     #   rsa
 pyasn1-modules==0.4.2
     # via google-auth
-pybase64==1.4.1
-    # via sglang
 pycares==4.9.0
     # via aiodns
-pycountry==24.6.1
-    # via outlines
 pycparser==2.22
     # via cffi
-pycryptodomex==3.23.0
-    # via blobfile
 pydantic==2.10.6
     # via
     #   -r requirements.in
     #   anthropic
     #   bespokelabs-curator
     #   browser-use
-    #   compressed-tensors
     #   fastapi
     #   fastapi-cloud-cli
     #   google-cloud-aiplatform
@@ -913,12 +735,9 @@ pydantic==2.10.6
     #   ollama
     #   openai
     #   openai-agents
-    #   outlines
     #   pydantic-extra-types
     #   pydantic-settings
     #   qdrant-client
-    #   sglang
-    #   xgrammar
 pydantic-core==2.27.2
     # via
     #   instructor
@@ -939,8 +758,6 @@ pyee==13.0.0
     #   playwright
 pygments==2.19.1
     # via
-    #   ipython
-    #   ipython-pygments-lexers
     #   mkdocs-material
     #   rich
 pyjwt==2.10.1
@@ -951,10 +768,6 @@ pymdown-extensions==10.16
     # via mkdocs-material
 pynacl==1.5.0
     # via paramiko
-pynvml==12.0.0
-    # via
-    #   flashinfer-python
-    #   sglang
 pyobjc==11.1 ; platform_system == 'darwin'
     # via browser-use
 pyobjc-core==11.1 ; platform_system == 'darwin' or sys_platform == 'darwin'
@@ -1669,8 +1482,6 @@ pypdfium2==4.30.1
     # via pdfplumber
 pyperclip==1.9.0
     # via browser-use
-pyproject-hooks==1.2.0
-    # via build
 pytesseract==0.3.13
     # via -r requirements.in
 python-dateutil==2.9.0.post0
@@ -1699,7 +1510,6 @@ python-multipart==0.0.20
     # via
     #   fastapi
     #   mcp
-    #   sglang
 python-pptx==1.0.2
     # via -r requirements.in
 pytz==2024.2
@@ -1709,7 +1519,6 @@ pytz==2024.2
     #   pandas
 pywin32==310 ; sys_platform == 'win32'
     # via
-    #   cuda-bindings
     #   portalocker
     #   promptflow-devkit
 pywin32-ctypes==0.2.3 ; sys_platform == 'win32'
@@ -1724,35 +1533,27 @@ pyyaml==6.0.2
     #   langchain-core
     #   mkdocs
     #   mkdocs-get-deps
-    #   mlx-lm
     #   pre-commit
     #   pymdown-extensions
     #   pyyaml-env-tag
-    #   timm
-    #   transformers
     #   uvicorn
 pyyaml-env-tag==1.1
     # via mkdocs
-pyzmq==27.0.0
-    # via sglang
 qdrant-client==1.15.0
     # via mem0ai
 referencing==0.36.2
     # via
     #   jsonschema
     #   jsonschema-specifications
-    #   outlines
 regex==2024.11.6
     # via
     #   nltk
     #   tiktoken
-    #   transformers
 requests==2.32.4
     # via
     #   azure-core
     #   browser-use
     #   datasets
-    #   flashinfer-python
     #   google-api-core
     #   google-cloud-bigquery
     #   google-cloud-storage
@@ -1761,19 +1562,15 @@ requests==2.32.4
     #   langchain
     #   langsmith
     #   mkdocs-material
-    #   modelscope
     #   msal
     #   msrest
     #   openai-agents
     #   opentelemetry-exporter-otlp-proto-http
-    #   outlines
     #   posthog
     #   requests-oauthlib
     #   requests-toolbelt
     #   runpod
-    #   sglang
     #   tiktoken
-    #   transformers
 requests-oauthlib==2.0.0
     # via msrest
 requests-toolbelt==1.0.0
@@ -1807,31 +1604,12 @@ runpod==1.7.12
     # via -r requirements.in
 s3transfer==0.13.0
     # via boto3
-safetensors==0.5.3
-    # via
-    #   timm
-    #   transformers
-scipy==1.16.0
-    # via sglang
 screeninfo==0.8.1 ; platform_system != 'darwin'
     # via browser-use
 secretstorage==3.3.3 ; sys_platform == 'linux'
     # via keyring
-sentencepiece==0.2.0
-    # via sglang
 sentry-sdk==2.33.0
     # via fastapi-cloud-cli
-setproctitle==1.3.6
-    # via sglang
-setuptools==80.9.0
-    # via
-    #   modelscope
-    #   torch
-    #   triton
-sgl-kernel==0.2.5
-    # via sglang
-sglang==0.4.9.post2
-    # via -r requirements.in
 shapely==2.1.1
     # via google-cloud-aiplatform
 shellingham==1.5.4
@@ -1851,8 +1629,6 @@ sniffio==1.3.1
     #   openai
 sounddevice==0.5.2
     # via -r requirements.in
-soundfile==0.13.1
-    # via sglang
 soupsieve==2.7
     # via beautifulsoup4
 sqlalchemy==2.0.41
@@ -1862,16 +1638,12 @@ sqlalchemy==2.0.41
     #   promptflow-devkit
 sse-starlette==2.3.6
     # via mcp
-stack-data==0.6.3
-    # via ipython
 starlette==0.46.2
     # via
     #   fastapi
     #   mcp
 strictyaml==1.7.3
     # via promptflow-devkit
-sympy==1.14.0
-    # via torch
 tabulate==0.9.0
     # via promptflow-devkit
 tenacity==9.1.2
@@ -1884,65 +1656,22 @@ tiktoken==0.9.0
     #   langchain-openai
     #   litellm
     #   promptflow-tracing
-    #   sglang
-timm==1.0.16
-    # via sglang
 tokenizers==0.21.2
-    # via
-    #   litellm
-    #   transformers
+    # via litellm
 tomli==2.2.1
     # via runpod
 tomlkit==0.13.3
     # via runpod
-torch==2.7.1
-    # via
-    #   compressed-tensors
-    #   flashinfer-python
-    #   outlines
-    #   sglang
-    #   timm
-    #   torchaudio
-    #   torchvision
-    #   xgrammar
-torch-memory-saver==0.0.8
-    # via sglang
-torchao==0.9.0
-    # via sglang
-torchaudio==2.7.1
-    # via sglang
-torchvision==0.22.1
-    # via
-    #   sglang
-    #   timm
 tqdm==4.67.1
     # via
     #   bespokelabs-curator
     #   datasets
     #   huggingface-hub
-    #   modelscope
     #   nltk
     #   openai
-    #   outlines
-    #   sglang
     #   tqdm-loggable
-    #   transformers
 tqdm-loggable==0.2
     # via runpod
-traitlets==5.14.3
-    # via
-    #   ipython
-    #   matplotlib-inline
-transformers==4.53.0
-    # via
-    #   compressed-tensors
-    #   mlx-lm
-    #   sglang
-    #   xgrammar
-triton==3.3.1 ; platform_machine == 'x86_64' and sys_platform == 'linux'
-    # via
-    #   torch
-    #   xgrammar
 typer==0.16.0
     # via
     #   fastapi-cli
@@ -1968,7 +1697,6 @@ typing-extensions==4.14.0
     #   openai
     #   openai-agents
     #   opentelemetry-sdk
-    #   outlines
     #   pydantic
     #   pydantic-core
     #   pydantic-extra-types
@@ -1979,7 +1707,6 @@ typing-extensions==4.14.0
     #   referencing
     #   rich-toolkit
     #   sqlalchemy
-    #   torch
     #   typer
     #   typing-inspection
 typing-inspection==0.4.1
@@ -1992,9 +1719,7 @@ ujson==5.10.0
     # via fastapi
 urllib3==2.4.0
     # via
-    #   blobfile
     #   botocore
-    #   modelscope
     #   qdrant-client
     #   requests
     #   runpod
@@ -2008,11 +1733,8 @@ uvicorn==0.34.3
     #   fastapi-cli
     #   fastapi-cloud-cli
     #   mcp
-    #   sglang
-uvloop==0.21.0
-    # via
-    #   sglang
-    #   uvicorn
+uvloop==0.21.0 ; platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32'
+    # via uvicorn
 vertexai==1.71.1
     # via bespokelabs-curator
 virtualenv==20.31.2
@@ -2043,8 +1765,6 @@ wrapt==1.17.2
     #   deprecated
     #   opentelemetry-instrumentation
     #   opentelemetry-instrumentation-httpx
-xgrammar==0.1.21
-    # via sglang
 xlsxwriter==3.2.5
     # via python-pptx
 xxhash==3.5.0
