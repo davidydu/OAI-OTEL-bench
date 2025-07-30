@@ -47,7 +47,7 @@ TOOLS.append(run_browser_research)
 async def main():
     research_agent = Agent(
         name="SearchAgent",
-        instructions="Feed the original question as the search tool query word for word. Respond with an answer.",
+        instructions="Give the original question verbatim to 'run_browser_research'. Return the answer it provides.",
         tools=TOOLS,
         model_settings=ModelSettings(tool_choice="required"),
         model=sglang_client.SGLANG_MODEL,
