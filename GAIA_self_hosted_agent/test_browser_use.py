@@ -6,9 +6,9 @@ load_dotenv()
 from lmnr import Laminar, Instruments
 import asyncio, logfire
 
-logfire.configure()
-logfire.instrument_httpx()
-logfire.instrument_openai_agents()
+# logfire.configure()
+# logfire.instrument_httpx()
+# logfire.instrument_openai_agents()
 
 Laminar.initialize(project_api_key="qNyn09TtAUYVACdhMSZ3mZEFQeb3BYPCvGEdOe2pNFdxmQrzuDzjaQ98vEbCcuh8")
 

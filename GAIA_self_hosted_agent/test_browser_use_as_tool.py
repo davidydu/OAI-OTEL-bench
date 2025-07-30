@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from browser_use import Agent as BrowserUseAgent
+from browser_use import BrowserSession
 from browser_use.llm import ChatOpenAI
 import sglang_client
 
@@ -37,6 +38,9 @@ async def run_browser_research(query: str) -> str:
         task = query,
         llm = llm,
         # use_vision = False,
+        browser_session=BrowserSession(
+            executable_path='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+        )
     )
     result = await browser_use_agent.run()
     return result.final_result() or ""
