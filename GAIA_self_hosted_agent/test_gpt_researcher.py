@@ -10,7 +10,7 @@ async def main():
     try:
         report = await create_chat_completion(
             model=cfg.smart_llm_model,
-            messages = [{"role": "user", "content": "sup?"}],
+            messages = [{"role": "user", "content": "How many studio albums were published by Mercedes Sosa between 2000 and 2009 (included)? You can use the latest 2022 version of english wikipedia."}],
             temperature=0.35,
             llm_provider=cfg.smart_llm_provider,
             stream=True,

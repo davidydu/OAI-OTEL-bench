@@ -13,7 +13,7 @@ SGLANG_BASE_URL = os.getenv("SGLANG_BASE_URL")
 SGLANG_API_KEY = os.getenv("SGLANG_API_KEY", "x")
 """Optional API key if authentication is enabled."""
 
-SGLANG_MODEL = os.getenv("SGLANG_MODEL", "openai/Qwen/Qwen2.5-VL-32B-Instruct")
+SGLANG_MODEL = os.getenv("SGLANG_MODEL", "openai/Qwen/Qwen3-30B-A3B-Thinking-2507")
 """Default model name used for agent calls."""
 
 if not SGLANG_BASE_URL:

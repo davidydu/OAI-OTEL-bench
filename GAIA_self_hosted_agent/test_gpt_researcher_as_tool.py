@@ -12,7 +12,7 @@ from agents import (
 from gpt_researcher import GPTResearcher
 
 
-logfire.configure()
+logfire.configure(scrubbing=False)
 logfire.instrument_httpx()
 logfire.instrument_openai_agents()
 
@@ -42,7 +42,7 @@ async def main():
     agent = Agent(
         name="Assistant",
         instructions="You only respond in haikus.",
-        model="Qwen3-8B",
+        model="Qwen3-30B-A3B-Thinking-2507",
     )
 
     research_agent = Agent(
@@ -50,15 +50,12 @@ async def main():
         instructions="Respond with a report",
         tools=TOOLS,
         model_settings=ModelSettings(tool_choice="required"),
-        model="openai/Qwen/Qwen3-8B",
+        model="openai/Qwen/Qwen3-30B-A3B-Thinking-2507",
     )
 
-    result = await Runner.run(research_agent, "Introduce Tokyo")
+    result = await Runner.run(research_agent, "How many studio albums were published by Mercedes Sosa between 2000 and 2009 (included)? You can use the latest 2022 version of english wikipedia.")
     print(result.final_output)
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-
-
