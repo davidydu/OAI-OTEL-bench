@@ -1,25 +1,22 @@
-import pandas as pd, json, numpy as np
+import torch
+import torch.nn.functional as F
 
-# Load the trace file
-df = pd.read_parquet("GAIA_self_hosted_agent/logfire_sample_traces.parquet")
+# --- global registry to capture data ---
+capture_registry = []
 
-# Spans tagged with LLMs
-llm_spans = df[df["tags"].apply(lambda x: "LLM" in x if isinstance(x, (list, np.ndarray)) else False)]
+def _capture_and_forward(fn_name, orig_fn, *args, **kwargs):
+    # run original fn
+    out = orig_fn(*args, **kwargs)
 
-records = []
-for _, row in llm_spans.iterrows():
-    attr = json.loads(row["attributes"])
-    # system prompt lives in request_data['messages']
-    system_prompt = next((m["content"] for m in attr.get("request_data", {}).get("messages", [])
-                          if m.get("role") == "system"), "")
-    user_inputs   = [m["content"] for m in attr.get("input", []) if m.get("role") == "user"]
-    model_outputs = [m["content"] for m in attr.get("output", [])]
-    model_reasoning_content = [m["reasoning_content"] for m in attr.get("output", [])]
-    records.append({
-        "system_prompt": system_prompt,
-        "inputs": user_inputs,
-        "outputs": model_outputs,
-        "reasoning": model_reasoning_content
+    # store input/output in registry; convert to CPU
+    def to_cpu(t):
+        return t.detach().cpu() if torch.is_tensor(t) else t
+
+    capture_registry.append({
+        "op": fn_name,
+        "inputs": [to_cpu(x) for x in args],
+        "kwargs": {k: to_cpu(v) for k, v in kwargs.items()},
+        "outputs": to_cpu(out),
     })
 
 # Use records directly, or convert to a DataFrame/JSON
