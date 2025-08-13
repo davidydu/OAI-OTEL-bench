@@ -1,5 +1,15 @@
-import torch
-import torch.nn.functional as F
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch, torch.nn.functional as F
+from functools import wraps
+
+model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen3-30B-A3B-Thinking-2507")
+tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen3-30B-A3B-Thinking-2507")
+
+def replay_call(system_prompt, user_msg):
+    prompt = f"<s>[SYSTEM]{system_prompt}[/SYSTEM]\n[USER]{user_msg}[/USER]\n[ASSISTANT]"
+    inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+    out = model.generate(**inputs, max_new_tokens=500)
+    return tokenizer.decode(out[0], skip_special_tokens=True)
 
 # --- global registry to capture data ---
 capture_registry = []
@@ -18,9 +28,22 @@ def _capture_and_forward(fn_name, orig_fn, *args, **kwargs):
         "kwargs": {k: to_cpu(v) for k, v in kwargs.items()},
         "outputs": to_cpu(out),
     })
+    return out
 
-# Use records directly, or convert to a DataFrame/JSON
-prompt_df = pd.DataFrame(records)
-# save as json
-prompt_df.to_json("GAIA_self_hosted_agent/parsed_traces.json", orient="records", indent=2)
-print(prompt_df.head())
+# --- patch functions ---
+orig_bmm = torch.bmm
+orig_matmul = torch.matmul
+orig_sdpa = F.scaled_dot_product_attention
+
+def patched_bmm(*args, **kwargs):
+    return _capture_and_forward("bmm", orig_bmm, *args, **kwargs)
+
+def patched_matmul(*args, **kwargs):
+    return _capture_and_forward("matmul", orig_matmul, *args, **kwargs)
+
+def patched_sdpa(*args, **kwargs):
+    return _capture_and_forward("sdpa", orig_sdpa, *args, **kwargs)
+
+torch.bmm = patched_bmm
+torch.matmul = patched_matmul
+F.scaled_dot_product_attention = patched_sdpa
