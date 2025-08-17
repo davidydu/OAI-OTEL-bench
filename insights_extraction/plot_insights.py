@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
-PARQUET = os.getenv("TRACE_SUMMARY_PARQUET", "insights_extraction/trace_insights.parquet")
-OUTDIR  = os.getenv("OUTDIR", "insights_extraction/figs")
+PARQUET = os.getenv("TRACE_SUMMARY_PARQUET", "insights_extraction/validation_traces_insights.parquet")
+OUTDIR  = os.getenv("OUTDIR", "insights_extraction/validation_figs")
 os.makedirs(OUTDIR, exist_ok=True)
 
 # ---------- Global style (no custom colors) ----------

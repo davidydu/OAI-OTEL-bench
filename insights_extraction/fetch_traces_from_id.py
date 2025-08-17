@@ -2,17 +2,17 @@ import os
 import polars as pl
 from logfire.query_client import AsyncLogfireQueryClient
 
-TRACE_LIST_CSV = "insights_extraction/logfire_latest_30_traces.csv"
-OUT_PARQUET = "insights_extraction/logfire_latest_30_traces_full.parquet"
+TRACE_LIST_CSV = "insights_extraction/validation_traces.csv"
+OUT_PARQUET = "insights_extraction/validation_traces_full.parquet"
 
 
 async def main():
-    # 1) Read the provided CSV and get the first 30 unique trace_ids (in order)
+    # 1) Read the provided CSV and get the first 165 unique trace_ids (in order)
     df_ids = pl.read_csv(TRACE_LIST_CSV)
     trace_ids = (
         df_ids.select(pl.col("trace_id"))
               .unique(maintain_order=True)
-              .head(30)
+              .head(165)
               .to_series()
               .to_list()
     )
